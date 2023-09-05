@@ -14,18 +14,20 @@
     </head>
     <body>
         {% block body %}
-        <div class="text-center">
-            <div class="mb-">Make an appointment!</div>
-            <form 
-            {# action="{{path('app_register')}}" #}
-            >
-                <button type="submit">Register</button>
-            </form>
-            <form 
-            {# action="{{path('app_sign_in')}}" #}
-            >
-                <button class="btn btn-primary" type="submit">Sign-In</button>
-            </form>
+        <div class="text-center pt-5">
+            <h1>Make an appointment!</h1>
+            <div class="pt-5">
+                <form
+                {# action="{{path('app_register')}}" #}
+                >
+                <button class="btn btn-primary btn-lg w-25" type="submit">Register</button>
+                </form>
+                <form class="pt-4"
+                {# action="{{path('app_sign_in')}}" #}
+                >
+                <button class="btn btn-primary btn-lg w-25" type="submit">Sign-In</button>
+                </form>
+            </div>
         </div>
         {% endblock %}
     </body>
