@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Verify your email!{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-column align-items-center">
+        <h2>Check your email to verify it</h2>
+        <form action="{{path('app_sign_in')}}">
+            <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
+        </form>
+    </div>
+{% endblock %}
