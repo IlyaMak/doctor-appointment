@@ -8,6 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class AppointmentController extends AbstractController {
     #[Route('/appointment', name: 'appointment_list')]
     public function appointmentList(): Response {
-        return $this->render('/appointment/appointment-list.html.twig');
+        return $this->render('/appointment/appointment_list.html.twig');
     }
 }
