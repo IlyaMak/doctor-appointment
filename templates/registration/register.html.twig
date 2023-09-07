@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme registrationForm 'common/form_errors.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
@@ -7,13 +8,25 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <div class="text-center mt-5 d-flex flex-column justify-content-center align-items-center">
+        <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_widget(registrationForm) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_start(registrationForm) }}
+            
+            <div class="form-floating">
+                {{ form_widget(registrationForm.email) }}
+                {{ form_label(registrationForm.email) }}
+            </div>
+            <div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.email) }}</div>
+            <div class="form-floating">
+                {{ form_widget(registrationForm.plainPassword) }}
+                {{ form_label(registrationForm.plainPassword) }}
+            </div>
+            <div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.plainPassword) }}</div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary mt-3">Register</button>
+            <p class="mt-5 mb-3 text-muted">© 2019-2023</p>
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}
