@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RootController extends AbstractController {
-    #[Route('/', name: 'root')]
+    #[Route('/', name: 'index')]
     public function index(): Response {
-        return $this->render('base.html.twig');
+        return $this->render('index/index.html.twig');
     }
 }

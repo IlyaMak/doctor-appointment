@@ -67,7 +67,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'attr' => ['class' => 'mt-3', 'style' => 'width: 300px']
+            'attr' => ['class' => 'mt-3 security-form']
         ]);
     }
 }

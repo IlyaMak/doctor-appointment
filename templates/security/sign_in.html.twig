@@ -1,0 +1,30 @@
+{% extends 'security/base.html.twig' %}
+
+{% block title %}Sign In | Doctor Appointment{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <div class="text-center d-flex flex-column">
+
+        <h1>Sign In</h1>
+    
+        <form class="mt-3 security-form" action="{{ path('app_sign_in') }}" method="post">
+            <div class="form-floating">
+                <input id="username" class="form-control" required="required" type="text" name="_username" value="{{ last_username }}"/>
+                <label class="required" for="username">Email</label>
+            </div>
+            <div class="form-floating mt-3">
+                <input type="password" class="form-control" id="password" name="_password"/>
+                <label for="password">Password</label>
+            </div> 
+        
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        
+            <button type="submit" class="w-100 btn btn-lg btn-primary mt-3">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2019-2023</p>
+        </form>
+    </div>
+{% endblock %}

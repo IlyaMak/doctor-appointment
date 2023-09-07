@@ -51,14 +51,14 @@ class RegistrationController extends AbstractController
                     ->from(new Address('ilmobdev@gmail.com', 'Doctor Appointment Mail Bot'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('security/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 
-            return $this->render('registration/register_success.html.twig');
+            return $this->render('security/register_success.html.twig');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

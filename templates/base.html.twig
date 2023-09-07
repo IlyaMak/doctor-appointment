@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -14,17 +14,7 @@
     </head>
     <body>
         {% block body %}
-        <div class="text-center pt-5">
-            <h1>Make an appointment!</h1>
-            <div class="pt-5">
-                <form action="{{path('app_register')}}">
-                <button class="btn btn-primary btn-lg w-25" type="submit">Register</button>
-                </form>
-                <form class="pt-4" action="{{path('app_sign_in')}}">
-                <button class="btn btn-primary btn-lg w-25" type="submit">Sign-In</button>
-                </form>
-            </div>
-        </div>
+        
         {% endblock %}
     </body>
 </html>

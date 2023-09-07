@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/base.html.twig' %}
 {% form_theme registrationForm 'common/form_errors.html.twig' %}
 
 {% block title %}Register{% endblock %}
@@ -8,7 +8,7 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <div class="text-center mt-5 d-flex flex-column justify-content-center align-items-center">
+    <div class="text-center d-flex flex-column justify-content-center align-items-center">
         <h1>Register</h1>
 
         {{ form_errors(registrationForm) }}
