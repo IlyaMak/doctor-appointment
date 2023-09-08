@@ -13,11 +13,11 @@
     
         <form class="mt-3 security-form" action="{{ path('app_sign_in') }}" method="post">
             <div class="form-floating">
-                <input id="username" class="form-control" required="required" type="text" name="_username" value="{{ last_username }}"/>
-                <label class="required" for="username">Email</label>
+                <input type="text" class="form-control" id="username" placeholder="email" name="_username" value="{{ last_username }}"/>
+                <label for="username">Email</label>
             </div>
             <div class="form-floating mt-3">
-                <input type="password" class="form-control" id="password" name="_password"/>
+                <input type="password" class="form-control" id="password" placeholder="password" name="_password"/>
                 <label for="password">Password</label>
             </div> 
         
