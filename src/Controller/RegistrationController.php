@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DoctorRegistrationFormType;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
@@ -30,7 +31,12 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(
+            $request->query->get('isPatient') === '1' 
+                ? RegistrationFormType::class 
+                : DoctorRegistrationFormType::class,
+            $user,
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

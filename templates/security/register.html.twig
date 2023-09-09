@@ -14,17 +14,33 @@
         {{ form_errors(registrationForm) }}
 
         {{ form_start(registrationForm) }}
-            
-            <div class="form-floating">
+            {% if registrationForm.name is defined %} 
+                <div class="form-floating">
+                    {{ form_widget(registrationForm.name) }}
+                    {{ form_label(registrationForm.name) }}
+                </div>
+            {% endif %}
+            {% if registrationForm.specialty is defined %} 
+                <div class="mt-3 form-floating">
+                    {{ form_widget(registrationForm.specialty) }}
+                </div>
+            {% endif %}
+            <div class="mt-3 form-floating">
                 {{ form_widget(registrationForm.email) }}
                 {{ form_label(registrationForm.email) }}
             </div>
             <div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.email) }}</div>
-            <div class="form-floating">
+            <div class="mt-3 form-floating">
                 {{ form_widget(registrationForm.plainPassword) }}
                 {{ form_label(registrationForm.plainPassword) }}
             </div>
             <div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.plainPassword) }}</div>
+            {% if registrationForm.image is defined %}
+                <div class="mt-3 d-flex flex-column align-items-start">
+                    {{ form_label(registrationForm.image) }}
+                    <div class="mt-1">{{ form_widget(registrationForm.image) }}</div>
+                </div>
+            {% endif %}
             <button type="submit" class="w-100 btn btn-lg btn-primary mt-3">Register</button>
             <p class="mt-5 mb-3 text-muted">© 2019-2023</p>
         {{ form_end(registrationForm) }}
