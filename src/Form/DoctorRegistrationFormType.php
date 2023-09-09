@@ -30,10 +30,10 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                     ],
                 ],   
             )
-            ->add('image',
+            ->add('avatar',
                 FileType::class,
                 [
-                    'label' => 'Upload image',
+                    'label' => 'Upload avatar',
                     'mapped' => false,
                     // make it optional so you don't have to re-upload the PDF file
                     // every time you edit the Product details
@@ -43,11 +43,6 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                     ],
                     'constraints' => [
                         new File([
-                            'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                'application/pdf',
-                                'application/x-pdf',
-                            ],
                             'mimeTypesMessage' => 'Please upload a valid image file',
                         ])
                     ],

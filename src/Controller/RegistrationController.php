@@ -7,6 +7,7 @@ use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -30,16 +31,18 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $isDoctor = $request->query->get('isPatient') === '0';
         $user = new User();
         $form = $this->createForm(
-            $request->query->get('isPatient') === '1' 
-                ? PatientRegistrationFormType::class 
-                : DoctorRegistrationFormType::class,
+             $isDoctor
+                ? DoctorRegistrationFormType::class
+                : PatientRegistrationFormType::class, 
             $user,
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setName($form->get('name')->getData());
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -47,6 +50,16 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            if ($isDoctor) {
+                $user->setSpecialty($form->get('specialty')->getData());
+                $avatarData = $form->get('avatar')->getData();
+                $currentDateTime = new DateTime();
+                $currentDate = $currentDateTime->format('YmdHisv');
+                $localAvatarPath = $currentDate.'.'.$avatarData->getClientOriginalExtension();
+                $avatarData->move('resources', $localAvatarPath);
+                $user->setAvatarPath($localAvatarPath);
+            }
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -59,7 +72,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('security/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->render('security/register_success.html.twig');
         }
