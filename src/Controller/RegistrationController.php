@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\DoctorRegistrationFormType;
-use App\Form\RegistrationFormType;
+use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,7 +33,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(
             $request->query->get('isPatient') === '1' 
-                ? RegistrationFormType::class 
+                ? PatientRegistrationFormType::class 
                 : DoctorRegistrationFormType::class,
             $user,
         );
