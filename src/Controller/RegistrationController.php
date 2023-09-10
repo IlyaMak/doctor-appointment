@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Specialty;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
@@ -41,18 +43,21 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setName($form->get('name')->getData());
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            /** @var string */
+            $name = $form->get('name')->getData();
+            /** @var string */
+            $plainPassword = $form->get('plainPassword')->getData();
+            /** @var string|Address */
+            $email = $user->getEmail();
+            $user->setName($name);
+            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             if ($isDoctor) {
-                $user->setSpecialty($form->get('specialty')->getData());
+                /** @var ?Specialty */
+                $specialty = $form->get('specialty')->getData();
+                /** @var UploadedFile */
                 $avatarData = $form->get('avatar')->getData();
+                $user->setSpecialty($specialty);
                 $currentDateTime = new \DateTime();
                 $currentDate = $currentDateTime->format('YmdHisv');
                 $localAvatarPath = $currentDate.'.'.$avatarData->getClientOriginalExtension();
@@ -67,7 +72,7 @@ class RegistrationController extends AbstractController
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('ilmobdev@gmail.com', 'Doctor Appointment Mail Bot'))
-                    ->to($user->getEmail())
+                    ->to($email)
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('security/confirmation_email.html.twig')
             );
