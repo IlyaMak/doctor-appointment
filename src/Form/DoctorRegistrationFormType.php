@@ -16,19 +16,19 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
     {
         parent::buildForm($builder, $options);
         $builder
-           
+
             ->add(
-                'specialty', 
-                EntityType::class, 
+                'specialty',
+                EntityType::class,
                 [
                     'class' => Specialty::class,
                     'choice_label' => 'name',
                     'placeholder' => 'Choose a specialty...',
                     'label' => false,
                     'attr' => [
-                        'class' => 'py-0 form-control'
+                        'class' => 'py-0 form-control',
                     ],
-                ],   
+                ],
             )
             ->add('avatar',
                 FileType::class,
@@ -39,12 +39,12 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                     // every time you edit the Product details
                     'required' => false,
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'constraints' => [
                         new File([
                             'mimeTypesMessage' => 'Please upload a valid image file',
-                        ])
+                        ]),
                     ],
                 ],
             )
@@ -55,7 +55,7 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'attr' => ['class' => 'mt-3 security-form']
+            'attr' => ['class' => 'mt-3 security-form'],
         ]);
     }
 }

@@ -9,21 +9,21 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends AbstractController
 {
-   #[Route('/sign-in', name: 'app_sign_in')]
+    #[Route('/sign-in', name: 'app_sign_in')]
     public function app_sign_in(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
- 
+
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
- 
+
         return $this->render('security/sign_in.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
     }
- 
+
     #[Route('/sign-out', name: 'app_sign_out')]
     public function app_sign_out(): Response
     {

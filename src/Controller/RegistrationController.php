@@ -7,7 +7,6 @@ use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -31,12 +30,12 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $isDoctor = $request->query->get('isPatient') === '0';
+        $isDoctor = '0' === $request->query->get('isPatient');
         $user = new User();
         $form = $this->createForm(
-             $isDoctor
-                ? DoctorRegistrationFormType::class
-                : PatientRegistrationFormType::class, 
+            $isDoctor
+               ? DoctorRegistrationFormType::class
+               : PatientRegistrationFormType::class,
             $user,
         );
         $form->handleRequest($request);
@@ -54,7 +53,7 @@ class RegistrationController extends AbstractController
             if ($isDoctor) {
                 $user->setSpecialty($form->get('specialty')->getData());
                 $avatarData = $form->get('avatar')->getData();
-                $currentDateTime = new DateTime();
+                $currentDateTime = new \DateTime();
                 $currentDate = $currentDateTime->format('YmdHisv');
                 $localAvatarPath = $currentDate.'.'.$avatarData->getClientOriginalExtension();
                 $avatarData->move('resources', $localAvatarPath);
@@ -85,17 +84,19 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request, UserRepository $userRepository, LoggerInterface $logger): Response
     {
         $id = $request->query->get('id');
-        
+
         if (null === $id) {
-           $logger->error('User id is not exists');
-           return $this->redirectToRoute('app_register');
+            $logger->error('User id is not exists');
+
+            return $this->redirectToRoute('app_register');
         }
-        
+
         $user = $userRepository->find($id);
-        
+
         if (null === $user) {
-           $logger->error('User is not exists');
-           return $this->redirectToRoute('app_register');
+            $logger->error('User is not exists');
+
+            return $this->redirectToRoute('app_register');
         }
 
         try {

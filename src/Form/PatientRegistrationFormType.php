@@ -19,28 +19,27 @@ class PatientRegistrationFormType extends AbstractType
     {
         $builder
             ->add(
-                'name', 
-                TextType::class, 
+                'name',
+                TextType::class,
                 [
                     'mapped' => false,
-                    'label'=>'Name',
-                    'label_attr' => ['for'=>"name"],
+                    'label' => 'Name',
+                    'label_attr' => ['for' => 'name'],
                     'attr' => [
                         'placeholder' => 'name',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                 ],
-                
             )
             ->add(
-                'email', 
-                EmailType::class, 
+                'email',
+                EmailType::class,
                 [
-                    'label'=>'Email',
-                    'label_attr' => ['for'=>"email"],
+                    'label' => 'Email',
+                    'label_attr' => ['for' => 'email'],
                     'attr' => [
                         'placeholder' => 'example@gmail.com',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'constraints' => [
                         new Email([
@@ -48,18 +47,17 @@ class PatientRegistrationFormType extends AbstractType
                         ]),
                     ],
                 ],
-                
             )
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'label'=>'Password',
-                    'label_attr' => ['for'=>"plainPassword"],
+                'label' => 'Password',
+                    'label_attr' => ['for' => 'plainPassword'],
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'new-password',
-                    'placeholder' => 'password'
+                    'placeholder' => 'password',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -80,7 +78,7 @@ class PatientRegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'attr' => ['class' => 'mt-3 security-form']
+            'attr' => ['class' => 'mt-3 security-form'],
         ]);
     }
 }
