@@ -82,7 +82,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "cghooks-add": "cghooks add --ignore-lock",
+        "cghooks-update": "cghooks update"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -91,9 +93,20 @@
         "symfony": {
             "allow-contrib": false,
             "require": "6.3.*"
+        },
+        "hooks": {
+            "pre-commit": [
+                "echo committing as $(git config user.name)",
+                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src"
+            ],
+            "pre-push": [
+                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src",
+                "phpunit"
+            ]
         }
     },
     "require-dev": {
+        "brainmaestro/composer-git-hooks": "v3.0.0-alpha.1",
         "friendsofphp/php-cs-fixer": "^3.26",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
