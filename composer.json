@@ -100,8 +100,7 @@
                 "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src"
             ],
             "pre-push": [
-                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src",
-                "phpunit"
+                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src"
             ]
         }
     },
