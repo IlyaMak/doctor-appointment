@@ -8,7 +8,7 @@
 /vendor/
 /.env
 /.env.test
-/resources
+/public/resources/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
