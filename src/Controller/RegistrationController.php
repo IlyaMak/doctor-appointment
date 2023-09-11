@@ -63,6 +63,9 @@ class RegistrationController extends AbstractController
                 $localAvatarPath = $currentDate.'.'.$avatarData->getClientOriginalExtension();
                 $avatarData->move('resources', $localAvatarPath);
                 $user->setAvatarPath($localAvatarPath);
+                $user->setRoles([User::ROLE_DOCTOR]);
+            } else {
+                $user->setRoles([User::ROLE_PATIENT]);
             }
 
             $entityManager->persist($user);

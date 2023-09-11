@@ -27,7 +27,7 @@ security:
                 login_path: app_sign_in
                 check_path: app_sign_in
                 enable_csrf: true
-                default_target_path: appointment_list
+                default_target_path: login_success
             logout:
                 path: app_sign_out
     # Easy way to control access for large sections of your site

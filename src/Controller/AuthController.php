@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends AbstractController
@@ -29,5 +31,17 @@ class AuthController extends AbstractController
     {
         // controller can be blank: it will never be called!
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
+
+    #[Route('/login-success', name: 'login_success')]
+    public function successLogin(TokenInterface $token): Response
+    {
+        /** @var User */
+        $user = $token->getUser();
+        if (in_array(User::ROLE_PATIENT, $user->getRoles())) {
+            return $this->redirectToRoute('patient_history');
+        }
+
+        return $this->redirectToRoute('doctor_schedule');
     }
 }
