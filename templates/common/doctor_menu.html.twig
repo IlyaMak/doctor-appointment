@@ -1,0 +1,22 @@
+{% block menu %}
+    <div class="text-center mt-3 row">
+        <div class="col-sm-4">
+            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                href="{{ path('schedule') }}">
+                <h5>Schedule</h5>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                href="{{ path('set_working_hours_form') }}">
+                <h5>Set working hours</h5>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                href="{{ path('delete_working_hours') }}">
+                <h5>Delete working hours</h5>
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -16,11 +16,4 @@ class AppointmentController extends AbstractController
     {
         return $this->render('/appointment/patient_appointment.html.twig');
     }
-
-    #[Route('/schedule', name: 'doctor_schedule')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
-    public function doctorSchedule(): Response
-    {
-        return $this->render('/appointment/doctor_appointment.html.twig');
-    }
 }
