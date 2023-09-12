@@ -42,6 +42,6 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('patient_history');
         }
 
-        return $this->redirectToRoute('doctor_schedule');
+        return $this->redirectToRoute('schedule');
     }
 }
