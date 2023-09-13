@@ -84,7 +84,8 @@
             "@auto-scripts"
         ],
         "cghooks-add": "cghooks add --ignore-lock",
-        "cghooks-update": "cghooks update"
+        "cghooks-update": "cghooks update",
+        "code-analyze":  "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix src"
     },
     "conflict": {
         "symfony/symfony": "*"

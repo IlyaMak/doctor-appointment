@@ -1,5 +1,104 @@
 {% extends 'doctor/base.html.twig' %}
+{% form_theme workingHoursForm 'common/form_errors.html.twig' %}
+
 {% block title %}Set Working Hours Form | Doctor Appointment{% endblock %}
 {% block content %}
-    <h1>set</h1>
+    <div class="col-md-6 m-auto">
+
+        {{ form_start(workingHoursForm) }}
+            <div class="ms-3">
+                {{form_label(workingHoursForm.startDate)}}
+            </div>
+                {{form_widget(workingHoursForm.startDate)}}
+            <div class="mt-2">
+                <div class="ms-3">
+                    {{form_label(workingHoursForm.endDate)}}
+                </div>
+                    {{form_widget(workingHoursForm.endDate)}}
+            </div>
+            <div class="mt-2">
+                <div class="ms-3">
+                    {{form_label(workingHoursForm.startTime)}}
+                </div>
+                    {{form_widget(workingHoursForm.startTime)}}
+            </div>
+            <div class="mt-2">
+                <div class="ms-3">
+                    {{form_label(workingHoursForm.endTime)}}
+                </div>
+                {{form_widget(workingHoursForm.endTime)}}
+            </div>
+            <div class="form-control mt-2">
+                <div>
+                    {{form_label(workingHoursForm.patientServiceInterval)}}
+                </div>
+                {{form_widget(workingHoursForm.patientServiceInterval)}}
+                <div class="list-group-item list-group-item-danger px-2 rounded">
+                    {{ form_errors(workingHoursForm.patientServiceInterval)}}
+                </div>
+            </div>
+            <div class="form-control mt-2">
+                <div>
+                    {{form_label(workingHoursForm.intervalBetweenPatientServices)}}
+                </div>
+                {{form_widget(workingHoursForm.intervalBetweenPatientServices)}}
+                <div class="list-group-item list-group-item-danger px-2 rounded">
+                    {{ form_errors(workingHoursForm.intervalBetweenPatientServices)}}
+                </div>
+            </div>
+            <div class="mt-2">
+                <div class="ms-3">
+                    {{form_label(workingHoursForm.startLunchTime)}}
+                </div>
+                {{form_widget(workingHoursForm.startLunchTime)}}
+            </div>
+            <div class="mt-2">
+                <div class="ms-3">
+                    {{form_label(workingHoursForm.endLunchTime)}}
+                </div>
+                {{form_widget(workingHoursForm.endLunchTime)}}
+            </div>
+            <div class="form-control mt-2">
+            <div>Exclude week days</div>
+                <div class="mt-1">
+                    <div>
+                        {{form_label(workingHoursForm.monday)}}
+                        {{form_widget(workingHoursForm.monday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.tuesday)}}
+                        {{form_widget(workingHoursForm.tuesday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.wednesday)}}
+                        {{form_widget(workingHoursForm.wednesday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.thursday)}}
+                        {{form_widget(workingHoursForm.thursday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.friday)}}
+                        {{form_widget(workingHoursForm.friday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.saturday)}}
+                        {{form_widget(workingHoursForm.saturday)}}
+                    </div>
+                    <div class="mt-1">
+                        {{form_label(workingHoursForm.sunday)}}
+                        {{form_widget(workingHoursForm.sunday)}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-control mt-2">
+                {{form_label(workingHoursForm.price)}}
+                {{form_widget(workingHoursForm.price)}}
+                <div class="list-group-item list-group-item-danger px-2 rounded">
+                    {{form_errors(workingHoursForm.price)}}
+                </div>
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary my-4">Generate Patient Service Time Slots</button>
+        {{ form_end(workingHoursForm) }}
+    </div>
 {% endblock %}
