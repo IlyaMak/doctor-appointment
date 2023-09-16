@@ -4,14 +4,17 @@
 {% block title %}Set Working Hours Form | Doctor Appointment{% endblock %}
 {% block content %}
     <div class="col-md-6 m-auto">
+        <div class="text-center mt-4">
+            <h2>Set Working Hours</h2>
+        </div>
         {% for flash_error in app.flashes('success') %}
-            <div class="mt-5 alert alert-success" role="alert">{{ flash_error }}</div>
+            <div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
         {% endfor %}
         {% for flash_error in app.flashes('warning') %}
-                <div class="mt-5 alert alert-warning" role="alert">{{ flash_error }}</div>
+            <div class="mt-4 mx-2 alert alert-warning" role="alert">{{ flash_error }}</div>
         {% endfor %}
         {% for flash_error in app.flashes('error') %}
-                <div class="mt-5 alert alert-danger" role="alert">{{ flash_error }}</div>
+            <div class="mt-4 mx-2 alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
         
         {{ form_start(workingHoursForm) }}

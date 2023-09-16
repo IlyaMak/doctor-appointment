@@ -226,7 +226,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'attr' => ['class' => 'mt-5 mx-2'],
+            'attr' => ['class' => 'mt-4 mx-2'],
         ]);
     }
 }
