@@ -45,4 +45,24 @@ class ScheduleSlotRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return ScheduleSlot[]
+     */
+    public function findOverlapDate(\DateTime $startDate, \DateTime $endDate): array
+    {
+        /** @var ScheduleSlot[] $entities */
+        $entities = $this->getEntityManager()->createQuery(
+            'SELECT slot 
+                 FROM App\Entity\ScheduleSlot slot
+                 WHERE (:startDate >= slot.start AND :startDate <= slot.end AND :endDate >= slot.start AND :endDate <= slot.end)
+                 OR (:startDate < slot.start AND :endDate > slot.start AND :endDate < slot.end)
+                 OR (:startDate > slot.start AND :startDate < slot.end AND :endDate > slot.end)
+                 OR (:startDate < slot.start AND :endDate > slot.end)'
+        )
+        ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
+        ->getResult();
+
+        return $entities;
+    }
 }

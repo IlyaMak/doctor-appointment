@@ -27,6 +27,7 @@ class WorkingHoursFormType extends AbstractType
                 DateType::class,
                 [
                     'mapped' => false,
+                    'label' => 'Start date (included)',
                     'years' => [date('Y'), date('Y') + 1],
                     'data' => $startDateTime,
                     'attr' => [
@@ -39,6 +40,7 @@ class WorkingHoursFormType extends AbstractType
                 DateType::class,
                 [
                     'mapped' => false,
+                    'label' => 'Start date (included)',
                     'data' => $endDateTime,
                     'years' => [date('Y'), date('Y') + 1],
                     'attr' => [
@@ -81,26 +83,6 @@ class WorkingHoursFormType extends AbstractType
                     'label' => 'Patient service interval (in minutes)',
                     'attr' => [
                         'placeholder' => '10',
-                    ],
-                    'constraints' => [
-                        new Positive([
-                            'message' => 'Please enter positive number',
-                        ]),
-                        new NotBlank([
-                            'message' => 'Please enter positive number',
-                        ]),
-                    ],
-                ],
-            )
-            ->add(
-                'intervalBetweenPatientServices',
-                NumberType::class,
-                [
-                    'mapped' => false,
-                    'data' => '5',
-                    'label' => 'Interval between patient services (in minutes)',
-                    'attr' => [
-                        'placeholder' => '5',
                     ],
                     'constraints' => [
                         new Positive([
