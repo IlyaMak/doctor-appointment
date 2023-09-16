@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\WorkingHoursFormType;
+use App\Form\ScheduleSlotGenerationFormType;
 use App\Service\ScheduleSlotService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ class DoctorController extends CustomAbstractController
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function setWorkingHoursForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
-        $form = $this->createForm(WorkingHoursFormType::class);
+        $form = $this->createForm(ScheduleSlotGenerationFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
