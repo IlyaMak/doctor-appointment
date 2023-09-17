@@ -1,0 +1,10 @@
+.h-50px {
+    height: 120px;
+}
+
+.slot {
+    width: 100%;
+    text-align: center;
+    line-height: 15px;
+    word-break: break-word;
+}

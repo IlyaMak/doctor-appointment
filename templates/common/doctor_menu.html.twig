@@ -1,22 +1,24 @@
 {% block menu %}
-    <div class="text-center mt-3 row">
-        <div class="col-sm-4">
-            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
-                href="{{ path('schedule') }}">
-                <h6>Schedule</h6>
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
-                href="{{ path('set_working_hours_form') }}">
-                <h6>Set working hours</h6>
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
-                href="{{ path('delete_working_hours') }}">
-                <h6>Delete working hours</h6>
-            </a>
+    <div class="container">
+        <div class="text-center mt-3 row">
+            <div class="col-sm-4">
+                <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                    href="{{ path('schedule') }}">
+                    <h6>Schedule</h6>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                    href="{{ path('set_working_hours_form') }}">
+                    <h6>Set working hours</h6>
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                    href="{{ path('delete_working_hours') }}">
+                    <h6>Delete working hours</h6>
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}

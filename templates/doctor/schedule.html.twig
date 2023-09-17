@@ -1,7 +1,217 @@
 {% extends 'doctor/base.html.twig' %}
 {% block title %}Schedule | Doctor Appointment{% endblock %}
 {% block content %}
-    <div class="text-center mt-4">
-        <h2>Schedule</h2>
+    <div>
+        <div class="text-center mt-4">
+            <h2>Schedule</h2>
+        </div>
+        <div class="d-flex align-items-center mt-5">
+            <button class="btn btn-outline-primary ms-3">Today</button>
+            <button class="btn btn-outline-primary ms-4">&#60;</button>
+            <button class="btn btn-outline-primary ms-2">&#62;</button>
+            <span class="h3 ms-4">Sep 2023</span>
+        </div>
+        <hr>
+        <div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
+            <div class="row text-center" id="s">
+                <div class="col px-0"></div>
+                <div class="col px-0">
+                    <div class="col">MON</div>
+                    <div class="col">11</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">TUE</div>
+                    <div class="col">12</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">WED</div>
+                    <div class="col">13</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">THU</div>
+                    <div class="col">14</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">FRI</div>
+                    <div class="col">15</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">SAT</div>
+                    <div class="col">16</div>
+                </div>
+                <div class="col px-0">
+                    <div class="col">SUN</div>
+                    <div class="col">
+                        17
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>08:00</small>
+                </div>
+                <div class="col px-0 border border-1 position-relative">
+                    <div class="bg-primary rounded-3 shadow slot position-absolute" 
+                        style="height: calc(100% * (15 / 5 * (2.5/30)));">
+                        <small class="text-white">08:00 -08:40</small>
+                    </div>
+                </div>
+                <div class="col px-0 border border-1 position-relative">
+                    <div class="bg-primary rounded-3 shadow slot position-absolute" 
+                        style="height: calc(100% * (45 / 5 * (2.5/30))); top: calc(100% * (45 / 5 * (2.5/30)))">
+                        <small class="text-white">08:30 -09:00</small>
+                    </div>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>09:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>10:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>11:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>12:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>13:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>14:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>15:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>16:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>17:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>18:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>19:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>20:00</small>
+                </div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+                <div class="col px-0 border border-1"></div>
+            </div>
+        </div>
     </div>
 {% endblock %}
