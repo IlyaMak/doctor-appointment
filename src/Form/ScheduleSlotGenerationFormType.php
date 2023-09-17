@@ -4,9 +4,9 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -76,22 +76,21 @@ class ScheduleSlotGenerationFormType extends AbstractType
             )
             ->add(
                 'patientServiceInterval',
-                NumberType::class,
+                ChoiceType::class,
                 [
                     'mapped' => false,
+                    'choices' => [
+                        '15' => '15',
+                        '30' => '30',
+                        '45' => '45',
+                        '60' => '60',
+                        '75' => '75',
+                        '90' => '90',
+                        '105' => '105',
+                        '120' => '120',
+                    ],
                     'data' => '30',
                     'label' => 'Patient service interval (in minutes)',
-                    'attr' => [
-                        'placeholder' => '10',
-                    ],
-                    'constraints' => [
-                        new Positive([
-                            'message' => 'Please enter positive number',
-                        ]),
-                        new NotBlank([
-                            'message' => 'Please enter positive number',
-                        ]),
-                    ],
                 ],
             )
             ->add(
