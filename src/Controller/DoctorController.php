@@ -17,9 +17,36 @@ class DoctorController extends CustomAbstractController
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function schedule(): Response
     {
+        $dateTime = new \DateTime('last sunday');
+        $week = [];
+        $monthYear = '';
+
+        foreach (range(0, 6) as $day) {
+            $dateTime->add(new \DateInterval('P1D'));
+            $week[] = [
+                'dayOfTheWeek' => $dateTime->format('D'),
+                'dayOfTheMonth' => $dateTime->format('j'),
+            ];
+        }
+
+        $monday = new \DateTime('monday this week');
+        $sunday = new \DateTime('sunday this week');
+
+        if ($monday->format('F') === $sunday->format('F')) {
+            $monthYear = $monday->format('F').' '.$monday->format('o');
+        } elseif ($monday->format('o') !== $sunday->format('o')) {
+            $monthYear = $monday->format('M').$monday->format('o').' - '.$sunday->format('M').$sunday->format('o');
+        } else {
+            $monthYear = $monday->format('M').' - '.$sunday->format('M').$sunday->format('o');
+        }
+
         return $this->render(
             '/doctor/schedule.html.twig',
-            ['hours' => ScheduleHelper::getAvailableTimeHours()]
+            [
+                'hours' => ScheduleHelper::getAvailableTimeHours(),
+                'week' => $week,
+                'monthYear' => $monthYear,
+            ],
         );
     }
 

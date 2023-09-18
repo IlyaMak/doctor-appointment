@@ -9,40 +9,18 @@
             <button class="btn btn-outline-primary ms-3">Today</button>
             <button class="btn btn-outline-primary ms-4">&#60;</button>
             <button class="btn btn-outline-primary ms-2">&#62;</button>
-            <span class="h3 ms-4">Sep 2023</span>
+            <span class="h3 ms-4">{{ monthYear }}</span>
         </div>
         <hr>
         <div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
             <div class="row text-center" id="s">
                 <div class="col px-0"></div>
-                <div class="col px-0">
-                    <div class="col">MON</div>
-                    <div class="col">11</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">TUE</div>
-                    <div class="col">12</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">WED</div>
-                    <div class="col">13</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">THU</div>
-                    <div class="col">14</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">FRI</div>
-                    <div class="col">15</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">SAT</div>
-                    <div class="col">16</div>
-                </div>
-                <div class="col px-0">
-                    <div class="col">SUN</div>
-                    <div class="col">17</div>
-                </div>
+                {% for day in week %}
+                    <div class="col px-0">
+                        <div class="col">{{ day['dayOfTheWeek'] }}</div>
+                        <div class="col">{{ day['dayOfTheMonth'] }}</div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="row row-cols-8 h-50px">
                 <div class="col px-0 text-end">

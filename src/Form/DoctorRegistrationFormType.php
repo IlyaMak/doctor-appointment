@@ -30,7 +30,8 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                     ],
                 ],
             )
-            ->add('avatar',
+            ->add(
+                'avatar',
                 FileType::class,
                 [
                     'label' => 'Upload avatar',
