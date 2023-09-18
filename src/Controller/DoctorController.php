@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ScheduleSlotGenerationFormType;
+use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,10 @@ class DoctorController extends CustomAbstractController
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function schedule(): Response
     {
-        return $this->render('/doctor/schedule.html.twig');
+        return $this->render(
+            '/doctor/schedule.html.twig',
+            ['hours' => ScheduleHelper::getAvailableTimeHours()]
+        );
     }
 
     #[Route('/set-working-hours-form', name: 'set_working_hours_form')]

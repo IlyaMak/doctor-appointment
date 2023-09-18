@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Service\ScheduleHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -52,7 +53,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'startTime',
                 TimeType::class,
                 [
-                    'hours' => range(8, 20),
+                    'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $startDateTime,
                     'mapped' => false,
@@ -65,7 +66,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'endTime',
                 TimeType::class,
                 [
-                    'hours' => range(8, 20),
+                    'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $endDateTime,
                     'mapped' => false,
