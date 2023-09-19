@@ -17,12 +17,12 @@
         </div>
         <hr>
         <div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
-            <div class="row text-center" id="s">
+            <div class="row text-center pb-1">
                 <div class="col px-0"></div>
                 {% for day in week %}
-                    <div class="col px-0">
-                        <div class="col">{{ day['dayOfTheWeek'] }}</div>
-                        <div class="col">{{ day['dayOfTheMonth'] }}</div>
+                    <div class="col d-flex flex-column align-items-center px-0">
+                        <div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek'] }}</div>
+                        <div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? "text-light rounded-circle bg-primary" : "text-body" }}">{{ day['dayOfTheMonth'] }}</div>
                     </div>
                 {% endfor %}
             </div>

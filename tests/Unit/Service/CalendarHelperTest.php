@@ -30,36 +30,43 @@ class CalendarHelperTest extends TestCase
     {
         self::assertEquals(
             CalendarHelper::getWeek(
-                new DateTimeImmutable('2023-09-19')
+                new DateTimeImmutable('2023-09-11')
             ),
             [
                 [
                     'dayOfTheWeek' => 'Mon',
-                    'dayOfTheMonth' => '18',
+                    'dayOfTheMonth' => '11',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Tue',
-                    'dayOfTheMonth' => '19',
+                    'dayOfTheMonth' => '12',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Wed',
-                    'dayOfTheMonth' => '20',
+                    'dayOfTheMonth' => '13',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Thu',
-                    'dayOfTheMonth' => '21',
+                    'dayOfTheMonth' => '14',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Fri',
-                    'dayOfTheMonth' => '22',
+                    'dayOfTheMonth' => '15',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Sat',
-                    'dayOfTheMonth' => '23',
+                    'dayOfTheMonth' => '16',
+                    'isHighlighted' => false,
                 ],
                 [
                     'dayOfTheWeek' => 'Sun',
-                    'dayOfTheMonth' => '24',
+                    'dayOfTheMonth' => '17',
+                    'isHighlighted' => false,
                 ],
             ]
         );

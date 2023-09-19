@@ -24,17 +24,19 @@ class CalendarHelper
         return $monthYearTitle;
     }
 
-    /** @return array<string, string>[] */
+    /** @return array<string, bool|string>[] */
     public static function getWeek(DateTimeImmutable $requestedDay): array
     {
         $dateTime = $requestedDay->modify('last sunday');
         $week = [];
+        $currentDate = new DateTimeImmutable();
 
         foreach (range(0, 6) as $day) {
             $dateTime = $dateTime->add(new DateInterval('P1D'));
             $week[] = [
                 'dayOfTheWeek' => $dateTime->format('D'),
                 'dayOfTheMonth' => $dateTime->format('j'),
+                'isHighlighted' => $dateTime->format('Y-m-d') === $currentDate->format('Y-m-d'),
             ];
         }
 
