@@ -4,51 +4,41 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ScheduleSlotGenerationFormType;
+use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use RuntimeException;
 
 class DoctorController extends CustomAbstractController
 {
     #[Route('/schedule', name: 'schedule')]
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
-    public function schedule(): Response
+    public function schedule(Request $request): Response
     {
-        $dateTime = new DateTime('last sunday');
-        $week = [];
-        $monthYear = '';
-
-        foreach (range(0, 6) as $day) {
-            $dateTime->add(new DateInterval('P1D'));
-            $week[] = [
-                'dayOfTheWeek' => $dateTime->format('D'),
-                'dayOfTheMonth' => $dateTime->format('j'),
-            ];
+        if(
+            $request->query->get('date') === null
+            || ($requestedDay = DateTimeImmutable::createFromFormat('Y-m-d', (string) $request->query->get('date'))) === false
+            || ($requestedDay < DateTimeImmutable::createFromFormat('Y-m-d', '2023-01-01'))
+        ) {
+            $requestedDay = new DateTimeImmutable('monday this week');
         }
 
-        $monday = new DateTime('monday this week');
-        $sunday = new DateTime('sunday this week');
-
-        if ($monday->format('F') === $sunday->format('F')) {
-            $monthYear = $monday->format('F') . ' ' . $monday->format('o');
-        } elseif ($monday->format('o') !== $sunday->format('o')) {
-            $monthYear = $monday->format('M') . $monday->format('o') . ' - ' . $sunday->format('M') . $sunday->format('o');
-        } else {
-            $monthYear = $monday->format('M') . ' - ' . $sunday->format('M') . $sunday->format('o');
-        }
+        $previousDayOfTheWeek = $requestedDay->modify('-7 days');
+        $nextDayOfTheWeek = $requestedDay->modify('+7 days');
 
         return $this->render(
             '/doctor/schedule.html.twig',
             [
                 'hours' => ScheduleHelper::getAvailableTimeHours(),
-                'week' => $week,
-                'monthYear' => $monthYear,
+                'week' => CalendarHelper::getWeek($requestedDay),
+                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay),
+                'previousDayOfTheWeek' => $previousDayOfTheWeek->format('Y-m-d'),
+                'nextDayOfTheWeek' => $nextDayOfTheWeek->format('Y-m-d'),
             ],
         );
     }

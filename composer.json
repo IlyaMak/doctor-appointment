@@ -98,10 +98,10 @@
         "hooks": {
             "pre-commit": [
                 "echo committing as $(git config user.name)",
-                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src"
+                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src && php bin/phpunit"
             ],
             "pre-push": [
-                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src"
+                "vendor/bin/phpstan analyze -l 9 src && vendor/bin/php-cs-fixer fix --dry-run src && php bin/phpunit"
             ]
         }
     },

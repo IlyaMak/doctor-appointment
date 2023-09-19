@@ -7,8 +7,12 @@
         </div>
         <div class="d-flex align-items-center mt-5">
             <button class="btn btn-outline-primary ms-3">Today</button>
-            <button class="btn btn-outline-primary ms-4">&#60;</button>
-            <button class="btn btn-outline-primary ms-2">&#62;</button>
+            <a href="{{ path('schedule', {'date': previousDayOfTheWeek}) }}">
+                <button class="btn btn-outline-primary ms-4">&#60;</button>
+            </a>
+            <a href="{{ path('schedule', {'date': nextDayOfTheWeek}) }}">
+                <button class="btn btn-outline-primary ms-2">&#62;</button>
+            </a>
             <span class="h3 ms-4">{{ monthYear }}</span>
         </div>
         <hr>
