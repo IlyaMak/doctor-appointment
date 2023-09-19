@@ -13,12 +13,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
+use DateTimeImmutable;
 
 class ScheduleSlotGenerationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $startDateTime = new \DateTimeImmutable();
+        $startDateTime = new DateTimeImmutable();
         $startDateTime = $startDateTime->setTime(8, 0, 0);
         $endDateTime = $startDateTime->modify('+7 day');
         $endDateTime = $endDateTime->setTime(17, 0, 0);
@@ -100,7 +101,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 [
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
-                    'data' => (new \DateTimeImmutable())->setTime(12, 0, 0),
+                    'data' => (new DateTimeImmutable())->setTime(12, 0, 0),
                     'mapped' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -113,7 +114,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 [
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
-                    'data' => (new \DateTimeImmutable())->setTime(13, 0, 0),
+                    'data' => (new DateTimeImmutable())->setTime(13, 0, 0),
                     'mapped' => false,
                     'attr' => [
                         'class' => 'form-control',

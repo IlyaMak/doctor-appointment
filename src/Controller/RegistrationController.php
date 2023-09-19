@@ -19,6 +19,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use DateTime;
 
 class RegistrationController extends AbstractController
 {
@@ -58,9 +59,9 @@ class RegistrationController extends AbstractController
                 /** @var UploadedFile */
                 $avatarData = $form->get('avatar')->getData();
                 $user->setSpecialty($specialty);
-                $currentDateTime = new \DateTime();
+                $currentDateTime = new DateTime();
                 $currentDate = $currentDateTime->format('YmdHisv');
-                $localAvatarPath = $currentDate.'.'.$avatarData->getClientOriginalExtension();
+                $localAvatarPath = $currentDate . ' . ' . $avatarData->getClientOriginalExtension();
                 $avatarData->move('resources', $localAvatarPath);
                 $user->setAvatarPath($localAvatarPath);
                 $user->setRoles([User::ROLE_DOCTOR]);

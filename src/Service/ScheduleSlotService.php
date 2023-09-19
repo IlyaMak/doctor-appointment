@@ -7,6 +7,10 @@ use App\Entity\User;
 use App\Repository\ScheduleSlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
+use DatePeriod;
+use DateInterval;
+use RuntimeException;
+use DateTime;
 
 class ScheduleSlotService
 {
@@ -22,19 +26,19 @@ class ScheduleSlotService
     public function generateScheduleSlots(FormInterface $form, ?User $user): int
     {
         $scheduleSlotsCount = 0;
-        /** @var \DateTime */
+        /** @var DateTime */
         $formStartDate = $form->get('startDate')->getData();
-        /** @var \DateTime */
+        /** @var DateTime */
         $formEndDate = $form->get('endDate')->getData();
-        /** @var \DateTime */
+        /** @var DateTime */
         $formStartTime = $form->get('startTime')->getData();
-        /** @var \DateTime */
+        /** @var DateTime */
         $formEndTime = $form->get('endTime')->getData();
         /** @var string */
         $patientServiceInterval = $form->get('patientServiceInterval')->getData();
-        /** @var \DateTime */
+        /** @var DateTime */
         $startLunchTime = $form->get('startLunchTime')->getData();
-        /** @var \DateTime */
+        /** @var DateTime */
         $endLunchTime = $form->get('endLunchTime')->getData();
         $excludedDaysOfTheWeek = [
             'monday' => $form->get('monday')->getData(),
@@ -61,7 +65,7 @@ class ScheduleSlotService
             ++$day
         ) {
             $currentDate = clone $formStartDate;
-            $currentDate->modify('+'.$day.' days');
+            $currentDate->modify('+' . $day . ' days');
 
             if ($excludedDaysOfTheWeek[strtolower($currentDate->format('l'))]) {
                 continue;
@@ -82,22 +86,22 @@ class ScheduleSlotService
                 (int) $endLunchTime->format('H'),
                 (int) $endLunchTime->format('i')
             );
-            $beforeLunchDatePeriod = new \DatePeriod(
+            $beforeLunchDatePeriod = new DatePeriod(
                 $currentDate,
-                new \DateInterval('PT'.$patientServiceInterval.'M'),
+                new DateInterval('PT' . $patientServiceInterval . 'M'),
                 $beforeLunchDate,
             );
-            $afterLunchDatePeriod = new \DatePeriod(
+            $afterLunchDatePeriod = new DatePeriod(
                 $afterLunchDate,
-                new \DateInterval('PT'.$patientServiceInterval.'M'),
+                new DateInterval('PT' . $patientServiceInterval . 'M'),
                 $endCurrentDate,
             );
             foreach ([...$beforeLunchDatePeriod, ...$afterLunchDatePeriod] as $date) {
                 $endDate = clone $date;
-                $endDate->modify('+'.$patientServiceInterval.' minutes');
+                $endDate->modify('+' . $patientServiceInterval . ' minutes');
 
                 if (0 !== count($this->scheduleSlotRepository->findOverlapDate($date, $endDate))) {
-                    throw new \RuntimeException('A date overlap has occured. Please correct the form values.');
+                    throw new RuntimeException('A date overlap has occured. Please correct the form values.');
                 }
 
                 if ($endDate > $endCurrentDate) {

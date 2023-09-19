@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ScheduleSlot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @extends ServiceEntityRepository<ScheduleSlot>
@@ -49,7 +50,7 @@ class ScheduleSlotRepository extends ServiceEntityRepository
     /**
      * @return ScheduleSlot[]
      */
-    public function findOverlapDate(\DateTime $startDate, \DateTime $endDate): array
+    public function findOverlapDate(DateTime $startDate, DateTime $endDate): array
     {
         /** @var ScheduleSlot[] $entities */
         $entities = $this->getEntityManager()->createQuery(
@@ -61,7 +62,8 @@ class ScheduleSlotRepository extends ServiceEntityRepository
                  OR (:startDate < slot.start AND :endDate > slot.end)'
         )
         ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
-        ->getResult();
+        ->getResult()
+        ;
 
         return $entities;
     }

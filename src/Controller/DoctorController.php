@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use DateInterval;
+use DateTime;
+use RuntimeException;
 
 class DoctorController extends CustomAbstractController
 {
@@ -17,27 +20,27 @@ class DoctorController extends CustomAbstractController
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function schedule(): Response
     {
-        $dateTime = new \DateTime('last sunday');
+        $dateTime = new DateTime('last sunday');
         $week = [];
         $monthYear = '';
 
         foreach (range(0, 6) as $day) {
-            $dateTime->add(new \DateInterval('P1D'));
+            $dateTime->add(new DateInterval('P1D'));
             $week[] = [
                 'dayOfTheWeek' => $dateTime->format('D'),
                 'dayOfTheMonth' => $dateTime->format('j'),
             ];
         }
 
-        $monday = new \DateTime('monday this week');
-        $sunday = new \DateTime('sunday this week');
+        $monday = new DateTime('monday this week');
+        $sunday = new DateTime('sunday this week');
 
         if ($monday->format('F') === $sunday->format('F')) {
-            $monthYear = $monday->format('F').' '.$monday->format('o');
+            $monthYear = $monday->format('F') . ' ' . $monday->format('o');
         } elseif ($monday->format('o') !== $sunday->format('o')) {
-            $monthYear = $monday->format('M').$monday->format('o').' - '.$sunday->format('M').$sunday->format('o');
+            $monthYear = $monday->format('M') . $monday->format('o') . ' - ' . $sunday->format('M') . $sunday->format('o');
         } else {
-            $monthYear = $monday->format('M').' - '.$sunday->format('M').$sunday->format('o');
+            $monthYear = $monday->format('M') . ' - ' . $sunday->format('M') . $sunday->format('o');
         }
 
         return $this->render(
@@ -61,11 +64,11 @@ class DoctorController extends CustomAbstractController
             try {
                 $scheduleSlotCount = $scheduleSlotService->generateScheduleSlots($form, $this->getUserCustom());
                 if (0 === $scheduleSlotCount) {
-                    $this->addFlash('warning', $scheduleSlotCount.' slots were added. Please correct the form values.');
+                    $this->addFlash('warning', $scheduleSlotCount . ' slots were added. Please correct the form values.');
                 } else {
-                    $this->addFlash('success', $scheduleSlotCount.' slots were added.');
+                    $this->addFlash('success', $scheduleSlotCount . ' slots were added.');
                 }
-            } catch (\RuntimeException $exception) {
+            } catch (RuntimeException $exception) {
                 $this->addFlash('error', $exception->getMessage());
             }
         }

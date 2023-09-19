@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ScheduleSlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeInterface;
 
 #[ORM\Entity(repositoryClass: ScheduleSlotRepository::class)]
 class ScheduleSlot
@@ -15,10 +16,10 @@ class ScheduleSlot
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $start = null;
+    private ?DateTimeInterface $start = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $end = null;
+    private ?DateTimeInterface $end = null;
 
     #[ORM\Column]
     private ?float $price = null;
@@ -35,24 +36,24 @@ class ScheduleSlot
         return $this->id;
     }
 
-    public function getStart(): ?\DateTimeInterface
+    public function getStart(): ?DateTimeInterface
     {
         return $this->start;
     }
 
-    public function setStart(\DateTimeInterface $start): static
+    public function setStart(DateTimeInterface $start): static
     {
         $this->start = $start;
 
         return $this;
     }
 
-    public function getEnd(): ?\DateTimeInterface
+    public function getEnd(): ?DateTimeInterface
     {
         return $this->end;
     }
 
-    public function setEnd(\DateTimeInterface $end): static
+    public function setEnd(DateTimeInterface $end): static
     {
         $this->end = $end;
 

@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use DateTime;
+use DateInterval;
+
 class ScheduleHelper
 {
     /** @return int[] */
@@ -14,9 +17,9 @@ class ScheduleHelper
     public static function getAvailableTimeHours(): array
     {
         $hours = [];
-        $startTime = new \DateTime('07:00');
+        $startTime = new DateTime('07:00');
         foreach (ScheduleHelper::getAvailableIntHours() as $hour) {
-            $hours[] = $startTime->add(new \DateInterval('PT1H'))->format('H:i');
+            $hours[] = $startTime->add(new DateInterval('PT1H'))->format('H:i');
         }
 
         return $hours;
