@@ -6,12 +6,14 @@
             <h2>Schedule</h2>
         </div>
         <div class="d-flex align-items-center mt-5">
-            <button class="btn btn-outline-primary ms-3">Today</button>
-            <a href="{{ path('schedule', {'date': previousDayOfTheWeek}) }}">
-                <button class="btn btn-outline-primary ms-4">&#60;</button>
+            <a class="btn btn-outline-primary ms-3" href="{{ path('schedule') }}">
+                Today
             </a>
-            <a href="{{ path('schedule', {'date': nextDayOfTheWeek}) }}">
-                <button class="btn btn-outline-primary ms-2">&#62;</button>
+            <a class="btn btn-outline-primary ms-4" href="{{ path('schedule', {'date': previousDayOfTheWeek}) }}">
+                &#60;
+            </a>
+            <a class="btn btn-outline-primary ms-2" href="{{ path('schedule', {'date': nextDayOfTheWeek}) }}">
+                &#62;
             </a>
             <span class="h3 ms-4">{{ monthYear }}</span>
         </div>
