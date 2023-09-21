@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\ScheduleSlot;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
+use DateTimeImmutable;
 
 /**
  * @extends ServiceEntityRepository<ScheduleSlot>
@@ -63,6 +65,32 @@ class ScheduleSlotRepository extends ServiceEntityRepository
         )
         ->setParameters(['startDate' => $startDate, 'endDate' => $endDate])
         ->getResult()
+        ;
+
+        return $entities;
+    }
+
+    /**
+     * @return ScheduleSlot[]
+     */
+    public function findDoctorSlotsByRange(User $user, DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        /** @var ScheduleSlot[] $entities */
+        $entities = $queryBuilder
+            ->where('s.doctor = :user')
+            ->setParameter('user', $user)
+            ->andWhere(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->gte('s.start', ':startDate'),
+                    $queryBuilder->expr()->lt('s.end', ':endDate'),
+                ),
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->orderBy('s.start', 'ASC')
+            ->getQuery()
+            ->getResult()
         ;
 
         return $entities;

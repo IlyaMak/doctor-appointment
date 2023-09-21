@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\ScheduleSlot;
 use DateInterval;
 use DateTimeImmutable;
 
@@ -41,5 +42,48 @@ class CalendarHelper
         }
 
         return $week;
+    }
+
+    /** @param string[] $availableHours
+     *  @return array<string, array<string, array<string, int|string>[]>>
+     */
+    private static function getEmptyWeekSchedule(DateTimeImmutable $requestedDay, array $availableHours): array
+    {
+        $schedule = [];
+        foreach ($availableHours as $hour) {
+            $dayOfTheWeek = $requestedDay->modify('monday this week');
+            $schedule[$hour] = [];
+
+            foreach (range(0, 6) as $day) {
+                $schedule[$hour][$dayOfTheWeek->format('Y-m-d')] = [];
+                $dayOfTheWeek = $dayOfTheWeek->add(new DateInterval('P1D'));
+            }
+        }
+
+        return $schedule;
+    }
+
+    /** @param string[] $availableHours
+     *  @param ScheduleSlot[] $scheduleSlots
+     *  @return array<string, array<string, array<string, int|string>[]>>
+    */
+    public static function getWeekSchedule(
+        DateTimeImmutable $requestedDay,
+        array $availableHours,
+        array $scheduleSlots,
+    ): array {
+        $schedule = CalendarHelper::getEmptyWeekSchedule($requestedDay, $availableHours);
+
+        foreach ($scheduleSlots as $scheduleSlot) {
+            $hour = $scheduleSlot->getStart()->format('H:00');
+            $date = $scheduleSlot->getStart()->format('Y-m-d');
+            $schedule[$hour][$date][] = [
+                'startMinutes' => (int) $scheduleSlot->getStart()->format('i'),
+                'duration' => (int) (($scheduleSlot->getEnd()->getTimestamp() - $scheduleSlot->getStart()->getTimestamp()) / 60),
+                'timeTitle' => $scheduleSlot->getStart()->format('H:i') . ' -' . $scheduleSlot->getEnd()->format('H:i'),
+            ];
+        }
+
+        return $schedule;
     }
 }

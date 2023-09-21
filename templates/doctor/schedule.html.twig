@@ -1,199 +1,50 @@
 {% extends 'doctor/base.html.twig' %}
-{% block title %}Schedule | Doctor Appointment{% endblock %}
+{% block title %}Schedule | Doctor Appointment
+{% endblock %}
 {% block content %}
-    <div>
-        <div class="text-center mt-4">
-            <h2>Schedule</h2>
-        </div>
-        <div class="d-flex align-items-center mt-5">
-            <a class="btn btn-outline-primary ms-3" href="{{ path('schedule') }}">
-                Today
-            </a>
-            <a class="btn btn-outline-primary ms-4" href="{{ path('schedule', {'date': previousDayOfTheWeek}) }}">
-                &#60;
-            </a>
-            <a class="btn btn-outline-primary ms-2" href="{{ path('schedule', {'date': nextDayOfTheWeek}) }}">
-                &#62;
-            </a>
-            <span class="h3 ms-4">{{ monthYear }}</span>
-        </div>
-        <hr>
-        <div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
-            <div class="row text-center pb-1">
-                <div class="col px-0"></div>
-                {% for day in week %}
-                    <div class="col d-flex flex-column align-items-center px-0">
-                        <div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek'] }}</div>
-                        <div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? "text-light rounded-circle bg-primary" : "text-body" }}">{{ day['dayOfTheMonth'] }}</div>
+	<div class="text-center mt-4">
+		<h2>Schedule</h2>
+	</div>
+	<div class="d-flex align-items-center mt-5">
+		<a class="btn btn-outline-primary ms-3" href="{{ path('schedule') }}">
+			Today
+		</a>
+		<a class="btn btn-outline-primary ms-4" href="{{ path('schedule', {'date': previousDayOfTheWeek}) }}">
+			&#60;
+		</a>
+		<a class="btn btn-outline-primary ms-2" href="{{ path('schedule', {'date': nextDayOfTheWeek}) }}">
+			&#62;
+		</a>
+		<span class="h3 ms-4">{{ monthYear }}</span>
+	</div>
+	<hr>
+	<div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
+		<div class="row text-center pb-1">
+			<div class="col px-0"></div>
+			{% for day in week %}
+				<div class="col d-flex flex-column align-items-center px-0">
+					<div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek'] }}</div>
+					<div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? " text-light rounded-circle bg-primary" : " text-body" }}">{{ day['dayOfTheMonth'] }}</div>
+				</div>
+			{% endfor %}
+		</div>
+		{% for hour in hours %}
+			<div class="row row-cols-8 h-50px">
+				<div class="col px-0 text-end">
+					<small>{{ hour }}</small>
+				</div>
+				{% for slots in schedule[hour] %}
+                    <div class="col px-0 border border-1 position-relative">
+                        {% for slot in slots %}
+                            <div class="bg-primary rounded-3 shadow slot position-absolute z-1" 
+                                style="height: calc(100% * ({{ slot['duration'] }} / 5 * (2.5/30)) - 2px);
+                                    top: calc(100% * (({{ slot['startMinutes'] }} / 5 * (2.5/30)))">
+                                <small class="text-white">{{ slot['timeTitle'] }}</small>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[0] }}</small>
-                </div>
-                <div class="col px-0 border border-1 position-relative">
-                    <div class="bg-primary rounded-3 shadow slot position-absolute" 
-                        style="height: calc(100% * (15 / 5 * (2.5/30)));">
-                        <small class="text-white">08:00 -08:40</small>
-                    </div>
-                </div>
-                <div class="col px-0 border border-1 position-relative">
-                    <div class="bg-primary rounded-3 shadow slot position-absolute" 
-                        style="height: calc(100% * (45 / 5 * (2.5/30))); top: calc(100% * (45 / 5 * (2.5/30)))">
-                        <small class="text-white">08:30 -09:00</small>
-                    </div>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[1] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[2] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[3] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[4] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[5] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[6] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[7] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[8] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[9] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[10] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[11] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-            <div class="row row-cols-8 h-50px">
-                <div class="col px-0 text-end">
-                    <small>{{ hours[12] }}</small>
-                </div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-                <div class="col px-0 border border-1"></div>
-            </div>
-        </div>
-    </div>
+				{% endfor %}
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

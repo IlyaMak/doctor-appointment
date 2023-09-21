@@ -16,27 +16,39 @@ class ScheduleSlot
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $start = null;
+    private DateTimeInterface $start;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $end = null;
+    private DateTimeInterface $end;
 
     #[ORM\Column]
-    private ?float $price = null;
+    private float $price;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $doctor = null;
+    private User $doctor;
 
     #[ORM\ManyToOne]
     private ?User $patient = null;
+
+    public function __construct(
+        DateTimeInterface $start,
+        DateTimeInterface $end,
+        float $price,
+        User $doctor,
+    ) {
+        $this->start = $start;
+        $this->end = $end;
+        $this->price = $price;
+        $this->doctor = $doctor;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStart(): ?DateTimeInterface
+    public function getStart(): DateTimeInterface
     {
         return $this->start;
     }
@@ -48,7 +60,7 @@ class ScheduleSlot
         return $this;
     }
 
-    public function getEnd(): ?DateTimeInterface
+    public function getEnd(): DateTimeInterface
     {
         return $this->end;
     }
@@ -60,7 +72,7 @@ class ScheduleSlot
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -72,12 +84,12 @@ class ScheduleSlot
         return $this;
     }
 
-    public function getDoctor(): ?User
+    public function getDoctor(): User
     {
         return $this->doctor;
     }
 
-    public function setDoctor(?User $doctor): static
+    public function setDoctor(User $doctor): static
     {
         $this->doctor = $doctor;
 

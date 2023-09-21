@@ -23,7 +23,7 @@ class ScheduleSlotService
         $this->scheduleSlotRepository = $scheduleSlotRepository;
     }
 
-    public function generateScheduleSlots(FormInterface $form, ?User $user): int
+    public function generateScheduleSlots(FormInterface $form, User $user): int
     {
         $scheduleSlotsCount = 0;
         /** @var DateTime */
@@ -108,11 +108,12 @@ class ScheduleSlotService
                     continue;
                 }
 
-                $scheduleSlot = new ScheduleSlot();
-                $scheduleSlot->setStart($date);
-                $scheduleSlot->setEnd($endDate);
-                $scheduleSlot->setPrice($price);
-                $scheduleSlot->setDoctor($user);
+                $scheduleSlot = new ScheduleSlot(
+                    $date,
+                    $endDate,
+                    $price,
+                    $user,
+                );
                 $this->entityManager->persist($scheduleSlot);
                 ++$scheduleSlotsCount;
             }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ScheduleSlotGenerationFormType;
+use App\Repository\ScheduleSlotRepository;
 use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
@@ -18,7 +19,7 @@ class DoctorController extends CustomAbstractController
 {
     #[Route('/schedule', name: 'schedule')]
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
-    public function schedule(Request $request): Response
+    public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         if(
             $request->query->get('date') === null
@@ -31,14 +32,27 @@ class DoctorController extends CustomAbstractController
         $previousDayOfTheWeek = $requestedDay->modify('-7 days');
         $nextDayOfTheWeek = $requestedDay->modify('+7 days');
 
+        $availableHours = ScheduleHelper::getAvailableTimeHours();
+
+        $scheduleSlots = $scheduleSlotRepository->findDoctorSlotsByRange(
+            $this->getUserCustom(),
+            $requestedDay->modify('monday this week'),
+            $requestedDay->modify('monday next week'),
+        );
+
         return $this->render(
             '/doctor/schedule.html.twig',
             [
-                'hours' => ScheduleHelper::getAvailableTimeHours(),
+                'hours' => $availableHours,
                 'week' => CalendarHelper::getWeek($requestedDay),
                 'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay),
                 'previousDayOfTheWeek' => $previousDayOfTheWeek->format('Y-m-d'),
                 'nextDayOfTheWeek' => $nextDayOfTheWeek->format('Y-m-d'),
+                'schedule' => CalendarHelper::getWeekSchedule(
+                    $requestedDay,
+                    $availableHours,
+                    $scheduleSlots,
+                ),
             ],
         );
     }
