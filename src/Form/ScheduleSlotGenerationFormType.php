@@ -2,22 +2,24 @@
 
 namespace App\Form;
 
+use App\Service\ScheduleHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
+use DateTimeImmutable;
 
 class ScheduleSlotGenerationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $startDateTime = new \DateTimeImmutable();
+        $startDateTime = new DateTimeImmutable();
         $startDateTime = $startDateTime->setTime(8, 0, 0);
         $endDateTime = $startDateTime->modify('+7 day');
         $endDateTime = $endDateTime->setTime(17, 0, 0);
@@ -52,7 +54,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'startTime',
                 TimeType::class,
                 [
-                    'hours' => range(8, 20),
+                    'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $startDateTime,
                     'mapped' => false,
@@ -65,7 +67,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'endTime',
                 TimeType::class,
                 [
-                    'hours' => range(8, 20),
+                    'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $endDateTime,
                     'mapped' => false,
@@ -76,22 +78,21 @@ class ScheduleSlotGenerationFormType extends AbstractType
             )
             ->add(
                 'patientServiceInterval',
-                NumberType::class,
+                ChoiceType::class,
                 [
                     'mapped' => false,
+                    'choices' => [
+                        '15' => '15',
+                        '30' => '30',
+                        '45' => '45',
+                        '60' => '60',
+                        '75' => '75',
+                        '90' => '90',
+                        '105' => '105',
+                        '120' => '120',
+                    ],
                     'data' => '30',
                     'label' => 'Patient service interval (in minutes)',
-                    'attr' => [
-                        'placeholder' => '10',
-                    ],
-                    'constraints' => [
-                        new Positive([
-                            'message' => 'Please enter positive number',
-                        ]),
-                        new NotBlank([
-                            'message' => 'Please enter positive number',
-                        ]),
-                    ],
                 ],
             )
             ->add(
@@ -100,7 +101,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 [
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
-                    'data' => (new \DateTimeImmutable())->setTime(12, 0, 0),
+                    'data' => (new DateTimeImmutable())->setTime(12, 0, 0),
                     'mapped' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -113,7 +114,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 [
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
-                    'data' => (new \DateTimeImmutable())->setTime(13, 0, 0),
+                    'data' => (new DateTimeImmutable())->setTime(13, 0, 0),
                     'mapped' => false,
                     'attr' => [
                         'class' => 'form-control',

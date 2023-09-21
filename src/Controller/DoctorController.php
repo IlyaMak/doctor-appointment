@@ -4,19 +4,57 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ScheduleSlotGenerationFormType;
+use App\Repository\ScheduleSlotRepository;
+use App\Service\CalendarHelper;
+use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use DateTimeImmutable;
+use RuntimeException;
 
 class DoctorController extends CustomAbstractController
 {
     #[Route('/schedule', name: 'schedule')]
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
-    public function schedule(): Response
+    public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
-        return $this->render('/doctor/schedule.html.twig');
+        if(
+            $request->query->get('date') === null
+            || ($requestedDay = DateTimeImmutable::createFromFormat('Y-m-d', (string) $request->query->get('date'))) === false
+            || ($requestedDay < DateTimeImmutable::createFromFormat('Y-m-d', '2023-01-01'))
+        ) {
+            $requestedDay = new DateTimeImmutable('monday this week');
+        }
+
+        $previousDayOfTheWeek = $requestedDay->modify('-7 days');
+        $nextDayOfTheWeek = $requestedDay->modify('+7 days');
+
+        $availableHours = ScheduleHelper::getAvailableTimeHours();
+
+        $scheduleSlots = $scheduleSlotRepository->findDoctorSlotsByRange(
+            $this->getUserCustom(),
+            $requestedDay->modify('monday this week'),
+            $requestedDay->modify('monday next week'),
+        );
+
+        return $this->render(
+            '/doctor/schedule.html.twig',
+            [
+                'hours' => $availableHours,
+                'week' => CalendarHelper::getWeek($requestedDay),
+                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay),
+                'previousDayOfTheWeek' => $previousDayOfTheWeek->format('Y-m-d'),
+                'nextDayOfTheWeek' => $nextDayOfTheWeek->format('Y-m-d'),
+                'schedule' => CalendarHelper::getWeekSchedule(
+                    $requestedDay,
+                    $availableHours,
+                    $scheduleSlots,
+                ),
+            ],
+        );
     }
 
     #[Route('/set-working-hours-form', name: 'set_working_hours_form')]
@@ -30,11 +68,11 @@ class DoctorController extends CustomAbstractController
             try {
                 $scheduleSlotCount = $scheduleSlotService->generateScheduleSlots($form, $this->getUserCustom());
                 if (0 === $scheduleSlotCount) {
-                    $this->addFlash('warning', $scheduleSlotCount.' slots were added. Please correct the form values.');
+                    $this->addFlash('warning', $scheduleSlotCount . ' slots were added. Please correct the form values.');
                 } else {
-                    $this->addFlash('success', $scheduleSlotCount.' slots were added.');
+                    $this->addFlash('success', $scheduleSlotCount . ' slots were added.');
                 }
-            } catch (\RuntimeException $exception) {
+            } catch (RuntimeException $exception) {
                 $this->addFlash('error', $exception->getMessage());
             }
         }
