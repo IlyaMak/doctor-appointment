@@ -77,10 +77,13 @@ class ScheduleSlotService
                 (int) $formEndTime->format('i'),
             );
             $beforeLunchDate = clone $currentDate;
-            $beforeLunchDate->setTime(
-                (int) $startLunchTime->format('H'),
-                (int) $startLunchTime->format('i')
-            );
+            $beforeLunchDate
+                ->setTime(
+                    (int) $startLunchTime->format('H'),
+                    (int) $startLunchTime->format('i')
+                )
+                ->modify("-$patientServiceInterval minutes")
+            ;
             $afterLunchDate = clone $currentDate;
             $afterLunchDate->setTime(
                 (int) $endLunchTime->format('H'),
@@ -90,27 +93,28 @@ class ScheduleSlotService
                 $currentDate,
                 new DateInterval('PT' . $patientServiceInterval . 'M'),
                 $beforeLunchDate,
+                DatePeriod::INCLUDE_END_DATE,
             );
             $afterLunchDatePeriod = new DatePeriod(
                 $afterLunchDate,
                 new DateInterval('PT' . $patientServiceInterval . 'M'),
                 $endCurrentDate,
             );
-            foreach ([...$beforeLunchDatePeriod, ...$afterLunchDatePeriod] as $date) {
-                $endDate = clone $date;
-                $endDate->modify('+' . $patientServiceInterval . ' minutes');
+            foreach ([...$beforeLunchDatePeriod, ...$afterLunchDatePeriod] as $slotStartDate) {
+                $slotEndDate = clone $slotStartDate;
+                $slotEndDate->modify('+' . $patientServiceInterval . ' minutes');
 
-                if (0 !== count($this->scheduleSlotRepository->findOverlapDate($date, $endDate))) {
+                if (0 !== count($this->scheduleSlotRepository->findOverlapDate($slotStartDate, $slotEndDate))) {
                     throw new RuntimeException('A date overlap has occured. Please correct the form values.');
                 }
 
-                if ($endDate > $endCurrentDate) {
+                if ($slotEndDate > $endCurrentDate) {
                     continue;
                 }
 
                 $scheduleSlot = new ScheduleSlot(
-                    $date,
-                    $endDate,
+                    $slotStartDate,
+                    $slotEndDate,
                     $price,
                     $user,
                 );
