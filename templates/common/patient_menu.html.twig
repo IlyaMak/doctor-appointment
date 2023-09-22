@@ -1,0 +1,18 @@
+{% block menu %}
+    <div class="container">
+        <div class="text-center mt-3 row">
+            <div class="col-sm-6">
+                <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                    href="{{ path('patient_appointment_history') }}">
+                    <h6>Appointment history</h6>
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a class="link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+                    href="{{ path('patient_book_an_appointment') }}">
+                    <h6>Book an appointment</h6>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

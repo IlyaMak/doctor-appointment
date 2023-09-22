@@ -40,7 +40,7 @@ class AuthController extends AbstractController
         /** @var User */
         $user = $token->getUser();
         if (in_array(User::ROLE_PATIENT, $user->getRoles())) {
-            return $this->redirectToRoute('patient_history');
+            return $this->redirectToRoute('patient_book_an_appointment');
         }
 
         return $this->redirectToRoute('schedule');
