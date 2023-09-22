@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DeleteScheduleSlotFormType;
 use App\Form\ScheduleSlotGenerationFormType;
 use App\Repository\ScheduleSlotRepository;
 use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,8 +87,41 @@ class DoctorController extends CustomAbstractController
 
     #[Route('/delete-working-hours', name: 'delete_working_hours')]
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
-    public function deleteWorkingHours(): Response
+    public function deleteWorkingHours(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
-        return $this->render('/doctor/delete_working_hours.html.twig');
+        $form = $this->createForm(DeleteScheduleSlotFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var DateTime */
+            $startDate = $form->get('startDate')->getData();
+            /** @var DateTime */
+            $endDate = $form->get('endDate')->getData();
+
+            $deletedSlots = $scheduleSlotRepository->deleteScheduleSlots(
+                $startDate,
+                $endDate,
+                $this->getUserCustom(),
+            );
+
+            $skippedSlots = $scheduleSlotRepository->countScheduleSlotsWithPatient(
+                $startDate,
+                $endDate,
+                $this->getUserCustom(),
+            );
+
+            $flashMessage = 'Deleted ' . $deletedSlots . ' slots. Skipped ' . $skippedSlots . ' slots.';
+
+            if ($deletedSlots === 0 || $skippedSlots > 0) {
+                $this->addFlash('warning', $flashMessage);
+            } else {
+                $this->addFlash('success', $flashMessage);
+            }
+        }
+
+        return $this->render(
+            '/doctor/delete_working_hours.html.twig',
+            ['deleteScheduleSlotForm' => $form->createView()]
+        );
     }
 }
