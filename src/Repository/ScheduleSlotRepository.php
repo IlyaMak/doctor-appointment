@@ -95,4 +95,52 @@ class ScheduleSlotRepository extends ServiceEntityRepository
 
         return $entities;
     }
+
+    public function deleteScheduleSlots(DateTime $startDate, DateTime $endDate, User $doctor): int
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        /** @var int */
+        $deletedSlots = $queryBuilder
+            ->delete()
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->gte('s.start', ':startDate'),
+                    $queryBuilder->expr()->lte('s.end', ':endDate'),
+                    $queryBuilder->expr()->eq('s.doctor', ':doctor'),
+                    $queryBuilder->expr()->isNull('s.patient'),
+                ),
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('doctor', $doctor)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $deletedSlots;
+    }
+
+    public function countScheduleSlotsWithPatient(DateTime $startDate, DateTime $endDate, User $doctor): int
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        /** @var int */
+        $skippedSlots = $queryBuilder
+            ->select('count(s.id)')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->gte('s.start', ':startDate'),
+                    $queryBuilder->expr()->lte('s.end', ':endDate'),
+                    $queryBuilder->expr()->eq('s.doctor', ':doctor'),
+                    $queryBuilder->expr()->isNotNull('s.patient'),
+                ),
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('doctor', $doctor)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $skippedSlots;
+    }
 }
