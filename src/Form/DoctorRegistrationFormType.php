@@ -16,7 +16,6 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
     {
         parent::buildForm($builder, $options);
         $builder
-
             ->add(
                 'specialty',
                 EntityType::class,
