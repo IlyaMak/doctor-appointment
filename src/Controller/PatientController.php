@@ -96,6 +96,7 @@ class PatientController extends CustomAbstractController
                         $availableHours,
                         $scheduleSlots,
                     ),
+                'href' => 'patient_book_an_appointment',
             ],
         );
     }
