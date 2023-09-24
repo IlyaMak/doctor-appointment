@@ -46,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarPath = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Specialty::class, inversedBy: 'doctors')]
     private ?Specialty $specialty = null;
 
     public function getId(): ?int

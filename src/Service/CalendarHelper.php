@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\ScheduleSlot;
 use DateInterval;
 use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\Request;
 
 class CalendarHelper
 {
@@ -85,5 +86,17 @@ class CalendarHelper
         }
 
         return $schedule;
+    }
+
+    public static function getMondayOfTheRequestedDate(Request $request): DateTimeImmutable
+    {
+        if (
+            $request->query->get('date') === null
+            || ($requestedDay = DateTimeImmutable::createFromFormat('Y-m-d', (string) $request->query->get('date'))) === false
+            || ($requestedDay < DateTimeImmutable::createFromFormat('Y-m-d', '2023-01-01'))
+        ) {
+            return new DateTimeImmutable('monday this week');
+        }
+        return $requestedDay->modify('monday this week');
     }
 }

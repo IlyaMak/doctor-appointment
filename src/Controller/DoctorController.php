@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use DateTimeImmutable;
 use RuntimeException;
 
 class DoctorController extends CustomAbstractController
@@ -23,13 +22,7 @@ class DoctorController extends CustomAbstractController
     #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
-        if(
-            $request->query->get('date') === null
-            || ($requestedDay = DateTimeImmutable::createFromFormat('Y-m-d', (string) $request->query->get('date'))) === false
-            || ($requestedDay < DateTimeImmutable::createFromFormat('Y-m-d', '2023-01-01'))
-        ) {
-            $requestedDay = new DateTimeImmutable('monday this week');
-        }
+        $requestedDay = CalendarHelper::getMondayOfTheRequestedDate($request);
 
         $previousDayOfTheWeek = $requestedDay->modify('-7 days');
         $nextDayOfTheWeek = $requestedDay->modify('+7 days');
@@ -38,7 +31,7 @@ class DoctorController extends CustomAbstractController
 
         $scheduleSlots = $scheduleSlotRepository->findDoctorSlotsByRange(
             $this->getUserCustom(),
-            $requestedDay->modify('monday this week'),
+            $requestedDay,
             $requestedDay->modify('monday next week'),
         );
 
@@ -55,6 +48,7 @@ class DoctorController extends CustomAbstractController
                     $availableHours,
                     $scheduleSlots,
                 ),
+                'href' => 'schedule',
             ],
         );
     }

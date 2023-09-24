@@ -1,0 +1,44 @@
+{% block calendar %}
+    <div class="d-flex align-items-center mt-5">
+        <a class="btn btn-outline-primary ms-3" href="{{ path(href) }}">
+            Today
+        </a>
+        <a class="btn btn-outline-primary ms-4" href="{{ path(href, {'date': previousDayOfTheWeek}) }}">
+            &#60;
+        </a>
+        <a class="btn btn-outline-primary ms-2" href="{{ path(href, {'date': nextDayOfTheWeek}) }}">
+            &#62;
+        </a>
+        <span class="h3 ms-4">{{ monthYear }}</span>
+	</div>
+	<hr>
+    <div class="container w-100 mw-100 mx-0 mb-4" style="mind-width:640px">
+        <div class="row text-center pb-1">
+            <div class="col px-0"></div>
+            {% for day in week %}
+                <div class="col d-flex flex-column align-items-center px-0">
+                    <div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek'] }}</div>
+                    <div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? " text-light rounded-circle bg-primary" : " text-body" }}">{{ day['dayOfTheMonth'] }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        {% for hour in hours %}
+            <div class="row row-cols-8 h-50px">
+                <div class="col px-0 text-end">
+                    <small>{{ hour }}</small>
+                </div>
+                {% for slots in schedule[hour] %}
+                    <div class="col px-0 border border-1 position-relative">
+                        {% for slot in slots %}
+                            <div class="bg-primary rounded-3 shadow slot position-absolute z-1" 
+                                style="height: calc(100% * ({{ slot['duration'] }} / 5 * (2.5/30)) - 2px);
+                                    top: calc(100% * (({{ slot['startMinutes'] }} / 5 * (2.5/30)))">
+                                <small class="text-white">{{ slot['timeTitle'] }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

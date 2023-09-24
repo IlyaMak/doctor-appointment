@@ -3,8 +3,10 @@
 namespace App\Tests\Unit\Service;
 
 use App\Service\CalendarHelper;
+use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class CalendarHelperTest extends TestCase
 {
@@ -69,6 +71,49 @@ class CalendarHelperTest extends TestCase
                     'isHighlighted' => false,
                 ],
             ]
+        );
+    }
+
+    public function testGetMondayOfTheRequestedDate(): void
+    {
+        self::assertEquals(
+            CalendarHelper::getMondayOfTheRequestedDate(
+                Request::create(
+                    uri: '',
+                    parameters: ['date' => '-']
+                ),
+            ),
+            new DateTime('monday this week'),
+        );
+
+        self::assertEquals(
+            CalendarHelper::getMondayOfTheRequestedDate(
+                Request::create(
+                    uri: '',
+                    parameters: ['date' => '2022-09-23']
+                ),
+            ),
+            new DateTime('monday this week'),
+        );
+
+        self::assertEquals(
+            CalendarHelper::getMondayOfTheRequestedDate(
+                Request::create(
+                    uri: '',
+                    parameters: ['date' => '2023-09-23']
+                ),
+            ),
+            new DateTime('2023-09-18'),
+        );
+        
+        self::assertEquals(
+            CalendarHelper::getMondayOfTheRequestedDate(
+                Request::create(
+                    uri: '',
+                    parameters: ['date' => '2023-09-01']
+                ),
+            ),
+            new DateTime('2023-08-28'),
         );
     }
 }

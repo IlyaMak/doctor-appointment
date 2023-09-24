@@ -1,0 +1,21 @@
+{% extends 'patient/base.html.twig' %}
+{% block title %}Book An Appointment | Doctor Appointment
+{% endblock %}
+{% block content %}
+	<div class="text-center mt-4">
+		<h2>Book An Appointment</h2>
+	</div>
+	<div class="col-md-6 mt-5 mx-auto">
+		{{ form_start(form) }}
+			<div class="mt-3 form-floating">
+				{{ form_widget(form.specialty) }}
+			</div>
+			<div class="mt-3 form-floating">
+				{{ form_widget(form.doctor) }}
+			</div>
+		{{ form_end(form) }}
+	</div>
+	{% if schedule is not null %}
+		{% include 'common/calendar.html.twig' %}
+	{% endif %}
+{% endblock %}
