@@ -6,14 +6,19 @@
 		<h2>Book An Appointment</h2>
 	</div>
 	<div class="col-md-6 mt-5 mx-auto">
-		{{ form_start(form) }}
-			<div class="mt-3 form-floating">
-				{{ form_widget(form.specialty) }}
-			</div>
-			<div class="mt-3 form-floating">
-				{{ form_widget(form.doctor) }}
-			</div>
-		{{ form_end(form) }}
+		{% for flash_error in app.flashes('error') %}
+			<div class="mt-4 alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+		<div class="mt-5">
+			{{ form_start(form) }}
+				<div class="mt-3 form-floating">
+					{{ form_widget(form.specialty) }}
+				</div>
+				<div class="mt-3 form-floating">
+					{{ form_widget(form.doctor) }}
+				</div>
+			{{ form_end(form) }}
+		</div>
 	</div>
 	{% if schedule is not null %}
 		{% include 'common/calendar.html.twig' %}
