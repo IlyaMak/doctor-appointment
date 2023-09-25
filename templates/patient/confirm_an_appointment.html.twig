@@ -1,0 +1,45 @@
+{% extends 'patient/base.html.twig' %}
+{% block title %}Confirm An Appointment | Doctor Appointment
+{% endblock %}
+{% block content %}
+	<div class="text-center mt-4">
+		<h2>Confirm An Appointment</h2>
+		<div class="mt-5">
+			<div class="col-xl-6 col-md-7 mx-auto">
+				<table class="table bg-white">
+					<thead class="bg-light">
+						<tr>
+							<th>Specialty</th>
+							<th>Doctor</th>
+							<th>Date</th>
+							<th>Time</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								{{ slot.doctor.specialty.name }}
+							</td>
+							<td>
+								{{ slot.doctor.name }}
+							</td>
+							<td>
+								{{ slot.start|date("Y-m-d") }}
+							</td>
+							<td>
+								{{ slot.start|date("H:i") }} - {{ slot.end|date("H:i") }}
+							</td>
+							<td>
+								{{ slot.price }}$
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<form class="mt-5" method="POST" action="{{ path('patient_confirm_an_appointment', {'slotId': slot.id}) }}" >
+					<button class="btn btn-primary btn-lg">Confirm and pay</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

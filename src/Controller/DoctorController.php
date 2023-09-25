@@ -49,6 +49,7 @@ class DoctorController extends CustomAbstractController
                     $scheduleSlots,
                 ),
                 'href' => 'schedule',
+                'appointmentPath' => 'schedule',
             ],
         );
     }

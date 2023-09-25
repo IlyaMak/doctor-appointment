@@ -30,11 +30,13 @@
                 {% for slots in schedule[hour] %}
                     <div class="col px-0 border border-1 position-relative">
                         {% for slot in slots %}
-                            <div class="bg-primary rounded-3 shadow slot position-absolute z-1" 
-                                style="height: calc(100% * ({{ slot['duration'] }} / 5 * (2.5/30)) - 2px);
-                                    top: calc(100% * (({{ slot['startMinutes'] }} / 5 * (2.5/30)))">
-                                <small class="text-white">{{ slot['timeTitle'] }}</small>
-                            </div>
+                            <a href="{{ path(appointmentPath, {'slotId': slot['id']}) }}">
+                                <div class="bg-primary rounded-3 shadow slot position-absolute z-1" 
+                                    style="height: calc(100% * ({{ slot['duration'] }} / 5 * (2.5/30)) - 2px);
+                                        top: calc(100% * (({{ slot['startMinutes'] }} / 5 * (2.5/30)))">
+                                    <small class="text-white">{{ slot['timeTitle'] }}</small>
+                                </div>
+                            </a>
                         {% endfor %}
                     </div>
                 {% endfor %}

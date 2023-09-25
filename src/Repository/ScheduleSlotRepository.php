@@ -96,6 +96,33 @@ class ScheduleSlotRepository extends ServiceEntityRepository
         return $entities;
     }
 
+    /**
+     * @return ScheduleSlot[]
+     */
+    public function findFreeSlotsByRange(User $doctor, DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        /** @var ScheduleSlot[] $entities */
+        $entities = $queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('s.doctor', ':doctor'),
+                    $queryBuilder->expr()->isNull('s.patient'),
+                    $queryBuilder->expr()->gte('s.start', ':startDate'),
+                    $queryBuilder->expr()->lt('s.end', ':endDate'),
+                ),
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('doctor', $doctor)
+            ->orderBy('s.start', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $entities;
+    }
+
     public function deleteScheduleSlots(DateTime $startDate, DateTime $endDate, User $doctor): int
     {
         $queryBuilder = $this->createQueryBuilder('s');
