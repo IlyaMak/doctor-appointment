@@ -170,4 +170,22 @@ class ScheduleSlotRepository extends ServiceEntityRepository
 
         return $skippedSlots;
     }
+
+    /**
+     * @return ScheduleSlot[]
+     */
+    public function getBookedScheduleSlotsByPatient(User $patient): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        /** @var ScheduleSlot[] $entities */
+        $entities = $queryBuilder
+        ->where('s.patient = :patient')
+        ->setParameter('patient', $patient)
+        ->orderBy('s.start', 'DESC')
+        ->getQuery()
+        ->getResult()
+        ;
+
+        return $entities;
+    }
 }

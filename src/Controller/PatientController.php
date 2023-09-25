@@ -25,9 +25,17 @@ class PatientController extends CustomAbstractController
 
     #[Route('/appointment-history', name: 'patient_appointment_history')]
     #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
-    public function patientAppointmentHistory(): Response
+    public function patientAppointmentHistory(ScheduleSlotRepository $scheduleSlotRepository): Response
     {
-        return $this->render('/patient/appointment_history.html.twig');
+        return $this->render(
+            '/patient/appointment_history.html.twig',
+            [
+                'scheduleSlots' =>
+                    $scheduleSlotRepository->getBookedScheduleSlotsByPatient(
+                        $this->getUserCustom()
+                    )
+            ],
+        );
     }
 
     #[Route('/book-an-appointment', name: 'patient_book_an_appointment')]
