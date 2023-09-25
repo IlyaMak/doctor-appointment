@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\ScheduleSlotRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,12 +36,18 @@ class AuthController extends AbstractController
     }
 
     #[Route('/login-success', name: 'login_success')]
-    public function successLogin(TokenInterface $token): Response
-    {
+    public function successLogin(
+        TokenInterface $token,
+        ScheduleSlotRepository $scheduleSlotRepository
+    ): Response {
         /** @var User */
         $user = $token->getUser();
         if (in_array(User::ROLE_PATIENT, $user->getRoles())) {
-            return $this->redirectToRoute('patient_book_an_appointment');
+            if (count($scheduleSlotRepository->getBookedScheduleSlotsByPatient($user)) === 0) {
+                return $this->redirectToRoute('patient_book_an_appointment');
+            } else {
+                return $this->redirectToRoute('patient_appointment_history');
+            }
         }
 
         return $this->redirectToRoute('schedule');

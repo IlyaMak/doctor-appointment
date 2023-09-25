@@ -17,6 +17,14 @@
 				</tr>
 			</thead>
 			<tbody>
+				{% if scheduleSlots|length == 0 %}
+					<tr>
+						<td colspan="5" class="text-center">
+							You have no past or future appointments
+						</td>
+					</tr>
+				{% endif %}
+				
 				{% for scheduleSlot in scheduleSlots %}
 					<tr>
 						<td>
