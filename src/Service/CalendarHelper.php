@@ -79,6 +79,7 @@ class CalendarHelper
             $hour = $scheduleSlot->getStart()->format('H:00');
             $date = $scheduleSlot->getStart()->format('Y-m-d');
             $schedule[$hour][$date][] = [
+                'id' => (int) $scheduleSlot->getId(),
                 'startMinutes' => (int) $scheduleSlot->getStart()->format('i'),
                 'duration' => (int) (($scheduleSlot->getEnd()->getTimestamp() - $scheduleSlot->getStart()->getTimestamp()) / 60),
                 'timeTitle' => $scheduleSlot->getStart()->format('H:i') . ' -' . $scheduleSlot->getEnd()->format('H:i'),

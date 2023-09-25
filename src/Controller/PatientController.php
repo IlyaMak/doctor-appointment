@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ScheduleSlot;
 use App\Entity\Specialty;
 use App\Entity\User;
 use App\Form\ChooseDoctorFormType;
@@ -11,6 +12,7 @@ use App\Repository\SpecialtyRepository;
 use App\Repository\UserRepository;
 use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,7 +76,7 @@ class PatientController extends CustomAbstractController
         $scheduleSlots =
             $selectedDoctor == null
             ? []
-            : $scheduleSlotRepository->findDoctorSlotsByRange(
+            : $scheduleSlotRepository->findFreeSlotsByRange(
                 $selectedDoctor,
                 $requestedDay,
                 $requestedDay->modify('monday next week'),
@@ -97,7 +99,42 @@ class PatientController extends CustomAbstractController
                         $scheduleSlots,
                     ),
                 'href' => 'patient_book_an_appointment',
+                'appointmentPath' => 'patient_confirm_an_appointment',
             ],
+        );
+    }
+
+    #[Route('/confirm-an-appointment', name: 'patient_confirm_an_appointment')]
+    #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
+    public function patientConfirmAnAppointment(
+        Request $request,
+        ScheduleSlotRepository $scheduleSlotRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $slotId = $request->query->get('slotId');
+        /** @var ScheduleSlot */
+        $scheduleSlot = $scheduleSlotRepository->find($slotId);
+
+        if ($request->isMethod('POST')) {
+            if($scheduleSlot->getPatient() !== null) {
+                $this->addFlash(
+                    'error',
+                    'Sorry, this slot ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . $scheduleSlot->getEnd()->format('H:i') . ' is already taken. Try book the other one.'
+                );
+
+                return $this->redirectToRoute('patient_appointment_history');
+            }
+
+            $user = $this->getUserCustom();
+            $scheduleSlot->setPatient($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('patient_appointment_history');
+        }
+
+        return $this->render(
+            '/patient/confirm_an_appointment.html.twig',
+            ['slot' => $scheduleSlot],
         );
     }
 }
