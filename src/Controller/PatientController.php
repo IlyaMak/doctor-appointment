@@ -119,10 +119,10 @@ class PatientController extends CustomAbstractController
             if($scheduleSlot->getPatient() !== null) {
                 $this->addFlash(
                     'error',
-                    'Sorry, this slot ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . $scheduleSlot->getEnd()->format('H:i') . ' is already taken. Try book the other one.'
+                    'Sorry, this slot ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i') . ' is already taken. Try to book the other one.'
                 );
 
-                return $this->redirectToRoute('patient_appointment_history');
+                return $this->redirectToRoute('patient_book_an_appointment');
             }
 
             $user = $this->getUserCustom();
