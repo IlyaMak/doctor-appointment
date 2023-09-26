@@ -1,0 +1,13 @@
+{% extends 'patient/base.html.twig' %}
+{% block title %}The Payment Failed | Doctor Appointment
+{% endblock %}
+{% block content %}
+	<div class="text-center mt-4">
+		<h1>The Payment Failed!</h1>
+		<div class="mt-4">
+			<a href="{{ path('patient_appointment_history') }}">
+				Open appointment history
+			</a>
+		</div>
+	</div>
+{% endblock %}
