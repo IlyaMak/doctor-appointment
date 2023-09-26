@@ -14,12 +14,13 @@
 					<th>Date</th>
 					<th>Time</th>
 					<th>Price</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% if scheduleSlots|length == 0 %}
 					<tr>
-						<td colspan="5" class="text-center">
+						<td colspan="6" class="text-center">
 							You have no past or future appointments
 						</td>
 					</tr>
@@ -41,6 +42,9 @@
 						</td>
 						<td>
 							{{ scheduleSlot.price }}$
+						</td>
+						<td>
+							{{ scheduleSlot.status.value }}
 						</td>
 					</tr>
 				{% endfor %}
