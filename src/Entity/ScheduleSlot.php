@@ -35,6 +35,9 @@ class ScheduleSlot
     #[ORM\Column(enumType: Status::class, options: ['default' => Status::NotPaid])]
     private Status $status;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paymentLink = null;
+
     public function __construct(
         DateTimeInterface $start,
         DateTimeInterface $end,
@@ -121,6 +124,18 @@ class ScheduleSlot
     public function setStatus(Status $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPaymentLink(): ?string
+    {
+        return $this->paymentLink;
+    }
+
+    public function setPaymentLink(?string $paymentLink): static
+    {
+        $this->paymentLink = $paymentLink;
 
         return $this;
     }
