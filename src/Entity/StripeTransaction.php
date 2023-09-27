@@ -14,7 +14,7 @@ class StripeTransaction
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $objectId = null;
+    private ?string $objectId = null;
 
     #[ORM\Column]
     private ?int $amount = null;
@@ -27,12 +27,12 @@ class StripeTransaction
         return $this->id;
     }
 
-    public function getObjectId(): ?int
+    public function getObjectId(): ?string
     {
         return $this->objectId;
     }
 
-    public function setObjectId(int $objectId): static
+    public function setObjectId(string $objectId): static
     {
         $this->objectId = $objectId;
 
