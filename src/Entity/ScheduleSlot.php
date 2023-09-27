@@ -35,7 +35,7 @@ class ScheduleSlot
     #[ORM\Column(enumType: Status::class, options: ['default' => Status::NotPaid])]
     private Status $status;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 1024, nullable: true)]
     private ?string $paymentLink = null;
 
     public function __construct(
