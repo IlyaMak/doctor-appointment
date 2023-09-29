@@ -35,9 +35,6 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                 [
                     'label' => 'Upload avatar',
                     'mapped' => false,
-                    // make it optional so you don't have to re-upload the PDF file
-                    // every time you edit the Product details
-                    'required' => false,
                     'attr' => [
                         'class' => 'form-control',
                     ],

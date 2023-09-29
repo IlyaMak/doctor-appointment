@@ -6,12 +6,11 @@
 {% endblock %}
 
 {% block body %}
-	{% for flash_error in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-	{% endfor %}
-
 	<div class="text-center d-flex flex-column justify-content-center align-items-center">
 		<h1>Register</h1>
+		{% for flash_error in app.flashes('verify_email_error') %}
+			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
 
 		{{ form_errors(registrationForm) }}
 

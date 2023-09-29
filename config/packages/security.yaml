@@ -28,6 +28,7 @@ security:
                 check_path: app_sign_in
                 enable_csrf: true
                 default_target_path: login_success
+            user_checker: App\Security\UserChecker
             logout:
                 path: app_sign_out
     # Easy way to control access for large sections of your site
