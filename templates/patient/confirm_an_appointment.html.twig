@@ -28,7 +28,9 @@
 								{{ slot.start|date("Y-m-d") }}
 							</td>
 							<td>
-								{{ slot.start|date("H:i") }} - {{ slot.end|date("H:i") }}
+								{{ slot.start|date("H:i") }}
+								-
+								{{ slot.end|date("H:i") }}
 							</td>
 							<td>
 								{{ slot.price }}$
@@ -36,7 +38,38 @@
 						</tr>
 					</tbody>
 				</table>
-				<form class="mt-5" method="POST" action="{{ path('patient_confirm_an_appointment', {'slotId': slot.id}) }}" >
+				<div class="mt-5">
+					This is a demo website. Use the following credit card data on the Stripe page to complete the purchase.
+					<table class="table bg-white mt-2">
+						<tbody>
+							<tr>
+								<td>
+									Card number
+								</td>
+								<td>
+									4242 4242 4242 4242
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Card Expiry
+								</td>
+								<td>
+									Any future date
+								</td>
+							</tr>
+							<tr>
+								<td>
+									CVC
+								</td>
+								<td>
+									Any 3-digit number
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<form class="mt-3" method="POST">
 					<button class="btn btn-primary btn-lg">Confirm and pay</button>
 				</form>
 			</div>

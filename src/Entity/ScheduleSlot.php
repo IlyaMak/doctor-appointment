@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\Status;
 use App\Repository\ScheduleSlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +32,12 @@ class ScheduleSlot
     #[ORM\ManyToOne]
     private ?User $patient = null;
 
+    #[ORM\Column(enumType: Status::class, options: ['default' => Status::NotPaid])]
+    private Status $status;
+
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $paymentLink = null;
+
     public function __construct(
         DateTimeInterface $start,
         DateTimeInterface $end,
@@ -41,6 +48,7 @@ class ScheduleSlot
         $this->end = $end;
         $this->price = $price;
         $this->doctor = $doctor;
+        $this->status = Status::NotPaid;
     }
 
     public function getId(): ?int
@@ -104,6 +112,30 @@ class ScheduleSlot
     public function setPatient(?User $patient): static
     {
         $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getPaymentLink(): ?string
+    {
+        return $this->paymentLink;
+    }
+
+    public function setPaymentLink(?string $paymentLink): static
+    {
+        $this->paymentLink = $paymentLink;
 
         return $this;
     }

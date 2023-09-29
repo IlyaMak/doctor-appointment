@@ -11,11 +11,13 @@ use App\Repository\ScheduleSlotRepository;
 use App\Repository\SpecialtyRepository;
 use App\Repository\UserRepository;
 use App\Service\CalendarHelper;
+use App\Service\PaymentService;
 use App\Service\ScheduleHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PatientController extends CustomAbstractController
@@ -31,9 +33,9 @@ class PatientController extends CustomAbstractController
             '/patient/appointment_history.html.twig',
             [
                 'scheduleSlots' =>
-                    $scheduleSlotRepository->getBookedScheduleSlotsByPatient(
-                        $this->getUserCustom()
-                    )
+                $scheduleSlotRepository->getBookedScheduleSlotsByPatient(
+                    $this->getUserCustom()
+                )
             ],
         );
     }
@@ -118,13 +120,15 @@ class PatientController extends CustomAbstractController
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
         EntityManagerInterface $entityManager,
+        PaymentService $paymentService,
     ): Response {
+        /** @var int */
         $slotId = $request->query->get('slotId');
         /** @var ScheduleSlot */
         $scheduleSlot = $scheduleSlotRepository->find($slotId);
 
         if ($request->isMethod('POST')) {
-            if($scheduleSlot->getPatient() !== null) {
+            if ($scheduleSlot->getPatient() !== null) {
                 $this->addFlash(
                     'error',
                     'Sorry, this slot ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i') . ' is already taken. Try to book the other one.'
@@ -133,11 +137,27 @@ class PatientController extends CustomAbstractController
                 return $this->redirectToRoute('patient_book_an_appointment');
             }
 
+            $paymentUrl = $paymentService->getScheduleSlotPaymentLink(
+                $slotId,
+                $scheduleSlot,
+                $this->generateUrl(
+                    'success_payment',
+                    [],
+                    UrlGeneratorInterface::ABSOLUTE_URL,
+                ),
+                $this->generateUrl(
+                    'cancel_payment',
+                    [],
+                    UrlGeneratorInterface::ABSOLUTE_URL,
+                ),
+            );
+
             $user = $this->getUserCustom();
+            $scheduleSlot->setPaymentLink($paymentUrl);
             $scheduleSlot->setPatient($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('patient_appointment_history');
+            return $this->redirect($paymentUrl, 303);
         }
 
         return $this->render(
