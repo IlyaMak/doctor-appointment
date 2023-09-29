@@ -5,9 +5,6 @@ How to send email:
 
 
 Problems:
-1. Fix sign-in wrong password message style.
-2. Add "Already have an account? <a>Sign in</a>" to the end of the register form.
-3. Add "New to this website? <a>Join now</a>" to the sign in page.
 4. Add "Forgot password?" to the sign in page.
 5. Forbid sign-in if not verified.
 6. Add .env var IS_EMAIL_VERIFICATION_REQUIRED=true/false:
