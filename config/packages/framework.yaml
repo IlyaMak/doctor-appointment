@@ -1,4 +1,6 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
+parameters:
+    is_required_email_verification: '%env(bool:IS_EMAIL_VERIFICATION_REQUIRED)%'
 framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true

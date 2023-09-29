@@ -20,25 +20,37 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use DateTime;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
-    {
+    public function __construct(
+        EmailVerifier $emailVerifier,
+        #[Autowire(param: 'is_required_email_verification')]
+        private bool $isEmailVerificationRequired,
+    ) {
         $this->emailVerifier = $emailVerifier;
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        UserAuthenticatorInterface $authenticatorManager,
+        #[Autowire(service: 'security.authenticator.form_login.main')]
+        FormLoginAuthenticator $authenticator,
+    ): Response {
         $isDoctor = '0' === $request->query->get('isPatient');
         $user = new User();
         $form = $this->createForm(
             $isDoctor
-               ? DoctorRegistrationFormType::class
-               : PatientRegistrationFormType::class,
+                ? DoctorRegistrationFormType::class
+                : PatientRegistrationFormType::class,
             $user,
         );
         $form->handleRequest($request);
@@ -72,18 +84,26 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
-                'app_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->from(new Address('ilmobdev@gmail.com', 'Doctor Appointment Mail Bot'))
-                    ->to($email)
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('security/confirmation_email.html.twig')
-            );
+            if ($this->isEmailVerificationRequired) {
+                $this->emailVerifier->sendEmailConfirmation(
+                    'app_verify_email',
+                    $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('ilmobdev@gmail.com', 'Doctor Appointment Mail Bot'))
+                        ->to($email)
+                        ->subject('Please Confirm your Email')
+                        ->htmlTemplate('security/confirmation_email.html.twig')
+                );
 
-            return $this->render('security/register_success.html.twig');
+                return $this->render('security/register_success.html.twig');
+            } else {
+                $authenticatorManager->authenticateUser($user, $authenticator, $request);
+                if ($isDoctor) {
+                    return $this->redirectToRoute('schedule');
+                } else {
+                    return $this->redirectToRoute('patient_book_an_appointment');
+                }
+            }
         }
 
         return $this->render('security/register.html.twig', [
@@ -121,6 +141,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_sign_in');
     }
 }
