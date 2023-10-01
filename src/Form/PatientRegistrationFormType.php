@@ -53,7 +53,7 @@ class PatientRegistrationFormType extends AbstractType
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'label' => 'Password',
-                    'label_attr' => ['for' => 'plainPassword'],
+                'label_attr' => ['for' => 'plainPassword'],
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'new-password',
