@@ -1,0 +1,25 @@
+{% extends 'security/base.html.twig' %}
+
+{% block title %}
+	Reset your password | Doctor Appointment
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex flex-column  align-items-center">
+		<h1>Reset your password</h1>
+		{% for flash_error in app.flashes('reset_password_error') %}
+			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+
+		{{ form_start(requestForm) }}
+		<div class="form-floating">
+			{{ form_widget(requestForm.email) }}
+			{{ form_label(requestForm.email) }}
+		</div>
+
+		<button class="w-100 btn btn-lg btn-primary mt-3">
+			Send password reset email
+		</button>
+		{{ form_end(requestForm) }}
+	</div>
+{% endblock %}

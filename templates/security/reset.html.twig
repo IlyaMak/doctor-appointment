@@ -1,0 +1,21 @@
+{% extends 'security/base.html.twig' %}
+{% form_theme resetForm 'common/form_errors.html.twig' %}
+
+{% block title %}
+	Reset your password | Doctor Appointment
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex flex-column align-items-center">
+		<h1>Reset your password</h1>
+		{{ form_start(resetForm) }}
+		{{ form_widget(resetForm.plainPassword) }}
+		<div class="list-group-item list-group-item-danger px-2 rounded">
+			{{ form_errors(resetForm) }}
+		</div>
+		<button class="w-100 btn btn-lg btn-primary mt-3">
+			Reset password
+		</button>
+		{{ form_end(resetForm) }}
+	</div>
+{% endblock %}
