@@ -44,6 +44,8 @@ class RegistrationController extends AbstractController
         UserAuthenticatorInterface $authenticatorManager,
         #[Autowire(service: 'security.authenticator.form_login.main')]
         FormLoginAuthenticator $authenticator,
+        #[Autowire(env: 'EMAIL_ADDRESS')]
+        string $emailAddress,
     ): Response {
         $isDoctor = '0' === $request->query->get('isPatient');
         $user = new User();
@@ -89,7 +91,7 @@ class RegistrationController extends AbstractController
                     'app_verify_email',
                     $user,
                     (new TemplatedEmail())
-                        ->from(new Address('ilmobdev@gmail.com', 'Doctor Appointment Mail Bot'))
+                        ->from(new Address($emailAddress, 'Doctor Appointment Mail Bot'))
                         ->to($email)
                         ->subject('Please Confirm your Email')
                         ->htmlTemplate('security/confirmation_email.html.twig')
