@@ -15,6 +15,7 @@
 					<th>Time</th>
 					<th>Price</th>
 					<th>Status</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,7 +26,7 @@
 						</td>
 					</tr>
 				{% endif %}
-				
+
 				{% for scheduleSlot in scheduleSlots %}
 					<tr>
 						<td>
@@ -38,13 +39,22 @@
 							{{ scheduleSlot.start|date("Y-m-d") }}
 						</td>
 						<td>
-							{{ scheduleSlot.start|date("H:i") }} - {{ scheduleSlot.end|date("H:i") }}
+							{{ scheduleSlot.start|date("H:i") }}
+							-
+							{{ scheduleSlot.end|date("H:i") }}
 						</td>
 						<td>
 							{{ scheduleSlot.price }}$
 						</td>
 						<td>
 							{{ scheduleSlot.status.value }}
+						</td>
+						<td>
+							{% if scheduleSlot.status.value == constant('App\\Enum\\Status::NotPaid').value %}
+								<a href="{{ scheduleSlot.paymentLink }}" class="link-underline link-underline-opacity-0" target="_blank">
+									Pay
+								</a>
+							{% endif %}
 						</td>
 					</tr>
 				{% endfor %}
