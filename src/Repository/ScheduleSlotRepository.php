@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
+use App\Enum\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
@@ -187,5 +188,33 @@ class ScheduleSlotRepository extends ServiceEntityRepository
         ;
 
         return $entities;
+    }
+
+    /**
+     * @return ScheduleSlot[]
+     */
+    public function getPaidTomorrowScheduleSlots(): array
+    {
+        $tomorrowDate = new DateTimeImmutable('tomorrow');
+        $afterTomorrowDate = $tomorrowDate->modify('+1 days');
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        /** @var ScheduleSlot[] */
+        $scheduleSlots = $queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('s.status', ':paidStatus'),
+                    $queryBuilder->expr()->gte('s.start', ':tomorrowDate'),
+                    $queryBuilder->expr()->lt('s.end', ':afterTomorrowDate'),
+                ),
+            )
+            ->setParameter('paidStatus', Status::Paid->value)
+            ->setParameter('tomorrowDate', $tomorrowDate)
+            ->setParameter('afterTomorrowDate', $afterTomorrowDate)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $scheduleSlots;
     }
 }
