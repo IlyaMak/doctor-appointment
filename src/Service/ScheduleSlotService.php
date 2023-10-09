@@ -126,4 +126,40 @@ class ScheduleSlotService
 
         return $scheduleSlotsCount;
     }
+
+    public function addNewAppointment(FormInterface $form, User $user): int
+    {
+        $scheduleSlotsCount = 0;
+        /** @var DateTime */
+        $formDate = $form->get('date')->getData();
+        /** @var DateTime */
+        $formTime = $form->get('time')->getData();
+        /** @var string */
+        $duration = $form->get('duration')->getData();
+        /** @var float */
+        $price = $form->get('price')->getData();
+        $startDate = $formDate->setTime(
+            (int) $formTime->format('H'),
+            (int) $formTime->format('i'),
+        );
+        $endDate = clone $startDate;
+        $endDate = $endDate->modify("+$duration minutes");
+
+        if (0 !== count($this->scheduleSlotRepository->findOverlapDate($startDate, $endDate))) {
+            throw new RuntimeException('A date overlap has occured. Please correct the form values.');
+        }
+
+        $scheduleSlot = new ScheduleSlot(
+            $startDate,
+            $endDate,
+            $price,
+            $user,
+        );
+        $this->entityManager->persist($scheduleSlot);
+        ++$scheduleSlotsCount;
+
+        $this->entityManager->flush();
+
+        return $scheduleSlotsCount;
+    }
 }

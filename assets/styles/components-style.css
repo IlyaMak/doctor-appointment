@@ -9,6 +9,16 @@
     word-break: break-word;
 }
 
+.hourCell {
+    height: calc(100% - 8px);
+    margin: 4px;
+    width: calc(100% - 8px);
+}
+
+.addSlotLink {
+    cursor: copy;
+}
+
 .calendar-date {
     width: 1.6rem;
     height: 1.6rem;

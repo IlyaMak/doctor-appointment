@@ -42,7 +42,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 DateType::class,
                 [
                     'mapped' => false,
-                    'label' => 'Start date (included)',
+                    'label' => 'End date (included)',
                     'data' => $endDateTime,
                     'years' => [date('Y'), date('Y') + 1],
                     'attr' => [

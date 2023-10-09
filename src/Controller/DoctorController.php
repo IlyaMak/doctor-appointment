@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\DeleteScheduleSlotFormType;
 use App\Form\ScheduleSlotGenerationFormType;
+use App\Form\SingleScheduleSlotGenerationFormType;
 use App\Repository\ScheduleSlotRepository;
 use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
@@ -77,6 +78,38 @@ class DoctorController extends CustomAbstractController
         return $this->render(
             '/doctor/set_working_hours_form.html.twig',
             ['workingHoursForm' => $form->createView()]
+        );
+    }
+
+    #[Route('/add-new-appointment-form', name: 'add_new_appointment_form')]
+    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
+    public function setSingleAppointmentForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
+    {
+        $date = $request->query->get('date');
+        $hour = $request->query->get('hour');
+        $startMinutes = $request->query->get('startMinutes');
+        $form = $this->createForm(
+            SingleScheduleSlotGenerationFormType::class,
+            ['date' => $date, 'hour' => $hour, 'startMinutes' => $startMinutes],
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $scheduleSlotCount = $scheduleSlotService->addNewAppointment($form, $this->getUserCustom());
+                if (0 === $scheduleSlotCount) {
+                    $this->addFlash('warning', $scheduleSlotCount . ' slots were added. Please correct the form values.');
+                } else {
+                    $this->addFlash('success', $scheduleSlotCount . ' slots were added.');
+                }
+            } catch (RuntimeException $exception) {
+                $this->addFlash('error', $exception->getMessage());
+            }
+        }
+
+        return $this->render(
+            '/doctor/add_new_appointment_form.html.twig',
+            ['form' => $form->createView()]
         );
     }
 
