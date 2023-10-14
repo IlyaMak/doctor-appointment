@@ -66,7 +66,7 @@ class CalendarHelper
 
     /** @param string[] $availableHours
      *  @param ScheduleSlot[] $scheduleSlots
-     *  @return array<string, array<string, array<string, int|string>[]>>
+     *  @return array<string, array<string, array<string, int|bool|string>[]>>
     */
     public static function getWeekSchedule(
         DateTimeImmutable $requestedDay,
@@ -80,6 +80,7 @@ class CalendarHelper
             $date = $scheduleSlot->getStart()->format('Y-m-d');
             $schedule[$hour][$date][] = [
                 'id' => (int) $scheduleSlot->getId(),
+                'hasPatient' => $scheduleSlot->getPatient() !== null,
                 'startMinutes' => (int) $scheduleSlot->getStart()->format('i'),
                 'duration' => (int) (($scheduleSlot->getEnd()->getTimestamp() - $scheduleSlot->getStart()->getTimestamp()) / 60),
                 'timeTitle' => $scheduleSlot->getStart()->format('H:i') . ' -' . $scheduleSlot->getEnd()->format('H:i'),
