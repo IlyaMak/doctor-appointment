@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ScheduleSlot;
 use App\Entity\User;
 use App\Form\DeleteScheduleSlotFormType;
+use App\Form\EditScheduleSlotFormType;
 use App\Form\ScheduleSlotGenerationFormType;
 use App\Form\SingleScheduleSlotGenerationFormType;
 use App\Repository\ScheduleSlotRepository;
@@ -11,6 +13,7 @@ use App\Service\CalendarHelper;
 use App\Service\ScheduleHelper;
 use App\Service\ScheduleSlotService;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -110,6 +113,39 @@ class DoctorController extends CustomAbstractController
         return $this->render(
             '/doctor/add_new_appointment_form.html.twig',
             ['form' => $form->createView()]
+        );
+    }
+
+    #[Route('/edit-appointment-form', name: 'edit_appointment_form')]
+    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
+    public function editAppointmentForm(
+        Request $request,
+        ScheduleSlotRepository $scheduleSlotRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        /** @var ScheduleSlot */
+        $scheduleSlot = $scheduleSlotRepository->find($request->query->get('slotId'));
+
+        $form = $this->createForm(
+            EditScheduleSlotFormType::class,
+            ['scheduleSlotRecommendation' => $scheduleSlot->getRecommendation()],
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var string */
+            $recommendation = $form->get('recommendation')->getData();
+            $scheduleSlot->setRecommendation($recommendation);
+            $entityManager->flush();
+            $this->addFlash('success', 'Appointment is updated.');
+        }
+
+        return $this->render(
+            '/doctor/edit_schedule_slot_form.html.twig',
+            [
+                'scheduleSlot' => $scheduleSlot,
+                'form' => $form->createView(),
+            ],
         );
     }
 
