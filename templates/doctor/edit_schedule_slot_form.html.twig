@@ -1,0 +1,39 @@
+{% extends 'doctor/base.html.twig' %}
+{% form_theme form 'common/form_errors.html.twig' %}
+
+{% block title %}
+	Edit Schedule Slot Form | Doctor Appointment
+{% endblock %}
+{% block content %}
+	<div class="col-md-6 m-auto">
+		<div class="text-center mt-4">
+			<h2>Edit Schedule Slot</h2>
+		</div>
+		{% for flash_error in app.flashes('success') %}
+			<div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+		{{ form_start(form) }}
+		<div>
+			<div>Date:
+				{{ scheduleSlot.start|date('Y-m-d') }}</div>
+			<div>Time:
+				{{ scheduleSlot.start|date('H:i') }}-{{ scheduleSlot.end|date('H:i') }}
+			</div>
+			<div>Patient:
+				{{ scheduleSlot.patient.name }}</div>
+			<div>Price:
+				{{ scheduleSlot.price }}$</div>
+		</div>
+		<div class="form-floating mt-4">
+			{{form_widget(form.recommendation)}}
+			{{form_label(form.recommendation)}}
+		</div>
+		<div class="list-group-item list-group-item-danger px-2 rounded">
+			{{ form_errors(form.recommendation)}}
+		</div>
+		<button type="submit" class="w-100 btn btn-lg btn-primary my-4">
+			Save
+		</button>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
