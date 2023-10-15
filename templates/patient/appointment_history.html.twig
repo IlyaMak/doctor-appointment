@@ -54,6 +54,10 @@
 								<a href="{{ scheduleSlot.paymentLink }}" class="link-underline link-underline-opacity-0" target="_blank">
 									Pay
 								</a>
+							{% else %}
+								<a href="{{ path('patient_show_appointment_details', {'slotId': scheduleSlot.id}) }}" class="link-underline link-underline-opacity-0" target="_blank">
+									View
+								</a>
 							{% endif %}
 						</td>
 					</tr>

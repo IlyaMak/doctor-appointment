@@ -20,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
 class PatientController extends CustomAbstractController
 {
     public const SPECIALTY = 'specialty';
     public const DOCTOR = 'doctor';
 
     #[Route('/appointment-history', name: 'patient_appointment_history')]
-    #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
     public function patientAppointmentHistory(ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         return $this->render(
@@ -40,8 +40,19 @@ class PatientController extends CustomAbstractController
         );
     }
 
+    #[Route('/show-appointment-details', name: 'patient_show_appointment_details')]
+    public function patientShowScheduleSlotDetails(
+        Request $request,
+        ScheduleSlotRepository $scheduleSlotRepository,
+    ): Response {
+        $scheduleSlot = $scheduleSlotRepository->find($request->query->get('slotId'));
+        return $this->render(
+            '/patient/show_schedule_slot_details.html.twig',
+            ['scheduleSlot' => $scheduleSlot,],
+        );
+    }
+
     #[Route('/book-an-appointment', name: 'patient_book_an_appointment')]
-    #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
     public function patientBookAnAppointment(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
@@ -115,7 +126,6 @@ class PatientController extends CustomAbstractController
     }
 
     #[Route('/confirm-an-appointment', name: 'patient_confirm_an_appointment')]
-    #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
     public function patientConfirmAnAppointment(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
