@@ -33,7 +33,7 @@
 							<div class="hourCell" data-hour={{ hour }} data-date={{ date }} data-form-slot-path="{{ path('add_new_appointment_form') }}"></div>
 						{% endif %}
 						{% for slot in slots %}
-							<a href="{{ path(appointmentPath, {'slotId': slot['id']}) }}">
+							<a href="{{ path(slot['hasPatient'] ? 'edit_appointment_form' : appointmentPath, {'slotId': slot['id']}) }}">
 								<div class="{{ slot['hasPatient'] ? "bg-danger" : "bg-primary" }} rounded-3 shadow slot position-absolute z-1" style="height: calc(100% * ({{ slot['duration'] }} / 5 * (2.5/30)) - 2px);top: calc(100% * (({{ slot['startMinutes'] }} / 5 * (2.5/30)))">
 									<small class="text-white">{{ slot['timeTitle'] }}</small>
 								</div>

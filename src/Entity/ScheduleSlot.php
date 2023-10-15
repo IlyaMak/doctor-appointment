@@ -38,6 +38,9 @@ class ScheduleSlot
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $paymentLink = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $recommendation = null;
+
     public function __construct(
         DateTimeInterface $start,
         DateTimeInterface $end,
@@ -136,6 +139,18 @@ class ScheduleSlot
     public function setPaymentLink(?string $paymentLink): static
     {
         $this->paymentLink = $paymentLink;
+
+        return $this;
+    }
+
+    public function getRecommendation(): ?string
+    {
+        return $this->recommendation;
+    }
+
+    public function setRecommendation(?string $recommendation): static
+    {
+        $this->recommendation = $recommendation;
 
         return $this;
     }
