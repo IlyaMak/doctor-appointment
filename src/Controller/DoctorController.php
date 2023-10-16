@@ -19,11 +19,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use RuntimeException;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+#[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
 class DoctorController extends CustomAbstractController
 {
     #[Route('/schedule', name: 'schedule')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $requestedDay = CalendarHelper::getMondayOfTheRequestedDate($request);
@@ -59,7 +64,6 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/set-working-hours-form', name: 'set_working_hours_form')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function setWorkingHoursForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $form = $this->createForm(ScheduleSlotGenerationFormType::class);
@@ -85,7 +89,6 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/add-new-appointment-form', name: 'add_new_appointment_form')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function setSingleAppointmentForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $date = $request->query->get('date');
@@ -117,11 +120,13 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/edit-appointment-form', name: 'edit_appointment_form')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function editAppointmentForm(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
         EntityManagerInterface $entityManager,
+        MailerInterface $mailer,
+        #[Autowire(env: 'EMAIL_ADDRESS')]
+        string $emailAddress,
     ): Response {
         /** @var ScheduleSlot */
         $scheduleSlot = $scheduleSlotRepository->find($request->query->get('slotId'));
@@ -137,7 +142,27 @@ class DoctorController extends CustomAbstractController
             $recommendation = $form->get('recommendation')->getData();
             $scheduleSlot->setRecommendation($recommendation);
             $entityManager->flush();
+
             $this->addFlash('success', 'Appointment is updated.');
+
+            $url = $this->generateUrl(
+                'patient_show_appointment_details',
+                ['slotId' => $scheduleSlot->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL,
+            );
+
+            /** @var User */
+            $patient = $scheduleSlot->getPatient();
+
+            $email = (new TemplatedEmail())
+                ->from(new Address($emailAddress, 'Doctor Appointment Bot'))
+                ->to($patient->getEmail())
+                ->subject('Appointment update!')
+                ->htmlTemplate('doctor/updated_schedule_slot.html.twig')
+                ->context(['url' => $url])
+            ;
+
+            $mailer->send($email);
         }
 
         return $this->render(
@@ -150,7 +175,6 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/delete-working-hours', name: 'delete_working_hours')]
-    #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
     public function deleteWorkingHours(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $form = $this->createForm(DeleteScheduleSlotFormType::class);
