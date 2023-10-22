@@ -8,9 +8,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use DateTimeImmutable;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteScheduleSlotFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $startDateTime = new DateTimeImmutable();
@@ -23,7 +28,7 @@ class DeleteScheduleSlotFormType extends AbstractType
                 DateTimeType::class,
                 [
                     'mapped' => false,
-                    'label' => 'Start date (included)',
+                    'label' => $this->translator->trans('start_date_label'),
                     'data' => $startDateTime,
                     'years' => [date('Y'), date('Y') + 1],
                     'hours' => ScheduleHelper::getAvailableIntHours(),
@@ -38,7 +43,7 @@ class DeleteScheduleSlotFormType extends AbstractType
                 DateTimeType::class,
                 [
                     'mapped' => false,
-                    'label' => 'Start date (included)',
+                    'label' => $this->translator->trans('end_date_label'),
                     'data' => $endDateTime,
                     'years' => [date('Y'), date('Y') + 1],
                     'hours' => ScheduleHelper::getAvailableIntHours(),

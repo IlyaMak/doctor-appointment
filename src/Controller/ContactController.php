@@ -11,15 +11,17 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContactController extends AbstractController
 {
-    #[Route('/contact', name: 'contact')]
+    #[Route('/{_locale<%app.supported_locales%>}/contact', name: 'contact')]
     public function contact(
         Request $request,
         MailerInterface $mailer,
         #[Autowire(env: 'EMAIL_ADDRESS')]
         string $emailAddress,
+        TranslatorInterface $translator,
     ): Response {
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
@@ -38,7 +40,7 @@ class ContactController extends AbstractController
                 ->text($message)
             ;
             $mailer->send($email);
-            $this->addFlash('success', 'The message was successfully sent!');
+            $this->addFlash('success', $translator->trans('contact_success_message_mark'));
 
         }
 

@@ -1,20 +1,21 @@
 {% extends 'patient/base.html.twig' %}
-{% block title %}Appointment History | Doctor Appointment
+{% block title %}
+	{{ 'appointment_history_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="text-center mt-4">
-		<h2>Appointment History</h2>
+		<h2>{{ 'appointment_history_label'|trans }}</h2>
 	</div>
 	<div class="col-xl-6 col-md-7 mt-5 mx-auto">
 		<table class="table bg-white">
 			<thead class="bg-light">
 				<tr>
-					<th>Specialty</th>
-					<th>Doctor</th>
-					<th>Date</th>
-					<th>Time</th>
-					<th>Price</th>
-					<th>Status</th>
+					<th>{{ 'specialty_label'|trans }}</th>
+					<th>{{ 'doctor_label'|trans }}</th>
+					<th>{{ 'date_label'|trans }}</th>
+					<th>{{ 'time_label'|trans }}</th>
+					<th>{{ 'price_label'|trans }}</th>
+					<th>{{ 'status_label'|trans }}</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -22,7 +23,7 @@
 				{% if scheduleSlots|length == 0 %}
 					<tr>
 						<td colspan="6" class="text-center">
-							You have no past or future appointments
+							{{ 'no_appointments_label'|trans }}
 						</td>
 					</tr>
 				{% endif %}
@@ -47,16 +48,20 @@
 							{{ scheduleSlot.price }}$
 						</td>
 						<td>
-							{{ scheduleSlot.status.value }}
+							{% if scheduleSlot.status.value == constant('App\\Enum\\Status::Paid').value %}
+								<div>{{ 'paid_label'|trans }}</div>
+							{% else %}
+								<div>{{ 'not_paid_label'|trans }}</div>
+							{% endif %}
 						</td>
 						<td>
 							{% if scheduleSlot.status.value == constant('App\\Enum\\Status::NotPaid').value %}
 								<a href="{{ scheduleSlot.paymentLink }}" class="link-underline link-underline-opacity-0" target="_blank">
-									Pay
+									{{ 'pay_label'|trans }}
 								</a>
 							{% else %}
 								<a href="{{ path('patient_show_appointment_details', {'slotId': scheduleSlot.id}) }}" class="link-underline link-underline-opacity-0" target="_blank">
-									View
+									{{ 'view_label'|trans }}
 								</a>
 							{% endif %}
 						</td>

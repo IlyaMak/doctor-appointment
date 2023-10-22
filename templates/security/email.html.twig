@@ -1,8 +1,8 @@
-<h1>Greetings!</h1>
-<p>To reset your password, please visit the following link</p>
+<h1>{{ emailHeader }}</h1>
+<p>{{ emailDescription }}:</p>
 <a href="{{ url }}">
 	{{ url }}
 </a>
-<p>This link will expire in
+<p>{{ expireLinkDescription }}
 	{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
 </p>

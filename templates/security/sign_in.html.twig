@@ -1,20 +1,20 @@
 {% extends 'security/base.html.twig' %}
 
 {% block title %}
-	Sign In | Doctor Appointment
+	{{ 'sign_in_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
 	<div class="text-center d-flex flex-column">
-		<h1>Sign In</h1>
+		<h1>{{ 'sign_in_label'|trans }}</h1>
 		<form class="mt-3 security-form" action="{{ path('app_sign_in') }}" method="post">
 			<div class="form-floating">
 				<input type="text" class="form-control" id="username" placeholder="email" name="_username" value="{{ last_username }}"/>
-				<label for="username">Email</label>
+				<label for="username">{{ 'email_label'|trans }}</label>
 			</div>
 			<div class="form-floating mt-3">
 				<input type="password" class="form-control" id="password" placeholder="password" name="_password"/>
-				<label for="password">Password</label>
+				<label for="password">{{ 'password_label'|trans }}</label>
 			</div>
 			{% if error %}
 				<div class="mt-3 mb-0 alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -23,15 +23,17 @@
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 			<button type="submit" class="w-100 btn btn-lg btn-primary mt-3">
-				Sign in
+				{{ 'sign_in_label'|trans }}
 			</button>
 			<div class="mt-3 text-left">
-				<a class="link-underline link-underline-opacity-0" href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
+				<a class="link-underline link-underline-opacity-0" href="{{ path('app_forgot_password_request') }}">
+					{{ 'forgot_password_label'|trans }}
+				</a>
 			</div>
 			<div class="mt-2">
-				New to this website?
+				{{ 'not_have_account_description'|trans }}
 				<a class="link-underline link-underline-opacity-0" href="{{ path('app_register', {'isPatient': 1}) }}">
-					Join now
+					{{ 'register_redirection_link'|trans }}
 				</a>
 			</div>
 			<p class="mt-4 mb-3 text-muted">© 2019-2023</p>

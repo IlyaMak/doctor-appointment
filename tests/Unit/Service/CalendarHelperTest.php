@@ -7,24 +7,42 @@ use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CalendarHelperTest extends TestCase
 {
+    private TranslatorInterface $translator;
+
+    protected function setUp(): void
+    {
+        $this->translator = new Translator('en');
+    }
+
     public function testMonthYearTitle(): void
     {
         self::assertEquals(
-            CalendarHelper::getMonthYearTitle(new DateTimeImmutable('2023-09-10')),
-            'September 2023',
+            CalendarHelper::getMonthYearTitle(
+                new DateTimeImmutable('2023-09-10'),
+                $this->translator
+            ),
+            $this->translator->trans('september') . ' ' . 2023,
         );
 
         self::assertEquals(
-            CalendarHelper::getMonthYearTitle(new DateTimeImmutable('2023-05-30')),
-            'May - Jun 2023',
+            CalendarHelper::getMonthYearTitle(
+                new DateTimeImmutable('2023-05-30'),
+                $this->translator
+            ),
+            $this->translator->trans('may') . ' - ' . $this->translator->trans('jun') . ' ' . 2023,
         );
 
         self::assertEquals(
-            CalendarHelper::getMonthYearTitle(new DateTimeImmutable('2024-12-31')),
-            'Dec 2024 - Jan 2025',
+            CalendarHelper::getMonthYearTitle(
+                new DateTimeImmutable('2024-12-31'),
+                $this->translator
+            ),
+            $this->translator->trans('dec') . ' ' . 2024 . ' - ' . $this->translator->trans('jan') . ' ' . 2025,
         );
     }
 
@@ -105,7 +123,7 @@ class CalendarHelperTest extends TestCase
             ),
             new DateTime('2023-09-18'),
         );
-        
+
         self::assertEquals(
             CalendarHelper::getMondayOfTheRequestedDate(
                 Request::create(

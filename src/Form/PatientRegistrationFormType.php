@@ -12,9 +12,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PatientRegistrationFormType extends AbstractType
 {
+    public function __construct(public TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -22,8 +27,8 @@ class PatientRegistrationFormType extends AbstractType
                 'name',
                 TextType::class,
                 [
+                    'label' => $this->translator->trans('name_label'),
                     'mapped' => false,
-                    'label' => 'Name',
                     'label_attr' => ['for' => 'name'],
                     'attr' => [
                         'placeholder' => 'name',
@@ -35,7 +40,7 @@ class PatientRegistrationFormType extends AbstractType
                 'email',
                 EmailType::class,
                 [
-                    'label' => 'Email',
+                    'label' => $this->translator->trans('email_label'),
                     'label_attr' => ['for' => 'email'],
                     'attr' => [
                         'placeholder' => 'example@gmail.com',
@@ -43,34 +48,39 @@ class PatientRegistrationFormType extends AbstractType
                     ],
                     'constraints' => [
                         new Email([
-                            'message' => 'Please enter a valid email',
+                            'message' => $this->translator->trans('email_constraint_message'),
                         ]),
                     ],
                 ],
             )
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'label' => 'Password',
-                'label_attr' => ['for' => 'plainPassword'],
-                'attr' => [
-                    'class' => 'form-control',
-                    'autocomplete' => 'new-password',
-                    'placeholder' => 'password',
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
+            ->add(
+                'plainPassword',
+                PasswordType::class,
+                [
+                    'mapped' => false,
+                    'label' => $this->translator->trans('password_label'),
+                    'label_attr' => ['for' => 'plainPassword'],
+                    'attr' => [
+                        'class' => 'form-control',
+                        'autocomplete' => 'new-password',
+                        'placeholder' => 'password',
+                    ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => $this->translator->trans('not_blank_constraint_password_message'),
+                        ]),
+                        new Length([
+                            'min' => 6,
+                            'minMessage' => $this->translator->trans(
+                                'length_constraint_password_message',
+                                ['limit' => '{{ limit }}']
+                            ),
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ]),
+                    ],
+                ]
+            )
         ;
     }
 

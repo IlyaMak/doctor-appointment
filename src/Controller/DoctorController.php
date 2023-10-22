@@ -24,11 +24,16 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
 class DoctorController extends CustomAbstractController
 {
-    #[Route('/schedule', name: 'schedule')]
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
+    #[Route('/{_locale<%app.supported_locales%>}/schedule', name: 'schedule')]
     public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $requestedDay = CalendarHelper::getMondayOfTheRequestedDate($request);
@@ -49,7 +54,7 @@ class DoctorController extends CustomAbstractController
             [
                 'hours' => $availableHours,
                 'week' => CalendarHelper::getWeek($requestedDay),
-                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay),
+                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay, $this->translator),
                 'previousDayOfTheWeek' => $previousDayOfTheWeek->format('Y-m-d'),
                 'nextDayOfTheWeek' => $nextDayOfTheWeek->format('Y-m-d'),
                 'schedule' => CalendarHelper::getWeekSchedule(
@@ -63,7 +68,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/set-working-hours-form', name: 'set_working_hours_form')]
+    #[Route('/{_locale<%app.supported_locales%>}/set-working-hours-form', name: 'set_working_hours_form')]
     public function setWorkingHoursForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $form = $this->createForm(ScheduleSlotGenerationFormType::class);
@@ -73,9 +78,21 @@ class DoctorController extends CustomAbstractController
             try {
                 $scheduleSlotCount = $scheduleSlotService->generateScheduleSlots($form, $this->getUserCustom());
                 if (0 === $scheduleSlotCount) {
-                    $this->addFlash('warning', $scheduleSlotCount . ' slots were added. Please correct the form values.');
+                    $this->addFlash(
+                        'warning',
+                        $this->translator->trans(
+                            'no_slots_added_message_mark',
+                            ['scheduleSlotCount' => $scheduleSlotCount]
+                        ),
+                    );
                 } else {
-                    $this->addFlash('success', $scheduleSlotCount . ' slots were added.');
+                    $this->addFlash(
+                        'success',
+                        $this->translator->trans(
+                            'added_slots_message_mark',
+                            ['scheduleSlotCount' => $scheduleSlotCount]
+                        ),
+                    );
                 }
             } catch (RuntimeException $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -88,7 +105,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/add-new-appointment-form', name: 'add_new_appointment_form')]
+    #[Route('/{_locale<%app.supported_locales%>}/add-new-appointment-form', name: 'add_new_appointment_form')]
     public function setSingleAppointmentForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $date = $request->query->get('date');
@@ -104,9 +121,21 @@ class DoctorController extends CustomAbstractController
             try {
                 $scheduleSlotCount = $scheduleSlotService->addNewAppointment($form, $this->getUserCustom());
                 if (0 === $scheduleSlotCount) {
-                    $this->addFlash('warning', $scheduleSlotCount . ' slots were added. Please correct the form values.');
+                    $this->addFlash(
+                        'warning',
+                        $this->translator->trans(
+                            'no_slots_added_message_mark',
+                            ['scheduleSlotCount' => $scheduleSlotCount]
+                        )
+                    );
                 } else {
-                    $this->addFlash('success', $scheduleSlotCount . ' slots were added.');
+                    $this->addFlash(
+                        'success',
+                        $this->translator->trans(
+                            'added_slots_message_mark',
+                            ['scheduleSlotCount' => $scheduleSlotCount]
+                        ),
+                    );
                 }
             } catch (RuntimeException $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -119,7 +148,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/edit-appointment-form', name: 'edit_appointment_form')]
+    #[Route('/{_locale<%app.supported_locales%>}/edit-appointment-form', name: 'edit_appointment_form')]
     public function editAppointmentForm(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
@@ -143,7 +172,10 @@ class DoctorController extends CustomAbstractController
             $scheduleSlot->setRecommendation($recommendation);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Appointment is updated.');
+            $this->addFlash(
+                'success',
+                $this->translator->trans('updated_appointment_message_mark')
+            );
 
             $url = $this->generateUrl(
                 'patient_show_appointment_details',
@@ -155,11 +187,14 @@ class DoctorController extends CustomAbstractController
             $patient = $scheduleSlot->getPatient();
 
             $email = (new TemplatedEmail())
-                ->from(new Address($emailAddress, 'Doctor Appointment Bot'))
+                ->from(new Address($emailAddress, $this->translator->trans('doctor_appointment_bot_name')))
                 ->to($patient->getEmail())
-                ->subject('Appointment update!')
+                ->subject($this->translator->trans('email_appointment_update_subject'))
                 ->htmlTemplate('doctor/updated_schedule_slot.html.twig')
-                ->context(['url' => $url])
+                ->context([
+                    'url' => $url,
+                    'updatedAppointmentRecommendationMessage' => $this->translator->trans('updated_appointment_recommendation_email_message')
+                ])
             ;
 
             $mailer->send($email);
@@ -174,7 +209,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/delete-working-hours', name: 'delete_working_hours')]
+    #[Route('/{_locale<%app.supported_locales%>}/delete-working-hours', name: 'delete_working_hours')]
     public function deleteWorkingHours(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $form = $this->createForm(DeleteScheduleSlotFormType::class);
@@ -198,7 +233,13 @@ class DoctorController extends CustomAbstractController
                 $this->getUserCustom(),
             );
 
-            $flashMessage = 'Deleted ' . $deletedSlots . ' slots. Skipped ' . $skippedSlots . ' slots.';
+            $flashMessage = $this->translator->trans(
+                'deleted_or_skipped_slots_message_mark',
+                [
+                    'deletedSlots' => $deletedSlots,
+                    'skippedSlots' => $skippedSlots
+                ]
+            );
 
             if ($deletedSlots === 0 || $skippedSlots > 0) {
                 $this->addFlash('warning', $flashMessage);

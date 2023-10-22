@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Event;
 use Stripe\StripeClient;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentService
 {
@@ -19,12 +21,14 @@ class PaymentService
         private ScheduleSlotRepository $scheduleSlotRepository,
         #[Autowire(env: 'STRIPE_SECRET')]
         private string $stripeSecret,
+        private TranslatorInterface $translator,
     ) {
     }
 
     public function getScheduleSlotPaymentLink(
         int $slotId,
         ScheduleSlot $scheduleSlot,
+        Request $request,
         string $successUrl,
         string $cancelUrl,
     ): string {
@@ -33,11 +37,12 @@ class PaymentService
             'mode' => 'payment',
             'success_url' => $successUrl,
             'cancel_url' => $cancelUrl,
+            'locale' => $request->getLocale() === 'en' ? 'en' : 'pl',
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => 'An appointment ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i'),
+                        'name' => $this->translator->trans('product_data_message') . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i'),
                     ],
                     'unit_amount' => $scheduleSlot->getPrice() * 100,
                 ],

@@ -23,6 +23,7 @@ use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -32,11 +33,12 @@ class RegistrationController extends AbstractController
         EmailVerifier $emailVerifier,
         #[Autowire(param: 'is_required_email_verification')]
         private bool $isEmailVerificationRequired,
+        private TranslatorInterface $translator,
     ) {
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/{_locale<%app.supported_locales%>}/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -66,6 +68,7 @@ class RegistrationController extends AbstractController
             $email = $user->getEmail();
             $user->setName($name);
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $user->setLanguage($request->getLocale());
 
             if ($isDoctor) {
                 /** @var ?Specialty */
@@ -91,10 +94,16 @@ class RegistrationController extends AbstractController
                     'app_verify_email',
                     $user,
                     (new TemplatedEmail())
-                        ->from(new Address($emailAddress, 'Doctor Appointment Mail Bot'))
+                        ->from(new Address($emailAddress, $this->translator->trans('doctor_appointment_bot_name')))
                         ->to($email)
-                        ->subject('Please Confirm your Email')
+                        ->subject($this->translator->trans('email_confirmation_subject'))
                         ->htmlTemplate('security/confirmation_email.html.twig')
+                        ->context([
+                            'emailHeader' => $this->translator->trans('email_header'),
+                            'emailDescription' => $this->translator->trans('confirmation_email_description'),
+                            'emailLink' => $this->translator->trans('confirm_email_link'),
+                            'expireLinkDescription' => $this->translator->trans('expire_link_description'),
+                        ])
                 );
 
                 return $this->render('security/register_success.html.twig');
@@ -113,7 +122,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/{_locale<%app.supported_locales%>}/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository, LoggerInterface $logger): Response
     {
         $id = $request->query->get('id');
@@ -140,8 +149,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', $this->translator->trans('verified_message_mark'));
 
         return $this->redirectToRoute('app_sign_in');
     }

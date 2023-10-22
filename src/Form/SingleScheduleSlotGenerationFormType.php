@@ -13,9 +13,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SingleScheduleSlotGenerationFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     /** @param array<string, array<string, string>> $options */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,6 +35,7 @@ class SingleScheduleSlotGenerationFormType extends AbstractType
                 'date',
                 DateType::class,
                 [
+                    'label' => $this->translator->trans('date_label'),
                     'mapped' => false,
                     'years' => [date('Y'), date('Y') + 1],
                     'data' => $currentDateTime,
@@ -42,6 +48,7 @@ class SingleScheduleSlotGenerationFormType extends AbstractType
                 'time',
                 TimeType::class,
                 [
+                    'label' => $this->translator->trans('time_label'),
                     'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $currentDateTime,
@@ -67,26 +74,26 @@ class SingleScheduleSlotGenerationFormType extends AbstractType
                         '120' => '120',
                     ],
                     'data' => '15',
-                    'label' => 'Duration (in minutes)',
+                    'label' => $this->translator->trans('duration_label'),
                 ],
             )
             ->add(
                 'price',
                 MoneyType::class,
                 [
+                    'label' => $this->translator->trans('price_label'),
                     'mapped' => false,
                     'currency' => 'USD',
                     'data' => '5',
                     'attr' => [
                         'class' => 'form-control',
-                        'placeholder' => '5',
                     ],
                     'constraints' => [
                         new Positive([
-                            'message' => 'Please enter positive number',
+                            'message' => $this->translator->trans('positive_number_constraint_message'),
                         ]),
                         new NotBlank([
-                            'message' => 'Please enter positive number',
+                            'message' => $this->translator->trans('positive_number_constraint_message'),
                         ]),
                     ],
                 ],

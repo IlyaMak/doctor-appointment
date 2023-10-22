@@ -7,9 +7,14 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ResetPasswordRequestFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -17,13 +22,14 @@ class ResetPasswordRequestFormType extends AbstractType
                 'email',
                 EmailType::class,
                 [
+                    'label' => $this->translator->trans('email_label'),
                     'attr' => [
                         'autocomplete' => 'email',
                         'placeholder' => 'email',
                     ],
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter your email',
+                            'message' => $this->translator->trans('email_constraint_message'),
                         ]),
                     ],
                 ]

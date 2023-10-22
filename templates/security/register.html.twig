@@ -2,12 +2,12 @@
 {% form_theme registrationForm 'common/form_errors.html.twig' %}
 
 {% block title %}
-	Register | Doctor Appointment
+	{{ 'register_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
 	<div class="text-center d-flex flex-column justify-content-center align-items-center">
-		<h1>Register</h1>
+		<h1>{{ 'register_label'|trans }}</h1>
 		{% for flash_error in app.flashes('verify_email_error') %}
 			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
 		{% endfor %}
@@ -30,22 +30,30 @@
 			{{ form_widget(registrationForm.email) }}
 			{{ form_label(registrationForm.email) }}
 		</div>
-		<div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.email) }}</div>
+		<div class="list-group-item list-group-item-danger px-2 rounded">
+			{{ form_errors(registrationForm.email) }}
+		</div>
 		<div class="mt-3 form-floating">
 			{{ form_widget(registrationForm.plainPassword) }}
 			{{ form_label(registrationForm.plainPassword) }}
 		</div>
-		<div class="list-group-item list-group-item-danger px-2 rounded">{{ form_errors(registrationForm.plainPassword) }}</div>
+		<div class="list-group-item list-group-item-danger px-2 rounded">
+			{{ form_errors(registrationForm.plainPassword) }}
+		</div>
 		{% if registrationForm.avatar is defined %}
 			<div class="mt-3 d-flex flex-column align-items-start">
 				{{ form_label(registrationForm.avatar) }}
 				<div class="mt-1">{{ form_widget(registrationForm.avatar) }}</div>
 			</div>
 		{% endif %}
-		<button type="submit" class="w-100 btn btn-lg btn-primary mt-3">Register</button>
+		<button type="submit" class="w-100 btn btn-lg btn-primary mt-3">
+			{{ 'register_label'|trans }}
+		</button>
 		<div class="mt-4">
-			Already have an account?
-			<a class="link-underline link-underline-opacity-0" href="{{ path('app_sign_in') }}">Sign in</a>
+			{{ 'have_account_label'|trans }}
+			<a class="link-underline link-underline-opacity-0" href="{{ path('app_sign_in') }}">
+				{{ 'sign_in_label'|trans }}
+			</a>
 		</div>
 		<p class="mt-4 mb-3 text-muted">© 2019-2023</p>
 		{{ form_end(registrationForm) }}

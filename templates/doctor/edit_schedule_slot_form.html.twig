@@ -2,26 +2,26 @@
 {% form_theme form 'common/form_errors.html.twig' %}
 
 {% block title %}
-	Edit Schedule Slot Form | Doctor Appointment
+	{{ 'edit_an_appointment_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="col-md-6 m-auto">
 		<div class="text-center mt-4">
-			<h2>Edit Schedule Slot</h2>
+			<h2>{{ 'edit_an_appointment_label'|trans }}</h2>
 		</div>
 		{% for flash_error in app.flashes('success') %}
 			<div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
 		{% endfor %}
 		{{ form_start(form) }}
 		<div>
-			<div>Date:
+			<div>{{ 'date_label'|trans }}:
 				{{ scheduleSlot.start|date('Y-m-d') }}</div>
-			<div>Time:
+			<div>{{ 'time_label'|trans }}:
 				{{ scheduleSlot.start|date('H:i') }}-{{ scheduleSlot.end|date('H:i') }}
 			</div>
-			<div>Patient:
+			<div>{{ 'patient_label'|trans }}:
 				{{ scheduleSlot.patient.name }}</div>
-			<div>Price:
+			<div>{{ 'price_label'|trans }}:
 				{{ scheduleSlot.price }}$</div>
 		</div>
 		<div class="form-floating mt-4">
@@ -32,7 +32,7 @@
 			{{ form_errors(form.recommendation)}}
 		</div>
 		<button type="submit" class="w-100 btn btn-lg btn-primary my-4">
-			Save
+			{{ 'save_label'|trans }}
 		</button>
 		{{ form_end(form) }}
 	</div>

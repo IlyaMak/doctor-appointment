@@ -22,7 +22,7 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                 [
                     'class' => Specialty::class,
                     'choice_label' => 'name',
-                    'placeholder' => 'Choose a specialty...',
+                    'placeholder' => $this->translator->trans('specialty_placeholder'),
                     'label' => false,
                     'attr' => [
                         'class' => 'py-0 form-control',
@@ -33,14 +33,14 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                 'avatar',
                 FileType::class,
                 [
-                    'label' => 'Upload avatar',
+                    'label' => $this->translator->trans('avatar_label'),
                     'mapped' => false,
                     'attr' => [
                         'class' => 'form-control',
                     ],
                     'constraints' => [
                         new File([
-                            'mimeTypesMessage' => 'Please upload a valid image file',
+                            'mimeTypesMessage' => $this->translator->trans('avatar_constraint_message'),
                         ]),
                     ],
                 ],

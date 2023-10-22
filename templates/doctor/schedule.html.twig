@@ -1,9 +1,10 @@
 {% extends 'doctor/base.html.twig' %}
-{% block title %}Schedule | Doctor Appointment
+{% block title %}
+	{{ 'schedule_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="text-center mt-4">
-		<h2>Schedule</h2>
+		<h2>{{ 'schedule_label'|trans }}</h2>
 	</div>
 	{% include 'common/calendar.html.twig' %}
 {% endblock %}

@@ -13,7 +13,7 @@ use Exception;
 
 class AuthController extends AbstractController
 {
-    #[Route('/sign-in', name: 'app_sign_in')]
+    #[Route('/{_locale<%app.supported_locales%>}/sign-in', name: 'app_sign_in')]
     public function app_sign_in(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -28,14 +28,14 @@ class AuthController extends AbstractController
         ]);
     }
 
-    #[Route('/sign-out', name: 'app_sign_out')]
+    #[Route('/{_locale<%app.supported_locales%>}/sign-out', name: 'app_sign_out')]
     public function app_sign_out(): Response
     {
         // controller can be blank: it will never be called!
         throw new Exception('Don\'t forget to activate logout in security.yaml');
     }
 
-    #[Route('/login-success', name: 'login_success')]
+    #[Route('/{_locale<%app.supported_locales%>}/login-success', name: 'login_success')]
     public function successLogin(
         TokenInterface $token,
         ScheduleSlotRepository $scheduleSlotRepository

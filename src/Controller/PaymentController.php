@@ -49,14 +49,14 @@ class PaymentController extends CustomAbstractController
         return new Response('', 200);
     }
 
-    #[Route('/api/payment/stripe/success', name: 'success_payment')]
+    #[Route('/{_locale<%app.supported_locales%>}/api/payment/stripe/success', name: 'success_payment')]
     #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
     public function successCheckout(): Response
     {
         return $this->render('payment/success.html.twig', []);
     }
 
-    #[Route('/api/payment/stripe/cancel', name: 'cancel_payment')]
+    #[Route('/{_locale<%app.supported_locales%>}/api/payment/stripe/cancel', name: 'cancel_payment')]
     #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
     public function cancelCheckout(): Response
     {
