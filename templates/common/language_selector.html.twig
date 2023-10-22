@@ -1,5 +1,5 @@
 {% block language %}
-{% set queries =  app.request.query.all|reduce((carry, value, key) => carry ~ key ~ '=' ~ value ~ '&', '?')|trim('&') %}
+	{% set queries =  app.request.query.all|reduce((carry, value, key) => carry ~ key ~ '=' ~ value ~ '&', '?')|trim('&') %}
 	<div class="py-4">
 		<div class="dropdown position-absolute end-0 me-3" style="top: 10px">
 			<a class="pe-auto" data-bs-toggle="dropdown" role="button">
@@ -9,7 +9,7 @@
 				<a class="dropdown-item p-0" href="{{ path(app.request.get('_route'), {_locale: 'en'}) ~ queries }}">
 					<img class="border border-black language-flag" src="/assets/images/Flag_of_the_United_Kingdom.svg" alt="English">
 				</a>
-				<a class="dropdown-item p-0 mt-1" href="{{ path(app.request.get('_route'), {_locale: 'pl'})  ~ queries }}">
+				<a class="dropdown-item p-0 mt-1" href="{{ path(app.request.get('_route'), {_locale: 'pl'}) ~ queries }}">
 					<img class="border border-black language-flag" src="/assets/images/Flag_of_Poland.svg" alt="Polish">
 				</a>
 			</div>
