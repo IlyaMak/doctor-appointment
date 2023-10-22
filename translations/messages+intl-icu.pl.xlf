@@ -169,12 +169,12 @@
         <source>end_date_label</source>
         <target>Data zakończenia (włącznie)</target>
       </trans-unit>
-      <trans-unit id="ur6d2oU" resname="Start time">
-        <source>Start time</source>
+      <trans-unit id="ur6d2oU" resname="start_time_label">
+        <source>start_time_label</source>
         <target>Czas rozpoczęcia</target>
       </trans-unit>
-      <trans-unit id="LkYAal7" resname="End time">
-        <source>End time</source>
+      <trans-unit id="LkYAal7" resname="end_time_label">
+        <source>end_time_label</source>
         <target>Czas zakończenia</target>
       </trans-unit>
       <trans-unit id="9v5ZuU4" resname="patient_service_interval_label">

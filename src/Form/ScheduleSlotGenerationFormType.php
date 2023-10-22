@@ -59,7 +59,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'startTime',
                 TimeType::class,
                 [
-                    'label' => $this->translator->trans('Start time'),
+                    'label' => $this->translator->trans('start_time_label'),
                     'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $startDateTime,
@@ -73,7 +73,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'endTime',
                 TimeType::class,
                 [
-                    'label' => $this->translator->trans('End time'),
+                    'label' => $this->translator->trans('end_time_label'),
                     'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $endDateTime,
