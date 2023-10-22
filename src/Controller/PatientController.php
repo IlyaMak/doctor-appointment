@@ -21,17 +21,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
 class PatientController extends CustomAbstractController
 {
+    public const SPECIALTY = 'specialty';
+    public const DOCTOR = 'doctor';
+
     public function __construct(private TranslatorInterface $translator)
     {
     }
 
-    public const SPECIALTY = 'specialty';
-    public const DOCTOR = 'doctor';
-
-    #[Route('/{_locale<%app.supported_locales%>}/appointment-history', name: 'patient_appointment_history')]
+    #[Route('/appointment-history', name: 'patient_appointment_history')]
     public function patientAppointmentHistory(ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         return $this->render(
@@ -45,7 +46,7 @@ class PatientController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/show-appointment-details', name: 'patient_show_appointment_details')]
+    #[Route('/show-appointment-details', name: 'patient_show_appointment_details')]
     public function patientShowScheduleSlotDetails(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
@@ -57,7 +58,7 @@ class PatientController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/book-an-appointment', name: 'patient_book_an_appointment')]
+    #[Route('/book-an-appointment', name: 'patient_book_an_appointment')]
     public function patientBookAnAppointment(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
@@ -130,7 +131,7 @@ class PatientController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/confirm-an-appointment', name: 'patient_confirm_an_appointment')]
+    #[Route('/confirm-an-appointment', name: 'patient_confirm_an_appointment')]
     public function patientConfirmAnAppointment(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,

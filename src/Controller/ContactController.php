@@ -13,9 +13,10 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class ContactController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/contact', name: 'contact')]
+    #[Route('/contact', name: 'contact')]
     public function contact(
         Request $request,
         MailerInterface $mailer,

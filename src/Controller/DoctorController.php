@@ -26,6 +26,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
 class DoctorController extends CustomAbstractController
 {
@@ -33,7 +34,7 @@ class DoctorController extends CustomAbstractController
     {
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/schedule', name: 'schedule')]
+    #[Route('/schedule', name: 'schedule')]
     public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $requestedDay = CalendarHelper::getMondayOfTheRequestedDate($request);
@@ -68,7 +69,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/set-working-hours-form', name: 'set_working_hours_form')]
+    #[Route('/set-working-hours-form', name: 'set_working_hours_form')]
     public function setWorkingHoursForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $form = $this->createForm(ScheduleSlotGenerationFormType::class);
@@ -105,7 +106,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/add-new-appointment-form', name: 'add_new_appointment_form')]
+    #[Route('/add-new-appointment-form', name: 'add_new_appointment_form')]
     public function setSingleAppointmentForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
     {
         $date = $request->query->get('date');
@@ -148,7 +149,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/edit-appointment-form', name: 'edit_appointment_form')]
+    #[Route('/edit-appointment-form', name: 'edit_appointment_form')]
     public function editAppointmentForm(
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
@@ -209,7 +210,7 @@ class DoctorController extends CustomAbstractController
         );
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/delete-working-hours', name: 'delete_working_hours')]
+    #[Route('/delete-working-hours', name: 'delete_working_hours')]
     public function deleteWorkingHours(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
     {
         $form = $this->createForm(DeleteScheduleSlotFormType::class);

@@ -11,9 +11,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Exception;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class AuthController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/sign-in', name: 'app_sign_in')]
+    #[Route('/sign-in', name: 'app_sign_in')]
     public function app_sign_in(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -28,14 +29,14 @@ class AuthController extends AbstractController
         ]);
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/sign-out', name: 'app_sign_out')]
+    #[Route('/sign-out', name: 'app_sign_out')]
     public function app_sign_out(): Response
     {
         // controller can be blank: it will never be called!
         throw new Exception('Don\'t forget to activate logout in security.yaml');
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/login-success', name: 'login_success')]
+    #[Route('/login-success', name: 'login_success')]
     public function successLogin(
         TokenInterface $token,
         ScheduleSlotRepository $scheduleSlotRepository

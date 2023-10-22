@@ -25,6 +25,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -38,7 +39,7 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/register', name: 'app_register')]
+    #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -122,7 +123,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/verify/email', name: 'app_verify_email')]
+    #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository, LoggerInterface $logger): Response
     {
         $id = $request->query->get('id');
