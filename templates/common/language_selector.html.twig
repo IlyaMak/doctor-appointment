@@ -1,7 +1,7 @@
 {% block language %}
 {% set queries =  app.request.query.all|reduce((carry, value, key) => carry ~ key ~ '=' ~ value ~ '&', '?')|trim('&') %}
 	<div class="py-4">
-		<div class="dropdown position-absolute end-0 translate-middle">
+		<div class="dropdown position-absolute end-0 me-3" style="top: 10px">
 			<a class="pe-auto" data-bs-toggle="dropdown" role="button">
 				<img class="border border-black language-flag" src={{ app.request.locale == 'en' ? "/assets/images/Flag_of_the_United_Kingdom.svg" : "/assets/images/Flag_of_Poland.svg" }} alt={{ app.request.locale == 'en' ? 'English' : 'Polish' }}>
 			</a>
