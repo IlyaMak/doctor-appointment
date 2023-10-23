@@ -19,12 +19,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 #[IsGranted(User::ROLE_PATIENT, message: 'You don\'t have permissions to access this resource')]
 class PatientController extends CustomAbstractController
 {
     public const SPECIALTY = 'specialty';
     public const DOCTOR = 'doctor';
+
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
 
     #[Route('/appointment-history', name: 'patient_appointment_history')]
     public function patientAppointmentHistory(ScheduleSlotRepository $scheduleSlotRepository): Response
@@ -48,7 +54,7 @@ class PatientController extends CustomAbstractController
         $scheduleSlot = $scheduleSlotRepository->find($request->query->get('slotId'));
         return $this->render(
             '/patient/show_schedule_slot_details.html.twig',
-            ['scheduleSlot' => $scheduleSlot,],
+            ['scheduleSlot' => $scheduleSlot],
         );
     }
 
@@ -57,7 +63,7 @@ class PatientController extends CustomAbstractController
         Request $request,
         ScheduleSlotRepository $scheduleSlotRepository,
         UserRepository $userRepository,
-        SpecialtyRepository $specialtyRepository,
+        SpecialtyRepository $specialtyRepository
     ): Response {
         $session = $request->getSession();
 
@@ -109,7 +115,7 @@ class PatientController extends CustomAbstractController
                 'form' => $form->createView(),
                 'hours' => $availableHours,
                 'week' => CalendarHelper::getWeek($requestedDay),
-                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay),
+                'monthYear' => CalendarHelper::getMonthYearTitle($requestedDay, $this->translator),
                 'previousDayOfTheWeek' => $previousDayOfTheWeek->format('Y-m-d'),
                 'nextDayOfTheWeek' => $nextDayOfTheWeek->format('Y-m-d'),
                 'schedule' => $selectedDoctor == null
@@ -141,7 +147,13 @@ class PatientController extends CustomAbstractController
             if ($scheduleSlot->getPatient() !== null) {
                 $this->addFlash(
                     'error',
-                    'Sorry, this slot ' . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i') . ' is already taken. Try to book the other one.'
+                    $this->translator->trans(
+                        'booked_appointment_message_mark',
+                        [
+                            'startDate' => $scheduleSlot->getStart()->format('Y-m-d H:i'),
+                            'endTime' => $scheduleSlot->getEnd()->format('H:i')
+                        ]
+                    )
                 );
 
                 return $this->redirectToRoute('patient_book_an_appointment');
@@ -150,6 +162,7 @@ class PatientController extends CustomAbstractController
             $paymentUrl = $paymentService->getScheduleSlotPaymentLink(
                 $slotId,
                 $scheduleSlot,
+                $request,
                 $this->generateUrl(
                     'success_payment',
                     [],

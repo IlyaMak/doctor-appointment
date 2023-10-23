@@ -8,7 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RootController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'root_index')]
+    public function rootIndex(): Response
+    {
+        return $this->redirectToRoute('index');
+    }
+
+    #[Route('/{_locale<%app.supported_locales%>}/', name: 'index')]
     public function index(): Response
     {
         return $this->render('index/index.html.twig');

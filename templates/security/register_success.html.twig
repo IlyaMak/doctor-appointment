@@ -1,12 +1,16 @@
 {% extends 'security/base.html.twig' %}
 
-{% block title %}Verify your email!{% endblock %}
+{% block title %}
+	{{ 'success_registration_header'|trans }} | {{ 'app_name'|trans }}
+{% endblock %}
 
 {% block body %}
-    <div class="d-flex flex-column align-items-center">
-        <h2>Check your email to verify it</h2>
-        <form action="{{path('app_sign_in')}}">
-            <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
-        </form>
-    </div>
+	<div class="d-flex flex-column align-items-center">
+		<h2>{{ 'success_registration_header'|trans }}</h2>
+		<form action="{{path('app_sign_in')}}">
+			<button type="submit" class="btn btn-lg btn-primary">
+				{{ 'sign_in_label'|trans }}
+			</button>
+		</form>
+	</div>
 {% endblock %}

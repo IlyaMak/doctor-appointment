@@ -10,9 +10,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContactFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -20,13 +25,17 @@ class ContactFormType extends AbstractType
                 'topic',
                 TextType::class,
                 [
+                    'label' => $this->translator->trans('topic_label'),
                     'attr' => [
                         'placeholder' => '',
                     ],
                     'constraints' => [
                         new Length([
                             'min' => 3,
-                            'minMessage' => 'Your topic should be at least {{ limit }} characters',
+                            'minMessage' => $this->translator->trans(
+                                'length_constraint_topic_message',
+                                ['limit' =>  '{{ limit }}']
+                            ),
                             'max' => 50,
                         ]),
                     ],
@@ -36,12 +45,13 @@ class ContactFormType extends AbstractType
                 'email',
                 EmailType::class,
                 [
+                    'label' => $this->translator->trans('email_label'),
                     'attr' => [
                         'placeholder' => '',
                     ],
                     'constraints' => [
                         new Email([
-                            'message' => 'Please enter a valid email',
+                            'message' => $this->translator->trans('email_constraint_message'),
                         ]),
                     ],
                 ],
@@ -50,13 +60,17 @@ class ContactFormType extends AbstractType
                 'message',
                 TextareaType::class,
                 [
+                    'label' => $this->translator->trans('message_label'),
                     'attr' => [
                         'placeholder' => '',
                     ],
                     'constraints' => [
                         new Length([
                             'min' => 3,
-                            'minMessage' => 'Your message should be at least {{ limit }} characters',
+                            'minMessage' => $this->translator->trans(
+                                'length_constraint_message',
+                                ['limit' => '{{ limit }}']
+                            ),
                             'max' => 4096,
                         ]),
                     ],

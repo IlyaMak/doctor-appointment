@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="NUKuJfp" resname="make_appointment_label">
+        <source>make_appointment_label</source>
+        <target>Make an appointment!</target>
+      </trans-unit>
+      <trans-unit id="S2NH.Ng" resname="register_patient_label">
+        <source>register_patient_label</source>
+        <target>Register as a patient</target>
+      </trans-unit>
+      <trans-unit id="H_15GSm" resname="register_doctor_label">
+        <source>register_doctor_label</source>
+        <target>Register as a doctor</target>
+      </trans-unit>
+      <trans-unit id="70zPRy3" resname="sign_in_label">
+        <source>sign_in_label</source>
+        <target>Sign In</target>
+      </trans-unit>
+      <trans-unit id="x.nKtVT" resname="contact_label">
+        <source>contact_label</source>
+        <target>Contact Us</target>
+      </trans-unit>
+      <trans-unit id="YEsNrlq" resname="topic_label">
+        <source>topic_label</source>
+        <target>Topic</target>
+      </trans-unit>
+      <trans-unit id="URIN_gQ" resname="send_message_label">
+        <source>send_message_label</source>
+        <target>Send a message</target>
+      </trans-unit>
+      <trans-unit id="n1tXOaO" resname="email_label">
+        <source>email_label</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="kouUC1L" resname="email_constraint_message">
+        <source>email_constraint_message</source>
+        <target>Please enter a valid email</target>
+      </trans-unit>
+      <trans-unit id="DGFNi8X" resname="message_label">
+        <source>message_label</source>
+        <target>Message</target>
+      </trans-unit>
+      <trans-unit id="UgKhOGm" resname="length_constraint_topic_message">
+        <source>length_constraint_topic_message</source>
+        <target>Your topic should be at least {limit} characters</target>
+      </trans-unit>
+      <trans-unit id="YIu2fjh" resname="length_constraint_message">
+        <source>length_constraint_message</source>
+        <target>Your message should be at least {limit} characters</target>
+      </trans-unit>
+      <trans-unit id="sXtQ4Eg" resname="contact_success_message_mark">
+        <source>contact_success_message_mark</source>
+        <target>The message was successfully sent!</target>
+      </trans-unit>
+      <trans-unit id="jcbELO8" resname="verified_message_mark">
+        <source>verified_message_mark</source>
+        <target>Your email address has been verified.</target>
+      </trans-unit>
+      <trans-unit id="s4PV8cG" resname="name_label">
+        <source>name_label</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="HDBrE_m" resname="password_label">
+        <source>password_label</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="yBQh7Ls" resname="not_blank_constraint_password_message">
+        <source>not_blank_constraint_password_message</source>
+        <target>Please enter a password</target>
+      </trans-unit>
+      <trans-unit id="2S.VIoN" resname="length_constraint_password_message">
+        <source>length_constraint_password_message</source>
+        <target>Your password should be at least {limit} characters</target>
+      </trans-unit>
+      <trans-unit id="XhGw4SN" resname="register_label">
+        <source>register_label</source>
+        <target>Register</target>
+      </trans-unit>
+      <trans-unit id="yV4A7gd" resname="have_account_label">
+        <source>have_account_label</source>
+        <target>Already have an account?</target>
+      </trans-unit>
+      <trans-unit id="jHwGyqj" resname="specialty_placeholder">
+        <source>specialty_placeholder</source>
+        <target>Choose a specialty...</target>
+      </trans-unit>
+      <trans-unit id="yHWVj5C" resname="avatar_label">
+        <source>avatar_label</source>
+        <target>Upload avatar</target>
+      </trans-unit>
+      <trans-unit id="h9T3lqK" resname="avatar_constraint_message">
+        <source>avatar_constraint_message</source>
+        <target>Please upload a valid image file</target>
+      </trans-unit>
+      <trans-unit id="gIs6MYe" resname="forgot_password_label">
+        <source>forgot_password_label</source>
+        <target>Forgot password?</target>
+      </trans-unit>
+      <trans-unit id="2wd5SPX" resname="not_have_account_description">
+        <source>not_have_account_description</source>
+        <target>New to this website?</target>
+      </trans-unit>
+      <trans-unit id="sIgr1Be" resname="register_redirection_link">
+        <source>register_redirection_link</source>
+        <target>Join now</target>
+      </trans-unit>
+      <trans-unit id="qI0RgtC" resname="schedule_label">
+        <source>schedule_label</source>
+        <target>Schedule</target>
+      </trans-unit>
+      <trans-unit id="DNK3wS4" resname="set_working_hours_label">
+        <source>set_working_hours_label</source>
+        <target>Set Working Hours</target>
+      </trans-unit>
+      <trans-unit id="csIA2U3" resname="delete_working_hours_label">
+        <source>delete_working_hours_label</source>
+        <target>Delete Working Hours</target>
+      </trans-unit>
+      <trans-unit id="iCg5w7K" resname="today_label">
+        <source>today_label</source>
+        <target>Today</target>
+      </trans-unit>
+      <trans-unit id="Bj1HMFP" resname="appointment_history_label">
+        <source>appointment_history_label</source>
+        <target>Appointment History</target>
+      </trans-unit>
+      <trans-unit id="3aD.Cso" resname="book_an_appointment_label">
+        <source>book_an_appointment_label</source>
+        <target>Book An Appointment</target>
+      </trans-unit>
+      <trans-unit id="Ggxc4Aa" resname="date_label">
+        <source>date_label</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="l9UCjHt" resname="time_label">
+        <source>time_label</source>
+        <target>Time</target>
+      </trans-unit>
+      <trans-unit id="ALDwcvw" resname="duration_label">
+        <source>duration_label</source>
+        <target>Duration</target>
+      </trans-unit>
+      <trans-unit id="hP5kIJZ" resname="price_label">
+        <source>price_label</source>
+        <target>Price</target>
+      </trans-unit>
+      <trans-unit id="bBWDIB9" resname="positive_number_constraint_message">
+        <source>positive_number_constraint_message</source>
+        <target>Please enter a positive number</target>
+      </trans-unit>
+      <trans-unit id="Ot2Xc7G" resname="add_new_appointment_label">
+        <source>add_new_appointment_label</source>
+        <target>Add A New Appointment</target>
+      </trans-unit>
+      <trans-unit id="JzkYQnh" resname="save_label">
+        <source>save_label</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="hd29UC4" resname="start_date_label">
+        <source>start_date_label</source>
+        <target>Start date (included)</target>
+      </trans-unit>
+      <trans-unit id="3QkiOzV" resname="end_date_label">
+        <source>end_date_label</source>
+        <target>End date (included)</target>
+      </trans-unit>
+      <trans-unit id="ur6d2oU" resname="start_time_label">
+        <source>start_time_label</source>
+        <target>Start time</target>
+      </trans-unit>
+      <trans-unit id="LkYAal7" resname="end_time_label">
+        <source>end_time_label</source>
+        <target>End time</target>
+      </trans-unit>
+      <trans-unit id="9v5ZuU4" resname="patient_service_interval_label">
+        <source>patient_service_interval_label</source>
+        <target>Patient service interval (in minutes)</target>
+      </trans-unit>
+      <trans-unit id="8XkO8NF" resname="start_lunch_date_label">
+        <source>start_lunch_date_label</source>
+        <target>Start lunch date</target>
+      </trans-unit>
+      <trans-unit id="A26XM2n" resname="end_lunch_date_label">
+        <source>end_lunch_date_label</source>
+        <target>End lunch date</target>
+      </trans-unit>
+      <trans-unit id="Qn8lR5i" resname="monday_label">
+        <source>monday_label</source>
+        <target>Monday</target>
+      </trans-unit>
+      <trans-unit id="Q0yc81T" resname="tuesday_label">
+        <source>tuesday_label</source>
+        <target>Tuesday</target>
+      </trans-unit>
+      <trans-unit id="eAsEZbg" resname="wednesday_label">
+        <source>wednesday_label</source>
+        <target>Wednesday</target>
+      </trans-unit>
+      <trans-unit id="1OMaRzj" resname="thursday_label">
+        <source>thursday_label</source>
+        <target>Thursday</target>
+      </trans-unit>
+      <trans-unit id="Aa.Nhwh" resname="friday_label">
+        <source>friday_label</source>
+        <target>Friday</target>
+      </trans-unit>
+      <trans-unit id="418Bpf_" resname="saturday_label">
+        <source>saturday_label</source>
+        <target>Saturday</target>
+      </trans-unit>
+      <trans-unit id="QSOgGeK" resname="sunday_label">
+        <source>sunday_label</source>
+        <target>Sunday</target>
+      </trans-unit>
+      <trans-unit id="ztD6NGF" resname="recommendation_label">
+        <source>recommendation_label</source>
+        <target>Recommendation</target>
+      </trans-unit>
+      <trans-unit id="ik_Vfgj" resname="Appointment">
+        <source>Appointment</source>
+        <target>Appointment</target>
+      </trans-unit>
+      <trans-unit id="ImRgoAj" resname="patient_label">
+        <source>patient_label</source>
+        <target>Patient</target>
+      </trans-unit>
+      <trans-unit id="A3CYxac" resname="edit_an_appointment_label">
+        <source>edit_an_appointment_label</source>
+        <target>Edit An Appointment</target>
+      </trans-unit>
+      <trans-unit id="H1TwNEf" resname="specialty_label">
+        <source>specialty_label</source>
+        <target>Specialty</target>
+      </trans-unit>
+      <trans-unit id="CF.idvI" resname="doctor_label">
+        <source>doctor_label</source>
+        <target>Doctor</target>
+      </trans-unit>
+      <trans-unit id=".Xqe9Iq" resname="status_label">
+        <source>status_label</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="vICQ7Qw" resname="no_appointments_label">
+        <source>no_appointments_label</source>
+        <target>You have no past or future appointments</target>
+      </trans-unit>
+      <trans-unit id="p0COgrH" resname="pay_label">
+        <source>pay_label</source>
+        <target>Pay</target>
+      </trans-unit>
+      <trans-unit id="qApnnlY" resname="view_label">
+        <source>view_label</source>
+        <target>View</target>
+      </trans-unit>
+      <trans-unit id="PwtpBdz" resname="doctor_placeholder">
+        <source>doctor_placeholder</source>
+        <target>Choose a doctor...</target>
+      </trans-unit>
+      <trans-unit id="VIWHN5B" resname="confirm_appointment_label">
+        <source>confirm_appointment_label</source>
+        <target>Confirm An Appointment</target>
+      </trans-unit>
+      <trans-unit id="vyp7LVs" resname="This is a demo website. Use the following credit card data on the Stripe page to complete the purchase.">
+        <source>This is a demo website. Use the following credit card data on the Stripe page to complete the purchase.</source>
+        <target>This is a demo website. Use the following credit card data on the Stripe page to complete the purchase.</target>
+      </trans-unit>
+      <trans-unit id="gGICXAH" resname="card_number_label">
+        <source>card_number_label</source>
+        <target>Card number</target>
+      </trans-unit>
+      <trans-unit id="jKvt86X" resname="card_expiry_label">
+        <source>card_expiry_label</source>
+        <target>Card Expiry</target>
+      </trans-unit>
+      <trans-unit id="EaJq.Ss" resname="card_date_label">
+        <source>card_date_label</source>
+        <target>Any future date</target>
+      </trans-unit>
+      <trans-unit id="9CBwO2v" resname="card_cvc_number_label">
+        <source>card_cvc_number_label</source>
+        <target>Any 3-digit number</target>
+      </trans-unit>
+      <trans-unit id="D.yq0u9" resname="confirm_label">
+        <source>confirm_label</source>
+        <target>Confirm and pay</target>
+      </trans-unit>
+      <trans-unit id="kkjjfni" resname="show_schedule_slot_details_label">
+        <source>show_schedule_slot_details_label</source>
+        <target>Show Schedule Slot Details</target>
+      </trans-unit>
+      <trans-unit id="jJg1tiz" resname="not_found_recommendations">
+        <source>not_found_recommendations</source>
+        <target>No recommendations found</target>
+      </trans-unit>
+      <trans-unit id="T9d865f" resname="new_password_label">
+        <source>new_password_label</source>
+        <target>New password</target>
+      </trans-unit>
+      <trans-unit id="QrnU0ky" resname="repeat_password_label">
+        <source>repeat_password_label</source>
+        <target>Repeat Password</target>
+      </trans-unit>
+      <trans-unit id="cPeKUrW" resname="passwords_not_matched_message">
+        <source>passwords_not_matched_message</source>
+        <target>The password fields must match</target>
+      </trans-unit>
+      <trans-unit id="L9j43yQ" resname="reset_password_label">
+        <source>reset_password_label</source>
+        <target>Reset Your Password</target>
+      </trans-unit>
+      <trans-unit id="S17JhU." resname="success_registration_header">
+        <source>success_registration_header</source>
+        <target>Check your email to verify it</target>
+      </trans-unit>
+      <trans-unit id="9v0HJqv" resname="confirmation_email_description">
+        <source>confirmation_email_description</source>
+        <target>To confirm an email open the following link:</target>
+      </trans-unit>
+      <trans-unit id="FQO2PUL" resname="expire_link_description">
+        <source>expire_link_description</source>
+        <target>This link will expire in</target>
+      </trans-unit>
+      <trans-unit id="7lWRHv7" resname="reset_password_email_message">
+        <source>reset_password_email_message</source>
+        <target>To reset your password, please visit the following link</target>
+      </trans-unit>
+      <trans-unit id="_LRz9aW" resname="check_email_description">
+        <source>check_email_description</source>
+        <target>If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+				This link will expire in</target>
+      </trans-unit>
+      <trans-unit id="hsJ73Zp" resname="not_receive_email_description">
+        <source>not_receive_email_description</source>
+        <target>If you don't receive an email please check your spam folder or</target>
+      </trans-unit>
+      <trans-unit id="8AIBWJy" resname="try_again">
+        <source>try_again</source>
+        <target>try again</target>
+      </trans-unit>
+      <trans-unit id="pcZORuN" resname="send_password_reset_email_label">
+        <source>send_password_reset_email_label</source>
+        <target>Send password reset email</target>
+      </trans-unit>
+      <trans-unit id="Zkz6SLU" resname="updated_appointment_recommendation_email_message">
+        <source>updated_appointment_recommendation_email_message</source>
+        <target>Appointment recommendation was updated. Check this out by clicking here</target>
+      </trans-unit>
+      <trans-unit id="gCJORs." resname="failed_payment_label">
+        <source>failed_payment_label</source>
+        <target>The Payment Failed!</target>
+      </trans-unit>
+      <trans-unit id="wo8S4RS" resname="appointment_history_link_label">
+        <source>appointment_history_link_label</source>
+        <target>Open appointment history</target>
+      </trans-unit>
+      <trans-unit id="y7hjRTs" resname="succeeded_payment_label">
+        <source>succeeded_payment_label</source>
+        <target>The Payment Succeeded!</target>
+      </trans-unit>
+      <trans-unit id="YYi99UI" resname="paid_label">
+        <source>paid_label</source>
+        <target>Paid</target>
+      </trans-unit>
+      <trans-unit id="G8C5oFu" resname="not_paid_label">
+        <source>not_paid_label</source>
+        <target>Not paid</target>
+      </trans-unit>
+      <trans-unit id="TuIKbOa" resname="no_slots_added_message_mark">
+        <source>no_slots_added_message_mark</source>
+        <target>{scheduleSlotCount} slots were added. Please correct the form values.</target>
+      </trans-unit>
+      <trans-unit id="N_XhHGr" resname="added_slots_message_mark">
+        <source>added_slots_message_mark</source>
+        <target>{scheduleSlotCount} slots were added.</target>
+      </trans-unit>
+      <trans-unit id="HkRDGkM" resname="updated_appointment_message_mark">
+        <source>updated_appointment_message_mark</source>
+        <target>Appointment is updated.</target>
+      </trans-unit>
+      <trans-unit id="blqte9_" resname="deleted_or_skipped_slots_message_mark">
+        <source>deleted_or_skipped_slots_message_mark</source>
+        <target>Deleted {deletedSlots} slots. Skipped {skippedSlots} slots.</target>
+      </trans-unit>
+      <trans-unit id="5tPvxqv" resname="mon">
+        <source>mon</source>
+        <target>Mon</target>
+      </trans-unit>
+      <trans-unit id="0kMWGGi" resname="tue">
+        <source>tue</source>
+        <target>Tue</target>
+      </trans-unit>
+      <trans-unit id="MYqt.oX" resname="wed">
+        <source>wed</source>
+        <target>Wed</target>
+      </trans-unit>
+      <trans-unit id="7b0m8Hp" resname="thu">
+        <source>thu</source>
+        <target>Thu</target>
+      </trans-unit>
+      <trans-unit id="gWIJzrJ" resname="fri">
+        <source>fri</source>
+        <target>Fri</target>
+      </trans-unit>
+      <trans-unit id="M57_q3C" resname="sat">
+        <source>sat</source>
+        <target>Sat</target>
+      </trans-unit>
+      <trans-unit id="J3VvBQ4" resname="sun">
+        <source>sun</source>
+        <target>Sun</target>
+      </trans-unit>
+      <trans-unit id="em2FljN" resname="january">
+        <source>january</source>
+        <target>January</target>
+      </trans-unit>
+      <trans-unit id="U_KXW15" resname="february">
+        <source>february</source>
+        <target>February</target>
+      </trans-unit>
+      <trans-unit id="_nW1wl." resname="march">
+        <source>march</source>
+        <target>March</target>
+      </trans-unit>
+      <trans-unit id="qmiQgpU" resname="april">
+        <source>april</source>
+        <target>April</target>
+      </trans-unit>
+      <trans-unit id="7k2YjGX" resname="may">
+        <source>may</source>
+        <target>May</target>
+      </trans-unit>
+      <trans-unit id="wPoe_GR" resname="june">
+        <source>june</source>
+        <target>June</target>
+      </trans-unit>
+      <trans-unit id="BcfbrBT" resname="july">
+        <source>july</source>
+        <target>July</target>
+      </trans-unit>
+      <trans-unit id="wq.dOFZ" resname="august">
+        <source>august</source>
+        <target>August</target>
+      </trans-unit>
+      <trans-unit id="JJ0fnLh" resname="september">
+        <source>september</source>
+        <target>September</target>
+      </trans-unit>
+      <trans-unit id="eu5bXbu" resname="october">
+        <source>october</source>
+        <target>October</target>
+      </trans-unit>
+      <trans-unit id="togj7e0" resname="november">
+        <source>november</source>
+        <target>November</target>
+      </trans-unit>
+      <trans-unit id="h0X4ZkC" resname="december">
+        <source>december</source>
+        <target>December</target>
+      </trans-unit>
+      <trans-unit id="agrA.Zc" resname="jan">
+        <source>jan</source>
+        <target>Jan</target>
+      </trans-unit>
+      <trans-unit id="cMdI5j2" resname="feb">
+        <source>feb</source>
+        <target>Feb</target>
+      </trans-unit>
+      <trans-unit id="UWCShvt" resname="mar">
+        <source>mar</source>
+        <target>Mar</target>
+      </trans-unit>
+      <trans-unit id="ArPc6Yx" resname="apr">
+        <source>apr</source>
+        <target>Apr</target>
+      </trans-unit>
+      <trans-unit id="62h6_w9" resname="jun">
+        <source>jun</source>
+        <target>Jun</target>
+      </trans-unit>
+      <trans-unit id="XAIv_0i" resname="jul">
+        <source>jul</source>
+        <target>Jul</target>
+      </trans-unit>
+      <trans-unit id="f79udRM" resname="aug">
+        <source>aug</source>
+        <target>Aug</target>
+      </trans-unit>
+      <trans-unit id="wZWI7px" resname="sep">
+        <source>sep</source>
+        <target>Sep</target>
+      </trans-unit>
+      <trans-unit id="ZeEHFvN" resname="oct">
+        <source>oct</source>
+        <target>Oct</target>
+      </trans-unit>
+      <trans-unit id="FUZ7IFb" resname="nov">
+        <source>nov</source>
+        <target>Nov</target>
+      </trans-unit>
+      <trans-unit id="51AseZu" resname="dec">
+        <source>dec</source>
+        <target>Dec</target>
+      </trans-unit>
+      <trans-unit id="dRsDFsX" resname="product_data_message">
+        <source>product_data_message</source>
+        <target>An appointment {startDate}-{endTime}</target>
+      </trans-unit>
+      <trans-unit id="UxJGhvt" resname="doctor_appointment_bot_name">
+        <source>doctor_appointment_bot_name</source>
+        <target>Doctor Appointment Bot</target>
+      </trans-unit>
+      <trans-unit id="9jMMdND" resname="email_header">
+        <source>email_header</source>
+        <target>Greetings!</target>
+      </trans-unit>
+      <trans-unit id="YFqe1YW" resname="confirm_email_link">
+        <source>confirm_email_link</source>
+        <target>Confirm an email</target>
+      </trans-unit>
+      <trans-unit id="V9hKZvd" resname="email_confirmation_subject">
+        <source>email_confirmation_subject</source>
+        <target>Please Confirm your Email</target>
+      </trans-unit>
+      <trans-unit id="XYI1IdY" resname="email_appointment_update_subject">
+        <source>email_appointment_update_subject</source>
+        <target>Appointment is updated!</target>
+      </trans-unit>
+      <trans-unit id="S4LYFMB" resname="email_password_reset_subject">
+        <source>email_password_reset_subject</source>
+        <target>Your password reset request</target>
+      </trans-unit>
+      <trans-unit id="txdwlqr" resname="app_name">
+        <source>app_name</source>
+        <target>Doctor appointment</target>
+      </trans-unit>
+      <trans-unit id="80ps0zP" resname="password_reset_email_sent_title">
+        <source>password_reset_email_sent_title</source>
+        <target>Password Reset Email Sent</target>
+      </trans-unit>
+      <trans-unit id="y6Upp3r" resname="email_appointment_reminder_subject">
+        <source>email_appointment_reminder_subject</source>
+        <target>🔔 Reminder: you have a doctor appointment tomorrow</target>
+      </trans-unit>
+      <trans-unit id="vWVbjZJ" resname="email_appointment_reminder_text">
+        <source>email_appointment_reminder_text</source>
+        <target>Hello! You have a doctor appointment {scheduleSlotStartDate} . If you want to cancel the appointment reply to this email with the text "Cancel".</target>
+      </trans-unit>
+      <trans-unit id="qdHHQPF" resname="booked_appointment_message_mark">
+        <source>booked_appointment_message_mark</source>
+        <target>Sorry, this slot {startDate}-{endTime} is already taken. Try to book the other one.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

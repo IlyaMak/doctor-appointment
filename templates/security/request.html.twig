@@ -1,12 +1,12 @@
 {% extends 'security/base.html.twig' %}
 
 {% block title %}
-	Reset your password | Doctor Appointment
+	{{ 'reset_password_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
 	<div class="d-flex flex-column  align-items-center">
-		<h1>Reset your password</h1>
+		<h1>{{ 'reset_password_label'|trans }}</h1>
 		{% for flash_error in app.flashes('reset_password_error') %}
 			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
 		{% endfor %}
@@ -18,7 +18,7 @@
 		</div>
 
 		<button class="w-100 btn btn-lg btn-primary mt-3">
-			Send password reset email
+			{{ 'send_password_reset_email_label'|trans }}
 		</button>
 		{{ form_end(requestForm) }}
 	</div>

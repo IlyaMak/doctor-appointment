@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Specialty::class, inversedBy: 'doctors')]
     private ?Specialty $specialty = null;
 
+    #[ORM\Column(length: 2, options: ['default' => 'en', 'fixed' => true])]
+    private string $language = 'en';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -164,6 +167,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSpecialty(?Specialty $specialty): static
     {
         $this->specialty = $specialty;
+
+        return $this;
+    }
+
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): static
+    {
+        $this->language = $language;
 
         return $this;
     }

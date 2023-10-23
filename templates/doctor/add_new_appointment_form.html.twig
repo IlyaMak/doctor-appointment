@@ -2,12 +2,12 @@
 {% form_theme form 'common/form_errors.html.twig' %}
 
 {% block title %}
-	Add A New Appointment Form | Doctor Appointment
+	{{ 'add_new_appointment_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="col-md-6 m-auto">
 		<div class="text-center mt-4">
-			<h2>Add A New Appointment</h2>
+			<h2>{{ 'add_new_appointment_label'|trans }}</h2>
 		</div>
 		{% for flash_error in app.flashes('success') %}
 			<div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		<button type="submit" class="w-100 btn btn-lg btn-primary my-4">
-			Save
+			{{ 'save_label'|trans }}
 		</button>
 		{{ form_end(form) }}
 	</div>

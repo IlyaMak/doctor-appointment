@@ -1,25 +1,30 @@
 {% extends 'patient/base.html.twig' %}
 
 {% block title %}
-	Show Schedule Slot Details | Doctor Appointment
+	{{ 'show_schedule_slot_details_label'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="col-md-6 m-auto">
 		<div class="text-center mt-4">
-			<h2>Show Schedule Slot Details</h2>
+			<h2>{{ 'show_schedule_slot_details_label'|trans }}</h2>
 		</div>
 		<div class="mt-4 mx-3">
-			<div>Date:
+			<div>{{ 'date_label'|trans }}:
 				{{ scheduleSlot.start|date('Y-m-d') }}</div>
-			<div>Time:
+			<div>{{ 'time_label'|trans }}:
 				{{ scheduleSlot.start|date('H:i') }}-{{ scheduleSlot.end|date('H:i') }}
 			</div>
-			<div>Patient:
+			<div>{{ 'patient_label'|trans }}:
 				{{ scheduleSlot.patient.name }}</div>
-			<div>Price:
+			<div>{{ 'price_label'|trans }}:
 				{{ scheduleSlot.price }}$</div>
-				<div>Recommendation:
-				{{ scheduleSlot.recommendation|length > 0 ? scheduleSlot.recommendation : 'No recommendations found' }}</div>
+			<div>
+				{{ 'recommendation_label'|trans }}:
+				{{ scheduleSlot.recommendation|length > 0 
+					? scheduleSlot.recommendation 
+					: 'not_found_recommendations'|trans 
+				}}
+			</div>
 		</div>
 	</div>
 {% endblock %}

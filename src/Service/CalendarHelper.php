@@ -6,21 +6,24 @@ use App\Entity\ScheduleSlot;
 use DateInterval;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CalendarHelper
 {
     /** @return string */
-    public static function getMonthYearTitle(DateTimeImmutable $requestedDay): string
-    {
+    public static function getMonthYearTitle(
+        DateTimeImmutable $requestedDay,
+        TranslatorInterface $translator
+    ): string {
         $monday = $requestedDay->modify('monday this week');
         $sunday = $monday->modify('sunday this week');
 
         if ($monday->format('F') === $sunday->format('F')) {
-            $monthYearTitle = $monday->format('F') . ' ' . $monday->format('Y');
+            $monthYearTitle = $translator->trans(strtolower($monday->format('F'))) . ' ' . $monday->format('Y');
         } elseif ($monday->format('Y') !== $sunday->format('Y')) {
-            $monthYearTitle = $monday->format('M') . ' ' . $monday->format('Y') . ' - ' . $sunday->format('M') . ' ' . $sunday->format('Y');
+            $monthYearTitle = $translator->trans(strtolower($monday->format('M'))) . ' ' . $monday->format('Y') . ' - ' . $translator->trans(strtolower($sunday->format('M'))) . ' ' . $sunday->format('Y');
         } else {
-            $monthYearTitle = $monday->format('M') . ' - ' . $sunday->format('M') . ' ' . $sunday->format('Y');
+            $monthYearTitle = $translator->trans(strtolower($monday->format('M'))) . ' - ' . $translator->trans(strtolower($sunday->format('M'))) . ' ' . $sunday->format('Y');
         }
 
         return $monthYearTitle;
@@ -67,7 +70,7 @@ class CalendarHelper
     /** @param string[] $availableHours
      *  @param ScheduleSlot[] $scheduleSlots
      *  @return array<string, array<string, array<string, int|bool|string>[]>>
-    */
+     */
     public static function getWeekSchedule(
         DateTimeImmutable $requestedDay,
         array $availableHours,

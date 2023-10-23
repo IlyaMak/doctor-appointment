@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Exception;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class AuthController extends AbstractController
 {
     #[Route('/sign-in', name: 'app_sign_in')]

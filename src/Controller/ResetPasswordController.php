@@ -22,7 +22,7 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-#[Route('/reset-password')]
+#[Route('/{_locale<%app.supported_locales%>}/reset-password')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -165,13 +165,16 @@ class ResetPasswordController extends AbstractController
         );
 
         $email = (new TemplatedEmail())
-            ->from(new Address($emailAddress, 'Doctor Appointment Reset Password Bot'))
+            ->from(new Address($emailAddress, $this->translator->trans('doctor_appointment_bot_name')))
             ->to($user->getEmail())
-            ->subject('Your password reset request')
+            ->subject($this->translator->trans('email_password_reset_subject'))
             ->htmlTemplate('security/email.html.twig')
             ->context([
                 'url' => $url,
                 'resetToken' => $resetToken,
+                'emailHeader' => $this->translator->trans('email_header'),
+                'emailDescription' => $this->translator->trans('reset_password_email_message'),
+                'expireLinkDescription' => $this->translator->trans('expire_link_description'),
             ])
         ;
 

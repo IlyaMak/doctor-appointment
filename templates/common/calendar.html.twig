@@ -1,7 +1,7 @@
 {% block calendar %}
 	<div class="d-flex align-items-center mt-5">
 		<a class="btn btn-outline-primary ms-3" href="{{ path(href) }}">
-			Today
+			{{ 'today_label'|trans }}
 		</a>
 		<a class="btn btn-outline-primary ms-4" href="{{ path(href, {'date': previousDayOfTheWeek}) }}">
 			&#60;
@@ -17,8 +17,10 @@
 			<div class="col px-0"></div>
 			{% for day in week %}
 				<div class="col d-flex flex-column align-items-center px-0">
-					<div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek'] }}</div>
-					<div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? " text-light rounded-circle bg-primary" : " text-body" }}">{{ day['dayOfTheMonth'] }}</div>
+					<div class="{{ day['isHighlighted'] ? "text-primary" : "text-body" }}">{{ day['dayOfTheWeek']|lower|trans }}</div>
+					<div class="calendar-date d-flex align-items-center justify-content-center {{ day['isHighlighted'] ? " text-light rounded-circle bg-primary" : " text-body" }}">
+						{{ day['dayOfTheMonth'] }}
+					</div>
 				</div>
 			{% endfor %}
 		</div>

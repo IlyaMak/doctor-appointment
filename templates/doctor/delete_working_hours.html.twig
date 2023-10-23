@@ -1,33 +1,37 @@
 {% extends 'doctor/base.html.twig' %}
-{% block title %}Delete Working Hours | Doctor Appointment{% endblock %}
+{% block title %}
+	{{ 'delete_working_hours_label'|trans }} | {{ 'app_name'|trans }}
+{% endblock %}
 {% block content %}
-    <div class="col-md-6 m-auto">
-        <div class="text-center mt-4">
-            <h2>Delete Working Hours</h2>
-        </div>
+	<div class="col-md-6 m-auto">
+		<div class="text-center mt-4">
+			<h2>{{ 'delete_working_hours_label'|trans }}</h2>
+		</div>
 
-        {% for flash_error in app.flashes('success') %}
-            <div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-        {% for flash_error in app.flashes('warning') %}
-            <div class="mt-4 mx-2 alert alert-warning" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-        {% for flash_error in app.flashes('error') %}
-            <div class="mt-4 mx-2 alert alert-danger" role="alert">{{ flash_error }}</div>
-        {% endfor %}
+		{% for flash_error in app.flashes('success') %}
+			<div class="mt-4 mx-2 alert alert-success" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+		{% for flash_error in app.flashes('warning') %}
+			<div class="mt-4 mx-2 alert alert-warning" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+		{% for flash_error in app.flashes('error') %}
+			<div class="mt-4 mx-2 alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
 
-        {{ form_start(deleteScheduleSlotForm) }}
-            <div class="ms-3">
-                {{form_label(deleteScheduleSlotForm.startDate)}}
-            </div>
-                {{form_widget(deleteScheduleSlotForm.startDate)}}
-            <div class="mt-2">
-                <div class="ms-3">
-                    {{form_label(deleteScheduleSlotForm.endDate)}}
-                </div>
-                    {{form_widget(deleteScheduleSlotForm.endDate)}}
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary my-4">Submit</button>
-        {{ form_end(deleteScheduleSlotForm) }}
-    </div>
+		{{ form_start(deleteScheduleSlotForm) }}
+		<div class="ms-3">
+			{{form_label(deleteScheduleSlotForm.startDate)}}
+		</div>
+		{{form_widget(deleteScheduleSlotForm.startDate)}}
+		<div class="mt-2">
+			<div class="ms-3">
+				{{form_label(deleteScheduleSlotForm.endDate)}}
+			</div>
+			{{form_widget(deleteScheduleSlotForm.endDate)}}
+		</div>
+		<button type="submit" class="w-100 btn btn-lg btn-primary my-4">
+			{{ 'save_label'|trans }}
+		</button>
+		{{ form_end(deleteScheduleSlotForm) }}
+	</div>
 {% endblock %}

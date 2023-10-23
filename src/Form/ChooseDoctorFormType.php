@@ -9,9 +9,14 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChooseDoctorFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -21,7 +26,7 @@ class ChooseDoctorFormType extends AbstractType
                 [
                     'class' => Specialty::class,
                     'choice_label' => 'name',
-                    'placeholder' => 'Choose a specialty...',
+                    'placeholder' => $this->translator->trans('specialty_placeholder'),
                     'attr' => [
                         'class' => 'py-0',
                         'onchange' => 'this.form.submit()',
@@ -41,7 +46,7 @@ class ChooseDoctorFormType extends AbstractType
             [
                 'class' => User::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Choose a doctor...',
+                'placeholder' => $this->translator->trans('doctor_placeholder'),
                 'choices' => $doctors,
                 'attr' => [
                     'class' => 'py-0',

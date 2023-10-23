@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(name: 'app:send-email-appoinment-reminder')]
 class SendEmailAppointmentRemiderCommand extends Command
@@ -20,6 +21,7 @@ class SendEmailAppointmentRemiderCommand extends Command
         private ScheduleSlotRepository $scheduleSlotRepository,
         #[Autowire(env: 'EMAIL_ADDRESS')]
         private string $emailAddress,
+        private TranslatorInterface $translator
     ) {
         parent::__construct();
     }
@@ -35,14 +37,26 @@ class SendEmailAppointmentRemiderCommand extends Command
         foreach ($scheduleSlots as $scheduleSlot) {
             /** @var User */
             $patient = $scheduleSlot->getPatient();
+            $patientLocale = $patient->getLanguage();
+
             $email = (new Email())
                 ->from($this->emailAddress)
                 ->to($patient->getEmail())
                 ->subject(
-                    '🔔 Reminder: you have a doctor appointment tomorrow'
+                    $this->translator->trans(
+                        'email_appointment_reminder_subject',
+                        [],
+                        null,
+                        $patientLocale
+                    )
                 )
                 ->text(
-                    'Hello! You have a doctor appointment ' . $scheduleSlot->getStart()->format('Y-m-d H:s') . '. If you want to cancel the appointment reply to this email with the text "Cancel".'
+                    $this->translator->trans(
+                        'email_appointment_reminder_text',
+                        ['scheduleSlotStartDate' => $scheduleSlot->getStart()->format('Y-m-d H:s')],
+                        null,
+                        $patientLocale
+                    )
                 )
             ;
             $this->mailer->send($email);

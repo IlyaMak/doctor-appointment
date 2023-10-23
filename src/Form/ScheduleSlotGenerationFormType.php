@@ -14,9 +14,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
 use DateTimeImmutable;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ScheduleSlotGenerationFormType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $startDateTime = new DateTimeImmutable();
@@ -29,7 +34,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 DateType::class,
                 [
                     'mapped' => false,
-                    'label' => 'Start date (included)',
+                    'label' => $this->translator->trans('start_date_label'),
                     'years' => [date('Y'), date('Y') + 1],
                     'data' => $startDateTime,
                     'attr' => [
@@ -42,7 +47,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 DateType::class,
                 [
                     'mapped' => false,
-                    'label' => 'End date (included)',
+                    'label' => $this->translator->trans('end_date_label'),
                     'data' => $endDateTime,
                     'years' => [date('Y'), date('Y') + 1],
                     'attr' => [
@@ -54,6 +59,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'startTime',
                 TimeType::class,
                 [
+                    'label' => $this->translator->trans('start_time_label'),
                     'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $startDateTime,
@@ -67,6 +73,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'endTime',
                 TimeType::class,
                 [
+                    'label' => $this->translator->trans('end_time_label'),
                     'hours' => ScheduleHelper::getAvailableIntHours(),
                     'minutes' => range(0, 55, 5),
                     'data' => $endDateTime,
@@ -92,13 +99,14 @@ class ScheduleSlotGenerationFormType extends AbstractType
                         '120' => '120',
                     ],
                     'data' => '30',
-                    'label' => 'Patient service interval (in minutes)',
+                    'label' => $this->translator->trans('patient_service_interval_label'),
                 ],
             )
             ->add(
                 'startLunchTime',
                 TimeType::class,
                 [
+                    'label' => $this->translator->trans('start_lunch_date_label'),
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
                     'data' => (new DateTimeImmutable())->setTime(12, 0, 0),
@@ -112,6 +120,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'endLunchTime',
                 TimeType::class,
                 [
+                    'label' => $this->translator->trans('end_lunch_date_label'),
                     'hours' => range(11, 15),
                     'minutes' => range(0, 55, 5),
                     'data' => (new DateTimeImmutable())->setTime(13, 0, 0),
@@ -125,6 +134,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'monday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('monday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -136,6 +146,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'tuesday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('tuesday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -147,6 +158,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'wednesday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('wednesday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -158,6 +170,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'thursday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('thursday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -169,6 +182,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'friday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('friday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -180,6 +194,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'saturday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('saturday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -192,6 +207,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'sunday',
                 CheckboxType::class,
                 [
+                    'label' => $this->translator->trans('sunday_label'),
                     'mapped' => false,
                     'required' => false,
                     'attr' => [
@@ -204,6 +220,7 @@ class ScheduleSlotGenerationFormType extends AbstractType
                 'price',
                 MoneyType::class,
                 [
+                    'label' => $this->translator->trans('price_label'),
                     'mapped' => false,
                     'currency' => 'USD',
                     'data' => '5',
@@ -213,10 +230,10 @@ class ScheduleSlotGenerationFormType extends AbstractType
                     ],
                     'constraints' => [
                         new Positive([
-                            'message' => 'Please enter positive number',
+                            'message' => $this->translator->trans('positive_number_constraint_message'),
                         ]),
                         new NotBlank([
-                            'message' => 'Please enter positive number',
+                            'message' => $this->translator->trans('positive_number_constraint_message'),
                         ]),
                     ],
                 ],
