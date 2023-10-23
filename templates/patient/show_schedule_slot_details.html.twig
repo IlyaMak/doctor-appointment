@@ -1,29 +1,34 @@
 {% extends 'patient/base.html.twig' %}
 
 {% block title %}
-	{{ 'show_schedule_slot_details_label'|trans }} | {{ 'app_name'|trans }}
+	{{ 'show_schedule_slot_details_label'|trans }}
+	|
+	{{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
-	<div class="col-md-6 m-auto">
+	<div class="col-md-8 m-auto">
 		<div class="text-center mt-4">
 			<h2>{{ 'show_schedule_slot_details_label'|trans }}</h2>
 		</div>
-		<div class="mt-4 mx-3">
-			<div>{{ 'date_label'|trans }}:
-				{{ scheduleSlot.start|date('Y-m-d') }}</div>
-			<div>{{ 'time_label'|trans }}:
-				{{ scheduleSlot.start|date('H:i') }}-{{ scheduleSlot.end|date('H:i') }}
-			</div>
-			<div>{{ 'patient_label'|trans }}:
-				{{ scheduleSlot.patient.name }}</div>
-			<div>{{ 'price_label'|trans }}:
-				{{ scheduleSlot.price }}$</div>
+		<div class="d-flex justify-content-center align-items-start mt-4 mx-3">
+			<img class="me-3" style="width:100px" src="/resources/{{scheduleSlot.doctor.avatarPath}}" alt="avatar">
 			<div>
-				{{ 'recommendation_label'|trans }}:
-				{{ scheduleSlot.recommendation|length > 0 
+				<div>{{ 'date_label'|trans }}:
+					{{ scheduleSlot.start|date('Y-m-d') }}</div>
+				<div>{{ 'time_label'|trans }}:
+					{{ scheduleSlot.start|date('H:i') }}-{{ scheduleSlot.end|date('H:i') }}
+				</div>
+				<div>{{ 'doctor_label'|trans }}:
+					{{ scheduleSlot.doctor.name }}</div>
+				<div>{{ 'price_label'|trans }}:
+					{{ scheduleSlot.price }}$</div>
+				<div>
+					{{ 'recommendation_label'|trans }}:
+					{{ scheduleSlot.recommendation|length > 0 
 					? scheduleSlot.recommendation 
 					: 'not_found_recommendations'|trans 
 				}}
+				</div>
 			</div>
 		</div>
 	</div>

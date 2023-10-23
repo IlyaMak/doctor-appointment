@@ -1,6 +1,8 @@
 {% extends 'patient/base.html.twig' %}
 {% block title %}
-	{{ 'confirm_appointment_label'|trans }} | {{ 'app_name'|trans }}
+	{{ 'confirm_appointment_label'|trans }}
+	|
+	{{ 'app_name'|trans }}
 {% endblock %}
 {% block content %}
 	<div class="text-center mt-4">
@@ -23,7 +25,10 @@
 								{{ slot.doctor.specialty.name }}
 							</td>
 							<td>
-								{{ slot.doctor.name }}
+								<div class="d-flex flex-column align-items-center">
+									<img style="width:50px" src="/resources/{{slot.doctor.avatarPath}}" alt="avatar">
+									{{ slot.doctor.name }}
+								</div>
 							</td>
 							<td>
 								{{ slot.start|date("Y-m-d") }}
