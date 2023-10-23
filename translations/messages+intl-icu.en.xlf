@@ -508,7 +508,7 @@
       </trans-unit>
       <trans-unit id="dRsDFsX" resname="product_data_message">
         <source>product_data_message</source>
-        <target>An appointment </target>
+        <target>An appointment {startDate}-{endTime}</target>
       </trans-unit>
       <trans-unit id="UxJGhvt" resname="doctor_appointment_bot_name">
         <source>doctor_appointment_bot_name</source>

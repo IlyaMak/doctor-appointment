@@ -37,12 +37,18 @@ class PaymentService
             'mode' => 'payment',
             'success_url' => $successUrl,
             'cancel_url' => $cancelUrl,
-            'locale' => $request->getLocale() === 'en' ? 'en' : 'pl',
+            'locale' => $request->getLocale(),
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $this->translator->trans('product_data_message') . $scheduleSlot->getStart()->format('Y-m-d H:i') . '-' . $scheduleSlot->getEnd()->format('H:i'),
+                        'name' => $this->translator->trans(
+                            'product_data_message',
+                            [
+                                'startDate' => $scheduleSlot->getStart()->format('Y-m-d H:i'),
+                                'endTime' => $scheduleSlot->getEnd()->format('H:i'),
+                            ]
+                        ),
                     ],
                     'unit_amount' => $scheduleSlot->getPrice() * 100,
                 ],
