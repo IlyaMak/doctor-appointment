@@ -4,14 +4,18 @@ namespace App\Service;
 
 use App\Entity\ScheduleSlot;
 use App\Entity\StripeTransaction;
+use App\Entity\User;
 use App\Enum\Status;
 use App\Repository\ScheduleSlotRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Event;
 use Stripe\StripeClient;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentService
@@ -22,6 +26,9 @@ class PaymentService
         #[Autowire(env: 'STRIPE_SECRET')]
         private string $stripeSecret,
         private TranslatorInterface $translator,
+        #[Autowire(env: 'EMAIL_ADDRESS')]
+        private string $emailAddress,
+        private MailerInterface $mailer,
     ) {
     }
 
@@ -90,6 +97,47 @@ class PaymentService
                     /** @var ScheduleSlot */
                     $scheduleSlot = $this->scheduleSlotRepository->find($slotId);
                     $scheduleSlot->setStatus(Status::Paid);
+                    $doctorLanguage = $scheduleSlot->getDoctor()->getLanguage();
+                    /** @var User */
+                    $patient = $scheduleSlot->getPatient();
+
+                    $email = (new TemplatedEmail())
+                        ->from(
+                            new Address(
+                                $this->emailAddress,
+                                $this->translator->trans(
+                                    'doctor_appointment_bot_name',
+                                    [],
+                                    null,
+                                    $doctorLanguage
+                                )
+                            )
+                        )
+                        ->to($scheduleSlot->getDoctor()->getEmail())
+                        ->subject(
+                            $this->translator->trans(
+                                'email_paid_appointment_subject',
+                                [],
+                                null,
+                                $doctorLanguage
+                            )
+                        )
+                        ->text(
+                            $this->translator->trans(
+                                'email_paid_appointment_text',
+                                [
+                                    'patient' => $patient->getName(),
+                                    'date' => $scheduleSlot->getStart()->format('Y-m-d'),
+                                    'startTime' => $scheduleSlot->getStart()->format('H:i'),
+                                    'endTime' => $scheduleSlot->getEnd()->format('H:i')
+                                ],
+                                null,
+                                $doctorLanguage
+                            )
+                        )
+                    ;
+
+                    $this->mailer->send($email);
                 }
                 break;
         }
