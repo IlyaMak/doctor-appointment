@@ -169,11 +169,11 @@
         <source>end_date_label</source>
         <target>End date (included)</target>
       </trans-unit>
-      <trans-unit id="ur6d2oU" resname="start_time_label">
+      <trans-unit id="EF_aIdy" resname="start_time_label">
         <source>start_time_label</source>
         <target>Start time</target>
       </trans-unit>
-      <trans-unit id="LkYAal7" resname="end_time_label">
+      <trans-unit id="XxAzY1Y" resname="end_time_label">
         <source>end_time_label</source>
         <target>End time</target>
       </trans-unit>
@@ -548,11 +548,22 @@
       </trans-unit>
       <trans-unit id="vWVbjZJ" resname="email_appointment_reminder_text">
         <source>email_appointment_reminder_text</source>
-        <target>Hello! You have a doctor appointment {scheduleSlotStartDate} . If you want to cancel the appointment reply to this email with the text "Cancel".</target>
+        <target>Hello! You have a doctor appointment {scheduleSlotStartDate}. If you want to cancel the appointment reply to this email with the text "Cancel".</target>
       </trans-unit>
       <trans-unit id="qdHHQPF" resname="booked_appointment_message_mark">
         <source>booked_appointment_message_mark</source>
         <target>Sorry, this slot {startDate}-{endTime} is already taken. Try to book the other one.</target>
+      </trans-unit>
+      <trans-unit id="bN3v3DJ" resname="email_paid_appointment_subject">
+        <source>email_paid_appointment_subject</source>
+        <target>You have a new appointment</target>
+      </trans-unit>
+      <trans-unit id="i2dS7nE" resname="email_paid_appointment_text">
+        <source>email_paid_appointment_text</source>
+        <target>
+          Name: {patient}
+          Date: {date}
+          Time: {startTime}-{endTime}</target>
       </trans-unit>
     </body>
   </file>
