@@ -2,15 +2,21 @@
 {% form_theme registrationForm 'common/form_errors.html.twig' %}
 
 {% block title %}
-	{{ 'register_label'|trans }} | {{ 'app_name'|trans }}
+	{{ 'registration_label'|trans }}
+	|
+	{{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
 	<div class="text-center d-flex flex-column justify-content-center align-items-center">
-		<h1>{{ 'register_label'|trans }}</h1>
+		<h1>{{ 'registration_label'|trans }}</h1>
 		{% for flash_error in app.flashes('verify_email_error') %}
 			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
 		{% endfor %}
+
+		{{ form_start(registrationTypeForm) }}
+		{{form_widget(registrationTypeForm.type)}}
+		{{ form_end(registrationTypeForm) }}
 
 		{{ form_errors(registrationForm) }}
 
@@ -47,7 +53,7 @@
 			</div>
 		{% endif %}
 		<button type="submit" class="w-100 btn btn-lg btn-primary mt-3">
-			{{ 'register_label'|trans }}
+			{{ 'registration_label'|trans }}
 		</button>
 		<div class="mt-4">
 			{{ 'have_account_label'|trans }}

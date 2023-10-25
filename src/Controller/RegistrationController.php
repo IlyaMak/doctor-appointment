@@ -6,6 +6,7 @@ use App\Entity\Specialty;
 use App\Entity\User;
 use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
+use App\Form\RegistrationTypeFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,7 +51,12 @@ class RegistrationController extends AbstractController
         #[Autowire(env: 'EMAIL_ADDRESS')]
         string $emailAddress,
     ): Response {
-        $isDoctor = '0' === $request->query->get('isPatient');
+
+        $registrationTypeForm = $this->createForm(RegistrationTypeFormType::class);
+        $registrationTypeForm->handleRequest($request);
+        /** @var int */
+        $type = $registrationTypeForm->get('type')->getData();
+        $isDoctor = 0 === $type;
         $user = new User();
         $form = $this->createForm(
             $isDoctor
@@ -120,6 +126,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'registrationTypeForm' => $registrationTypeForm->createView(),
         ]);
     }
 

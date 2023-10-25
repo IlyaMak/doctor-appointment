@@ -9,14 +9,6 @@
         <source>make_appointment_label</source>
         <target>Make an appointment!</target>
       </trans-unit>
-      <trans-unit id="S2NH.Ng" resname="register_patient_label">
-        <source>register_patient_label</source>
-        <target>Register as a patient</target>
-      </trans-unit>
-      <trans-unit id="H_15GSm" resname="register_doctor_label">
-        <source>register_doctor_label</source>
-        <target>Register as a doctor</target>
-      </trans-unit>
       <trans-unit id="70zPRy3" resname="sign_in_label">
         <source>sign_in_label</source>
         <target>Sign In</target>
@@ -77,9 +69,9 @@
         <source>length_constraint_password_message</source>
         <target>Your password should be at least {limit} characters</target>
       </trans-unit>
-      <trans-unit id="XhGw4SN" resname="register_label">
-        <source>register_label</source>
-        <target>Register</target>
+      <trans-unit id="gJHo8d5" resname="registration_label">
+        <source>registration_label</source>
+        <target>Registration</target>
       </trans-unit>
       <trans-unit id="yV4A7gd" resname="have_account_label">
         <source>have_account_label</source>
@@ -564,6 +556,14 @@
           Name: {patient}
           Date: {date}
           Time: {startTime}-{endTime}</target>
+      </trans-unit>
+      <trans-unit id="pn1SpAk" resname="patient_user_label">
+        <source>patient_user_label</source>
+        <target>I am a patient</target>
+      </trans-unit>
+      <trans-unit id="sc1hq9L" resname="doctor_user_label">
+        <source>doctor_user_label</source>
+        <target>I am a doctor</target>
       </trans-unit>
     </body>
   </file>
