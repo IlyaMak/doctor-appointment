@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ScheduleSlot;
+use App\Entity\Specialty;
 use App\Entity\User;
 use App\Enum\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -216,5 +217,25 @@ class ScheduleSlotRepository extends ServiceEntityRepository
         ;
 
         return $scheduleSlots;
+    }
+
+    public function getNearestScheduleSlot(?Specialty $specialty): ?ScheduleSlot
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $currentDate = new DateTimeImmutable();
+
+        /** @var ?ScheduleSlot */
+        $scheduleSlot = $queryBuilder
+            ->leftJoin('s.doctor', 'd')
+            ->andWhere('d.specialty = :specialty')
+            ->andWhere('s.start > :currentDate')
+            ->setParameter('currentDate', $currentDate)
+            ->setParameter('specialty', $specialty)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        return $scheduleSlot;
     }
 }
