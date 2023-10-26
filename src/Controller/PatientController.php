@@ -77,9 +77,11 @@ class PatientController extends CustomAbstractController
         $sessionSpecialty = $session->get(self::SPECIALTY);
         /** @var ?User */
         $sessionDoctor = $session->get(self::DOCTOR);
+        /** Find the Specialty, because the Specialty from the session is not connected to the EntityManager. */
         $selectedSpecialty = $sessionSpecialty
             ? $specialtyRepository->find($sessionSpecialty->getId())
             : null;
+        /** Find the Doctor, because the Doctor from the session is not connected to the EntityManager. */
         $selectedDoctor = $sessionDoctor
             ? $userRepository->find($sessionDoctor->getId())
             : null;
@@ -92,13 +94,31 @@ class PatientController extends CustomAbstractController
             $formSpecialty = $form->get(self::SPECIALTY)->getData();
             /** @var ?User */
             $formDoctor = $form->get(self::DOCTOR)->getData();
+
+            if ($formSpecialty && $formDoctor) {
+                /** @var Specialty */
+                $specialty = $formDoctor->getSpecialty();
+                $formDoctor =
+                    $specialty->getId() === $formSpecialty->getId()
+                    ? $formDoctor
+                    : null;
+            }
+
+            if (!$formDoctor) {
+                $scheduleSlot = $scheduleSlotRepository->getNearestScheduleSlot(
+                    $formSpecialty
+                );
+
+                $formDoctor = $scheduleSlot ? $scheduleSlot->getDoctor() : null;
+            }
+
             $session->set(self::SPECIALTY, $formSpecialty);
             $session->set(self::DOCTOR, $formDoctor);
             $doctorModel = new DoctorModel($formSpecialty, $formDoctor);
             $form = $this->createForm(ChooseDoctorFormType::class, $doctorModel);
         }
 
-        /** @var User */
+        /** @var User|null */
         $selectedDoctor = $session->get(self::DOCTOR);
         $scheduleSlots =
             $selectedDoctor == null
