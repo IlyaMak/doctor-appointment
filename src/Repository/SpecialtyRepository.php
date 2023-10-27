@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\ScheduleSlot;
 use App\Entity\Specialty;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,4 +48,26 @@ class SpecialtyRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return Specialty[]
+     */
+    public function getSpecialtiesWithAvailableDoctors(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('sp');
+        $currentDate = new DateTimeImmutable();
+
+        /** @var Specialty[] */
+        $specialties = $queryBuilder
+            ->leftJoin('sp.doctors', 'u')
+            ->leftJoin(ScheduleSlot::class, 's', Join::WITH, 's.doctor = u')
+            ->andWhere('s.start > :currentDate')
+            ->andWhere('s.patient IS NULL')
+            ->setParameter('currentDate', $currentDate)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $specialties;
+    }
 }
