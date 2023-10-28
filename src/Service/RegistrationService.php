@@ -18,19 +18,19 @@ class RegistrationService
         private EmailVerifier $emailVerifier,
         private TranslatorInterface $translator,
         #[Autowire(env: 'EMAIL_ADDRESS')]
-        private string $emailAddress
+        private string $emailAddress,
+        private UserPasswordHasherInterface $userPasswordHasher
     ) {
     }
 
     public function setBasicUserProperties(
         FormInterface $form,
         User $user,
-        UserPasswordHasherInterface $userPasswordHasher,
         Request $request
     ): void {
         /** @var string */
         $plainPassword = $form->get('plainPassword')->getData();
-        $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, $plainPassword));
         $user->setLanguage($request->getLocale());
     }
 

@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use DateTime;
@@ -29,7 +28,6 @@ class RegistrationController extends AbstractController
     public function __construct(
         #[Autowire(param: 'is_required_email_verification')]
         private bool $isEmailVerificationRequired,
-        private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private UserAuthenticatorInterface $authenticatorManager,
         #[Autowire(service: 'security.authenticator.form_login.main')]
@@ -50,7 +48,6 @@ class RegistrationController extends AbstractController
             $this->registrationService->setBasicUserProperties(
                 $form,
                 $user,
-                $this->userPasswordHasher,
                 $request
             );
 
@@ -85,7 +82,6 @@ class RegistrationController extends AbstractController
             $this->registrationService->setBasicUserProperties(
                 $form,
                 $user,
-                $this->userPasswordHasher,
                 $request
             );
 
