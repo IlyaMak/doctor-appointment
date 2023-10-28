@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Address;
@@ -15,8 +16,9 @@ class RegistrationService
 {
     public function __construct(
         private EmailVerifier $emailVerifier,
-        private string $emailAddress,
         private TranslatorInterface $translator,
+        #[Autowire(env: 'EMAIL_ADDRESS')]
+        private string $emailAddress
     ) {
     }
 

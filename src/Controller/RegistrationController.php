@@ -29,15 +29,12 @@ class RegistrationController extends AbstractController
     public function __construct(
         #[Autowire(param: 'is_required_email_verification')]
         private bool $isEmailVerificationRequired,
-        private TranslatorInterface $translator,
-        private EmailVerifier $emailVerifier,
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private UserAuthenticatorInterface $authenticatorManager,
-        #[Autowire(env: 'EMAIL_ADDRESS')]
-        private string $emailAddress,
         #[Autowire(service: 'security.authenticator.form_login.main')]
-        private FormLoginAuthenticator $authenticator
+        private FormLoginAuthenticator $authenticator,
+        private RegistrationService $registrationService
     ) {
     }
 
@@ -50,13 +47,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registrationService = new RegistrationService(
-                $this->emailVerifier,
-                $this->emailAddress,
-                $this->translator
-            );
-
-            $registrationService->setBasicUserProperties(
+            $this->registrationService->setBasicUserProperties(
                 $form,
                 $user,
                 $this->userPasswordHasher,
@@ -69,7 +60,7 @@ class RegistrationController extends AbstractController
             $this->entityManager->flush();
 
             if ($this->isEmailVerificationRequired) {
-                $registrationService->sendEmailConfirmation($user);
+                $this->registrationService->sendEmailConfirmation($user);
                 return $this->render('security/register_success.html.twig');
             } else {
                 $this->authenticatorManager->authenticateUser($user, $this->authenticator, $request);
@@ -91,13 +82,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registrationService = new RegistrationService(
-                $this->emailVerifier,
-                $this->emailAddress,
-                $this->translator
-            );
-
-            $registrationService->setBasicUserProperties(
+            $this->registrationService->setBasicUserProperties(
                 $form,
                 $user,
                 $this->userPasswordHasher,
@@ -117,7 +102,7 @@ class RegistrationController extends AbstractController
             $this->entityManager->flush();
 
             if ($this->isEmailVerificationRequired) {
-                $registrationService->sendEmailConfirmation($user);
+                $this->registrationService->sendEmailConfirmation($user);
                 return $this->render('security/register_success.html.twig');
             } else {
                 $this->authenticatorManager->authenticateUser($user, $this->authenticator, $request);
@@ -131,8 +116,13 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository, LoggerInterface $logger): Response
-    {
+    public function verifyUserEmail(
+        Request $request,
+        UserRepository $userRepository,
+        LoggerInterface $logger,
+        EmailVerifier $emailVerifier,
+        TranslatorInterface $translator,
+    ): Response {
         $id = $request->query->get('id');
 
         if (null === $id) {
@@ -150,14 +140,14 @@ class RegistrationController extends AbstractController
         }
 
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
 
             return $this->redirectToRoute('app_patient_register');
         }
 
-        $this->addFlash('success', $this->translator->trans('verified_message_mark'));
+        $this->addFlash('success', $translator->trans('verified_message_mark'));
 
         return $this->redirectToRoute('app_sign_in');
     }
