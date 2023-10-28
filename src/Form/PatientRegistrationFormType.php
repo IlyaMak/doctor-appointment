@@ -28,7 +28,6 @@ class PatientRegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'label' => $this->translator->trans('name_label'),
-                    'mapped' => false,
                     'label_attr' => ['for' => 'name'],
                     'attr' => [
                         'placeholder' => 'name',

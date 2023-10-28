@@ -14,9 +14,16 @@
 			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>
 		{% endfor %}
 
-		{{ form_start(registrationTypeForm) }}
-		{{form_widget(registrationTypeForm.type)}}
-		{{ form_end(registrationTypeForm) }}
+		<div class="mt-2">
+			<form action="{{ path('app_patient_register') }}" method="POST">
+				<input id="patient" class="form-check-input" type="radio" onchange="this.form.submit()" {{ app.request.get('_route') == 'app_patient_register' ? "checked" : "" }}>
+				<label for="patient">{{ 'patient_user_label'|trans }}</label>
+			</form>
+			<form class="mt-1" action="{{ path('app_doctor_register') }}" method="POST">
+				<input id="doctor" class="form-check-input" type="radio" onchange="this.form.submit()" {{ app.request.get('_route') == 'app_doctor_register' ? "checked" : "" }}>
+				<label for="doctor">{{ 'doctor_user_label'|trans }}</label>
+			</form>
+		</div>
 
 		{{ form_errors(registrationForm) }}
 
