@@ -7,7 +7,7 @@ use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-use App\Service\RegistrationService as ServiceRegistrationService;
+use App\Service\RegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,49 +30,49 @@ class RegistrationController extends AbstractController
         #[Autowire(param: 'is_required_email_verification')]
         private bool $isEmailVerificationRequired,
         private TranslatorInterface $translator,
-        private ServiceRegistrationService $registrationService,
-        private EmailVerifier $emailVerifier
+        private EmailVerifier $emailVerifier,
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private EntityManagerInterface $entityManager,
+        private UserAuthenticatorInterface $authenticatorManager,
+        #[Autowire(env: 'EMAIL_ADDRESS')]
+        private string $emailAddress,
+        #[Autowire(service: 'security.authenticator.form_login.main')]
+        private FormLoginAuthenticator $authenticator
     ) {
     }
 
     #[Route('/patient-register', name: 'app_patient_register')]
     public function register(
-        Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        UserAuthenticatorInterface $authenticatorManager,
-        #[Autowire(service: 'security.authenticator.form_login.main')]
-        FormLoginAuthenticator $authenticator,
-        #[Autowire(env: 'EMAIL_ADDRESS')]
-        string $emailAddress
+        Request $request
     ): Response {
         $user = new User();
         $form = $this->createForm(PatientRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->registrationService->setBasicUserProperties(
+            $registrationService = new RegistrationService(
+                $this->emailVerifier,
+                $this->emailAddress,
+                $this->translator
+            );
+
+            $registrationService->setBasicUserProperties(
                 $form,
                 $user,
-                $userPasswordHasher,
+                $this->userPasswordHasher,
                 $request
             );
 
             $user->setRoles([User::ROLE_PATIENT]);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             if ($this->isEmailVerificationRequired) {
-                $this->registrationService->sendEmailConfirmation(
-                    $this->emailVerifier,
-                    $user,
-                    $emailAddress,
-                    $this->translator
-                );
+                $registrationService->sendEmailConfirmation($user);
                 return $this->render('security/register_success.html.twig');
             } else {
-                $authenticatorManager->authenticateUser($user, $authenticator, $request);
+                $this->authenticatorManager->authenticateUser($user, $this->authenticator, $request);
                 return $this->redirectToRoute('patient_book_an_appointment');
             }
         }
@@ -84,24 +84,23 @@ class RegistrationController extends AbstractController
 
     #[Route('/doctor-register', name: 'app_doctor_register')]
     public function doctorRegister(
-        Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        UserAuthenticatorInterface $authenticatorManager,
-        #[Autowire(service: 'security.authenticator.form_login.main')]
-        FormLoginAuthenticator $authenticator,
-        #[Autowire(env: 'EMAIL_ADDRESS')]
-        string $emailAddress
+        Request $request
     ): Response {
         $user = new User();
         $form = $this->createForm(DoctorRegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->registrationService->setBasicUserProperties(
+            $registrationService = new RegistrationService(
+                $this->emailVerifier,
+                $this->emailAddress,
+                $this->translator
+            );
+
+            $registrationService->setBasicUserProperties(
                 $form,
                 $user,
-                $userPasswordHasher,
+                $this->userPasswordHasher,
                 $request
             );
 
@@ -114,19 +113,14 @@ class RegistrationController extends AbstractController
             $user->setAvatarPath($localAvatarPath);
             $user->setRoles([User::ROLE_DOCTOR]);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             if ($this->isEmailVerificationRequired) {
-                $this->registrationService->sendEmailConfirmation(
-                    $this->emailVerifier,
-                    $user,
-                    $emailAddress,
-                    $this->translator
-                );
+                $registrationService->sendEmailConfirmation($user);
                 return $this->render('security/register_success.html.twig');
             } else {
-                $authenticatorManager->authenticateUser($user, $authenticator, $request);
+                $this->authenticatorManager->authenticateUser($user, $this->authenticator, $request);
                 return $this->redirectToRoute('schedule');
             }
         }
@@ -142,7 +136,7 @@ class RegistrationController extends AbstractController
         $id = $request->query->get('id');
 
         if (null === $id) {
-            $logger->error('User id is not exists');
+            $logger->error('User ID cannot be null');
 
             return $this->redirectToRoute('app_patient_register');
         }
@@ -150,7 +144,7 @@ class RegistrationController extends AbstractController
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            $logger->error('User is not exists');
+            $logger->error("A user with ID $id does not exist");
 
             return $this->redirectToRoute('app_patient_register');
         }

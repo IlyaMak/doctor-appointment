@@ -13,7 +13,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationService
 {
-    public static function setBasicUserProperties(
+    public function __construct(
+        private EmailVerifier $emailVerifier,
+        private string $emailAddress,
+        private TranslatorInterface $translator,
+    ) {
+    }
+
+    public function setBasicUserProperties(
         FormInterface $form,
         User $user,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -25,25 +32,22 @@ class RegistrationService
         $user->setLanguage($request->getLocale());
     }
 
-    public static function sendEmailConfirmation(
-        EmailVerifier $emailVerifier,
+    public function sendEmailConfirmation(
         User $user,
-        string $emailAddress,
-        TranslatorInterface $translator
     ): void {
-        $emailVerifier->sendEmailConfirmation(
+        $this->emailVerifier->sendEmailConfirmation(
             'app_verify_email',
             $user,
             (new TemplatedEmail())
-                ->from(new Address($emailAddress, $translator->trans('doctor_appointment_bot_name')))
+                ->from(new Address($this->emailAddress, $this->translator->trans('doctor_appointment_bot_name')))
                 ->to($user->getEmail())
-                ->subject($translator->trans('email_confirmation_subject'))
+                ->subject($this->translator->trans('email_confirmation_subject'))
                 ->htmlTemplate('security/confirmation_email.html.twig')
                 ->context([
-                    'emailHeader' => $translator->trans('email_header'),
-                    'emailDescription' => $translator->trans('confirmation_email_description'),
-                    'emailLink' => $translator->trans('confirm_email_link'),
-                    'expireLinkDescription' => $translator->trans('expire_link_description'),
+                    'emailHeader' => $this->translator->trans('email_header'),
+                    'emailDescription' => $this->translator->trans('confirmation_email_description'),
+                    'emailLink' => $this->translator->trans('confirm_email_link'),
+                    'expireLinkDescription' => $this->translator->trans('expire_link_description'),
                 ])
         );
     }
