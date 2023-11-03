@@ -649,6 +649,10 @@
         <source>sign_out_label</source>
         <target>Sign out</target>
       </trans-unit>
+      <trans-unit id="CDHKz6W" resname="personal_account_label">
+        <source>personal_account_label</source>
+        <target>Personal account</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
