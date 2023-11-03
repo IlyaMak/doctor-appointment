@@ -5,7 +5,7 @@
 			GitHub
 		</a>
 		<div class="d-flex align-items-center">
-			{% if is_granted('ROLE_USER') %}
+			{% if is_granted('IS_AUTHENTICATED') %}
 				<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_sign_out') }}">
 					{{ 'sign_out_label'|trans }}
 				</a>
