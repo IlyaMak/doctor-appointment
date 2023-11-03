@@ -13,22 +13,116 @@
 {% endblock %}
 
 {% block body %}
-	<div class="text-center">
-		<h1>{{ 'make_appointment_label'|trans }}</h1>
-		<div class="pt-5 d-flex flex-column align-items-center">
-			<a class="btn btn-primary btn-lg" href="{{ path('app_patient_register') }}">
-				{{ 'registration_label'|trans }}
-			</a>
-			<a class="mt-4 btn btn-primary btn-lg" href="{{ path('app_sign_in') }}">
-				{{ 'sign_in_label'|trans }}
-			</a>
+	<div class="modal fade" id="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body text-center">
+					<img class="w-100 zoomedInImage" alt={{ 'zoomed_in_image_alt'|trans }}>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="position-absolute bottom-0 w-100 bg-dark text-center">
-		<a href="{{ path('contact') }}">
-			<button class="btn btn-lg btn-outline-light my-5">
-				{{ 'contact_label'|trans }}
-			</button>
+
+	<div class="text-center mt-5">
+		<div class="container m-auto d-sm-flex d-block align-items-center justify-content-center">
+			<h1 class="me-sm-4">{{ 'index_main_header'|trans }}</h1>
+			<img style="width: 220px" src="/assets/images/doctor-appointment.png" alt={{ 'doctor_appointment_image_alt'|trans }}>
+		</div>
+		<div class="mt-5">
+			<h2>{{ 'index_patient_header'|trans }}</h2>
+			<div class="container mt-5">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_register_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage pointer" style="width: 200px" src="/assets/images/registration.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_registration_alt'|trans }}>
+					</div>
+				</div>
+				<div class="my-4 col-md-6">
+					<img style="width:40px" src="/assets/images/arrow-down.svg" alt={{ 'index_arrow_alt'|trans }}>
+				</div>
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_choose_specialty_doctor_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/choose-specialty-doctor.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_choose_specialty_doctor_alt'|trans }}>
+					</div>
+				</div>
+				<div class="my-4 col-md-6">
+					<img style="width:40px" src="/assets/images/arrow-down.svg" alt={{ 'index_arrow_alt'|trans }}>
+				</div>
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_select_date_time_header'|trans}}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/book-appointment.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_book_appointment_alt'|trans }}>
+					</div>
+				</div>
+				<div class="my-4 col-md-6">
+					<img style="width:40px" src="/assets/images/arrow-down.svg" alt={{ 'index_arrow_alt'|trans }}>
+				</div>
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_make_payment_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/confirm-appointment.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_payment_header'|trans }}>
+					</div>
+				</div>
+			</div>
+			<h5 class="mt-5 mx-4">{{ 'index_patient_result_header'|trans }}</h5>
+		</div>
+		<div class="mt-5">
+			<h2>{{ 'index_doctor_header'|trans }}</h2>
+			<div class="container mt-5">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_register_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/registration.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_registration_alt'|trans }}>
+					</div>
+				</div>
+				<div class="my-4 col-md-6">
+					<img style="width:40px" src="/assets/images/arrow-down.svg" alt={{ 'index_arrow_alt'|trans }}>
+				</div>
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_schedule_form_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/several-slots.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_schedule_form_alt'|trans }}>
+					</div>
+				</div>
+				<div class="my-4 col-md-6">
+					<img style="width:40px" src="/assets/images/arrow-down.svg" alt={{ 'index_arrow_alt'|trans }}>
+				</div>
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<h5>{{ 'index_create_single_slot_header'|trans }}</h5>
+					</div>
+					<div class="col-md-6 mt-4 mt-md-0">
+						<img class="guideImage" style="width: 200px" src="/assets/images/single-slot.svg" data-bs-toggle="modal" data-bs-target="#modal" alt={{ 'index_create_single_slot_alt'|trans }}>
+					</div>
+				</div>
+			</div>
+			<h5 class="mt-5 mx-4">{{ 'index_doctor_result_header'|trans }}</h5>
+		</div>
+	</div>
+	<div class="mt-5 w-100 bg-dark text-center">
+		<a href="{{ path('contact') }}" class="btn btn-lg btn-outline-light my-5">
+			{{ 'contact_label'|trans }}
 		</a>
+		<div class="pb-3">
+			<a class="btn text-white" href="https://github.com/IlyaMak" target="_blank">
+				{{ 'made_by_message'|trans }}
+			</a>
+		</div>
 	</div>
 {% endblock %}

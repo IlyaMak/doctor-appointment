@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="NUKuJfp" resname="make_appointment_label">
-        <source>make_appointment_label</source>
-        <target>Make an appointment!</target>
-      </trans-unit>
       <trans-unit id="70zPRy3" resname="sign_in_label">
         <source>sign_in_label</source>
         <target>Sign In</target>
@@ -71,7 +67,7 @@
       </trans-unit>
       <trans-unit id="gJHo8d5" resname="registration_label">
         <source>registration_label</source>
-        <target>Registration</target>
+        <target>Sign up</target>
       </trans-unit>
       <trans-unit id="yV4A7gd" resname="have_account_label">
         <source>have_account_label</source>
@@ -564,6 +560,90 @@
       <trans-unit id="sc1hq9L" resname="doctor_user_label">
         <source>doctor_user_label</source>
         <target>I am a doctor</target>
+      </trans-unit>
+      <trans-unit id="KEFO.J9" resname="index_main_header">
+        <source>index_main_header</source>
+        <target>Easy Doctor Appointments</target>
+      </trans-unit>
+      <trans-unit id="GwXWQt5" resname="zoomed_in_image_alt">
+        <source>zoomed_in_image_alt</source>
+        <target>zoomed image</target>
+      </trans-unit>
+      <trans-unit id="X.Lcp45" resname="doctor_appointment_image_alt">
+        <source>doctor_appointment_image_alt</source>
+        <target>doctor appointment</target>
+      </trans-unit>
+      <trans-unit id="oUy1ko3" resname="index_patient_header">
+        <source>index_patient_header</source>
+        <target>For a patient</target>
+      </trans-unit>
+      <trans-unit id="6MAiCDs" resname="index_doctor_header">
+        <source>index_doctor_header</source>
+        <target>For a doctor</target>
+      </trans-unit>
+      <trans-unit id="2XUAkQs" resname="index_register_header">
+        <source>index_register_header</source>
+        <target>1. Register</target>
+      </trans-unit>
+      <trans-unit id="PbIXdGE" resname="index_registration_alt">
+        <source>index_registration_alt</source>
+        <target>registration</target>
+      </trans-unit>
+      <trans-unit id="EJGS7iP" resname="index_arrow_alt">
+        <source>index_arrow_alt</source>
+        <target>arrow</target>
+      </trans-unit>
+      <trans-unit id="eqHvqWK" resname="index_choose_specialty_doctor_header">
+        <source>index_choose_specialty_doctor_header</source>
+        <target>2. Choose a specialty and a doctor</target>
+      </trans-unit>
+      <trans-unit id="_hSna.." resname="index_choose_specialty_doctor_alt">
+        <source>index_choose_specialty_doctor_alt</source>
+        <target>choose specialty and doctor</target>
+      </trans-unit>
+      <trans-unit id="0Doy6gH" resname="index_select_date_time_header">
+        <source>index_select_date_time_header</source>
+        <target>3. Select date and time</target>
+      </trans-unit>
+      <trans-unit id="K8i97EG" resname="index_book_appointment_alt">
+        <source>index_book_appointment_alt</source>
+        <target>book appointment</target>
+      </trans-unit>
+      <trans-unit id="MFZFnYh" resname="index_make_payment_header">
+        <source>index_make_payment_header</source>
+        <target>4. Make a payment</target>
+      </trans-unit>
+      <trans-unit id="RB36Y5C" resname="index_payment_header">
+        <source>index_payment_header</source>
+        <target>confirm appointment</target>
+      </trans-unit>
+      <trans-unit id="e7XoM7R" resname="index_patient_result_header">
+        <source>index_patient_result_header</source>
+        <target>Done! You will get an email the day before your appointment</target>
+      </trans-unit>
+      <trans-unit id="Rn6e.d1" resname="index_schedule_form_header">
+        <source>index_schedule_form_header</source>
+        <target>2.1. Create a whole schedule with a single form</target>
+      </trans-unit>
+      <trans-unit id="2_tWMZ1" resname="index_schedule_form_alt">
+        <source>index_schedule_form_alt</source>
+        <target>create slots form</target>
+      </trans-unit>
+      <trans-unit id="yXIZCsN" resname="index_create_single_slot_header">
+        <source>index_create_single_slot_header</source>
+        <target>2.2. Or by adding single slots</target>
+      </trans-unit>
+      <trans-unit id="S6IuMl7" resname="index_create_single_slot_alt">
+        <source>index_create_single_slot_alt</source>
+        <target>add single slot</target>
+      </trans-unit>
+      <trans-unit id="yqZZyxi" resname="index_doctor_result_header">
+        <source>index_doctor_result_header</source>
+        <target>Done! You will get an email every time a patient books your free slots</target>
+      </trans-unit>
+      <trans-unit id="SPPVS6m" resname="made_by_message">
+        <source>made_by_message</source>
+        <target>Made by Illia Makarski</target>
       </trans-unit>
     </body>
   </file>

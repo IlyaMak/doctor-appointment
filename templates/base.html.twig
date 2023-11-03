@@ -16,7 +16,9 @@
 		{% endblock %}
 	</head>
 	<body>
-		{% include "common/language_selector.html.twig" %}
-		{% block body %}{% endblock %}
+		{% include "common/header.html.twig" %}
+		<div class="blockBody">
+			{% block body %}{% endblock %}
+		</div>
 	</body>
 </html>

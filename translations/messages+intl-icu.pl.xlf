@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="NUKuJfp" resname="make_appointment_label">
-        <source>make_appointment_label</source>
-        <target>Umów się na wizytę!</target>
-      </trans-unit>
       <trans-unit id="70zPRy3" resname="sign_in_label">
         <source>sign_in_label</source>
         <target>Zaloguj Się</target>
@@ -71,7 +67,7 @@
       </trans-unit>
       <trans-unit id="gJHo8d5" resname="registration_label">
         <source>registration_label</source>
-        <target>Zarejestrować Się</target>
+        <target>Zarejestruj się</target>
       </trans-unit>
       <trans-unit id="yV4A7gd" resname="have_account_label">
         <source>have_account_label</source>
@@ -560,6 +556,90 @@
       <trans-unit id="sc1hq9L" resname="doctor_user_label">
         <source>doctor_user_label</source>
         <target>Jestem lekarzem</target>
+      </trans-unit>
+      <trans-unit id="KEFO.J9" resname="index_main_header">
+        <source>index_main_header</source>
+        <target>Łatwe Wizyty Lekarskie</target>
+      </trans-unit>
+      <trans-unit id="GwXWQt5" resname="zoomed_in_image_alt">
+        <source>zoomed_in_image_alt</source>
+        <target>powiększony obraz</target>
+      </trans-unit>
+      <trans-unit id="X.Lcp45" resname="doctor_appointment_image_alt">
+        <source>doctor_appointment_image_alt</source>
+        <target>wizyta lekarska</target>
+      </trans-unit>
+      <trans-unit id="oUy1ko3" resname="index_patient_header">
+        <source>index_patient_header</source>
+        <target>Dla pacjenta</target>
+      </trans-unit>
+      <trans-unit id="6MAiCDs" resname="index_doctor_header">
+        <source>index_doctor_header</source>
+        <target>Dla lekarza</target>
+      </trans-unit>
+      <trans-unit id="2XUAkQs" resname="index_register_header">
+        <source>index_register_header</source>
+        <target>1. Rejestr</target>
+      </trans-unit>
+      <trans-unit id="PbIXdGE" resname="index_registration_alt">
+        <source>index_registration_alt</source>
+        <target>rejestracja</target>
+      </trans-unit>
+      <trans-unit id="EJGS7iP" resname="index_arrow_alt">
+        <source>index_arrow_alt</source>
+        <target>strzałka</target>
+      </trans-unit>
+      <trans-unit id="eqHvqWK" resname="index_choose_specialty_doctor_header">
+        <source>index_choose_specialty_doctor_header</source>
+        <target>2. Wybierz specjalność i lekarza</target>
+      </trans-unit>
+      <trans-unit id="_hSna.." resname="index_choose_specialty_doctor_alt">
+        <source>index_choose_specialty_doctor_alt</source>
+        <target>wybierz specjalność i lekarza</target>
+      </trans-unit>
+      <trans-unit id="0Doy6gH" resname="index_select_date_time_header">
+        <source>index_select_date_time_header</source>
+        <target>3. Wybierz datę i godzinę</target>
+      </trans-unit>
+      <trans-unit id="K8i97EG" resname="index_book_appointment_alt">
+        <source>index_book_appointment_alt</source>
+        <target>zarezerwuj wizytę</target>
+      </trans-unit>
+      <trans-unit id="MFZFnYh" resname="index_make_payment_header">
+        <source>index_make_payment_header</source>
+        <target>4. Dokonać płatność</target>
+      </trans-unit>
+      <trans-unit id="RB36Y5C" resname="index_payment_header">
+        <source>index_payment_header</source>
+        <target>potwierdzenie wizyta</target>
+      </trans-unit>
+      <trans-unit id="e7XoM7R" resname="index_patient_result_header">
+        <source>index_patient_result_header</source>
+        <target>Gotowe! Otrzymasz wiadomość email dzień przed umówionym wizytę</target>
+      </trans-unit>
+      <trans-unit id="Rn6e.d1" resname="index_schedule_form_header">
+        <source>index_schedule_form_header</source>
+        <target>2.1. Stwórz całego harmonogramu za pomocą jednego formularza</target>
+      </trans-unit>
+      <trans-unit id="2_tWMZ1" resname="index_schedule_form_alt">
+        <source>index_schedule_form_alt</source>
+        <target>tworzenie slotów z formularzem</target>
+      </trans-unit>
+      <trans-unit id="yXIZCsN" resname="index_create_single_slot_header">
+        <source>index_create_single_slot_header</source>
+        <target>2.2. Lub dodaj pojedynczych slotów</target>
+      </trans-unit>
+      <trans-unit id="S6IuMl7" resname="index_create_single_slot_alt">
+        <source>index_create_single_slot_alt</source>
+        <target>dodaj pojedynczych slotów</target>
+      </trans-unit>
+      <trans-unit id="yqZZyxi" resname="index_doctor_result_header">
+        <source>index_doctor_result_header</source>
+        <target>Gotowe! Otrzymasz wiadomość email za każdym razem, gdy pacjent zarezerwuje wolne miejsca</target>
+      </trans-unit>
+      <trans-unit id="SPPVS6m" resname="made_by_message">
+        <source>made_by_message</source>
+        <target>Wykonane przez Illia Makarski</target>
       </trans-unit>
     </body>
   </file>
