@@ -7,7 +7,7 @@
     <body>
       <trans-unit id="70zPRy3" resname="sign_in_label">
         <source>sign_in_label</source>
-        <target>Zaloguj Się</target>
+        <target>Zaloguj się</target>
       </trans-unit>
       <trans-unit id="x.nKtVT" resname="contact_label">
         <source>contact_label</source>
@@ -561,7 +561,7 @@
         <source>index_main_header</source>
         <target>Łatwe Wizyty Lekarskie</target>
       </trans-unit>
-      <trans-unit id="GwXWQt5" resname="zoomed_in_image_alt">
+      <trans-unit id="wi76ITo" resname="zoomed_in_image_alt">
         <source>zoomed_in_image_alt</source>
         <target>powiększony obraz</target>
       </trans-unit>
@@ -640,6 +640,10 @@
       <trans-unit id="SPPVS6m" resname="made_by_message">
         <source>made_by_message</source>
         <target>Wykonane przez Illia Makarski</target>
+      </trans-unit>
+      <trans-unit id="TtOYNUr" resname="sign_out_label">
+        <source>sign_out_label</source>
+        <target>Wyjść</target>
       </trans-unit>
     </body>
   </file>
