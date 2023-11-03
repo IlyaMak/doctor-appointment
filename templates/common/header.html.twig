@@ -9,13 +9,17 @@
 				<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_sign_out') }}">
 					{{ 'sign_out_label'|trans }}
 				</a>
+				<a class="link-dark link-underline link-underline-opacity-0 me-2" href="{{ is_granted('ROLE_PATIENT') ? path('patient_appointment_history') : path('schedule') }}">
+					{{ 'personal_account_label'|trans }}
+				</a>
+			{% else %}
+				<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_sign_in') }}">
+					{{ 'sign_in_label'|trans }}
+				</a>
+				<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_patient_register') }}">
+					{{ 'registration_label'|trans }}
+				</a>
 			{% endif %}
-			<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_sign_in') }}">
-				{{ 'sign_in_label'|trans }}
-			</a>
-			<a class="link-dark link-underline link-underline-opacity-0 me-3" href="{{ path('app_patient_register') }}">
-				{{ 'registration_label'|trans }}
-			</a>
 			<div class="dropdown">
 				<a class="pe-auto" data-bs-toggle="dropdown" role="button">
 					<img class="border border-black language-flag" src={{ '/assets/images/' ~ app.request.locale ~ '.svg' }} alt="language">
