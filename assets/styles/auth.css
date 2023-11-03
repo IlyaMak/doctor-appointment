@@ -3,7 +3,7 @@ html, body {
 }
 
 .blockBody {
-    height: calc(100% - 66px); /* 66px is a toolbar space */
+    height: calc(100% - 66px); /* 66px is a toolbar height */
     display: flex;
     justify-content: center;
     align-items: center;
