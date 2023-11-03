@@ -561,9 +561,9 @@
         <source>index_main_header</source>
         <target>Łatwe Wizyty Lekarskie</target>
       </trans-unit>
-      <trans-unit id="GwXWQt5" resname="increased_image_alt">
-        <source>increased_image_alt</source>
-        <target>zwiększony obraz</target>
+      <trans-unit id="GwXWQt5" resname="zoomed_in_image_alt">
+        <source>zoomed_in_image_alt</source>
+        <target>powiększony obraz</target>
       </trans-unit>
       <trans-unit id="X.Lcp45" resname="doctor_appointment_image_alt">
         <source>doctor_appointment_image_alt</source>
