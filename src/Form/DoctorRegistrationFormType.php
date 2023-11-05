@@ -41,6 +41,7 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                     'constraints' => [
                         new File([
                             'mimeTypesMessage' => $this->translator->trans('avatar_constraint_message'),
+                            'maxSize' => '1M'
                         ]),
                     ],
                 ],
