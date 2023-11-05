@@ -7,6 +7,7 @@ use App\Form\DoctorRegistrationFormType;
 use App\Form\PatientRegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\ImageKitService;
 use App\Service\RegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -32,7 +33,8 @@ class RegistrationController extends AbstractController
         private UserAuthenticatorInterface $authenticatorManager,
         #[Autowire(service: 'security.authenticator.form_login.main')]
         private FormLoginAuthenticator $authenticator,
-        private RegistrationService $registrationService
+        private RegistrationService $registrationService,
+        private LoggerInterface $logger
     ) {
     }
 
@@ -72,7 +74,10 @@ class RegistrationController extends AbstractController
 
     #[Route('/doctor-register', name: 'app_doctor_register')]
     public function doctorRegister(
-        Request $request
+        Request $request,
+        ImageKitService $imageKitService,
+        #[Autowire(param: 'is_enabled_imagekit')]
+        bool $isImageKitEnabled
     ): Response {
         $user = new User();
         $form = $this->createForm(DoctorRegistrationFormType::class, $user);
@@ -89,9 +94,25 @@ class RegistrationController extends AbstractController
             $avatarData = $form->get('avatar')->getData();
             $currentDateTime = new DateTime();
             $currentDate = $currentDateTime->format('YmdHisv');
-            $localAvatarPath = $currentDate . ' . ' . $avatarData->getClientOriginalExtension();
-            $avatarData->move('resources', $localAvatarPath);
-            $user->setAvatarPath($localAvatarPath);
+            $localAvatarPath = $currentDate . '.' . $avatarData->getClientOriginalExtension();
+            if ($isImageKitEnabled) {
+                $imageURL = $imageKitService->uploadImage($localAvatarPath, $avatarData);
+                if ($imageURL->error !== null) {
+                    /** @var object{message: string, help: string} */
+                    $imageURLError = $imageURL->error;
+                    $this->logger->error($imageURLError->message);
+                    $avatarData->move('resources', $localAvatarPath);
+                    $user->setAvatarPath('/resources/' . $localAvatarPath);
+                } else {
+                    /** @var object{url: string} */
+                    $imageURLResult = $imageURL->result;
+                    $user->setAvatarPath($imageURLResult->url);
+                }
+            } else {
+                $avatarData->move('resources', $localAvatarPath);
+                $user->setAvatarPath('/resources/' . $localAvatarPath);
+            }
+
             $user->setRoles([User::ROLE_DOCTOR]);
 
             $this->entityManager->persist($user);
@@ -115,14 +136,13 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(
         Request $request,
         UserRepository $userRepository,
-        LoggerInterface $logger,
         EmailVerifier $emailVerifier,
         TranslatorInterface $translator,
     ): Response {
         $id = $request->query->get('id');
 
         if (null === $id) {
-            $logger->error('User ID cannot be null');
+            $this->logger->error('User ID cannot be null');
 
             return $this->redirectToRoute('app_patient_register');
         }
@@ -130,7 +150,7 @@ class RegistrationController extends AbstractController
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            $logger->error("A user with ID $id does not exist");
+            $this->logger->error("A user with ID $id does not exist");
 
             return $this->redirectToRoute('app_patient_register');
         }
