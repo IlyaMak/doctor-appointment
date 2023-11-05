@@ -58,6 +58,9 @@
 				{{ form_label(registrationForm.avatar) }}
 				<div class="mt-1">{{ form_widget(registrationForm.avatar) }}</div>
 			</div>
+			<div class="list-group-item list-group-item-danger px-2 rounded">
+				{{ form_errors(registrationForm.avatar) }}
+			</div>
 		{% endif %}
 		<button type="submit" class="w-100 btn btn-lg btn-primary mt-3">
 			{{ 'registration_label'|trans }}
