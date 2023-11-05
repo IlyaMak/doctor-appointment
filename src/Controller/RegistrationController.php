@@ -101,14 +101,14 @@ class RegistrationController extends AbstractController
                     /** @var object{message: string, help: string} */
                     $imageURLError = $imageURL->error;
                     $this->logger->error($imageURLError->message);
-                    $avatarData->move('resources', $localAvatarPath);
-                    $user->setAvatarPath('/resources/' . $localAvatarPath);
                 } else {
                     /** @var object{url: string} */
                     $imageURLResult = $imageURL->result;
                     $user->setAvatarPath($imageURLResult->url);
                 }
-            } else {
+            }
+
+            if ($user->getAvatarPath() === null) {
                 $avatarData->move('resources', $localAvatarPath);
                 $user->setAvatarPath('/resources/' . $localAvatarPath);
             }
