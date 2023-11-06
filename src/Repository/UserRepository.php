@@ -81,10 +81,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $doctors = $queryBuilder
             ->leftJoin(ScheduleSlot::class, 's', Join::WITH, 's.doctor = u')
             ->andWhere('u.specialty = :specialty')
+            ->andWhere('u.isApproved = :isApproved')
             ->andWhere('s.start > :currentDate')
             ->andWhere('s.patient IS NULL')
             ->setParameter('currentDate', $currentDate)
             ->setParameter('specialty', $specialty)
+            ->setParameter('isApproved', true)
             ->getQuery()
             ->getResult()
         ;

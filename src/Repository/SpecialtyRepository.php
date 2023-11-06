@@ -61,10 +61,11 @@ class SpecialtyRepository extends ServiceEntityRepository
         $specialties = $queryBuilder
             ->leftJoin('sp.doctors', 'u')
             ->leftJoin(ScheduleSlot::class, 's', Join::WITH, 's.doctor = u')
-            ->andWhere('u.isApproved = true')
+            ->andWhere('u.isApproved = :isApproved')
             ->andWhere('s.start > :currentDate')
             ->andWhere('s.patient IS NULL')
             ->setParameter('currentDate', $currentDate)
+            ->setParameter('isApproved', true)
             ->getQuery()
             ->getResult()
         ;
