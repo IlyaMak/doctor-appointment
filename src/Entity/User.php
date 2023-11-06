@@ -15,6 +15,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_DOCTOR = 'ROLE_DOCTOR';
     public const ROLE_PATIENT = 'ROLE_PATIENT';
+    public const IS_DOCTOR_PROFILE_APPROVED = true;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

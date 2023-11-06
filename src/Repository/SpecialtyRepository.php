@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ScheduleSlot;
 use App\Entity\Specialty;
+use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -65,7 +66,7 @@ class SpecialtyRepository extends ServiceEntityRepository
             ->andWhere('s.start > :currentDate')
             ->andWhere('s.patient IS NULL')
             ->setParameter('currentDate', $currentDate)
-            ->setParameter('isApproved', true)
+            ->setParameter('isApproved', User::IS_DOCTOR_PROFILE_APPROVED)
             ->getQuery()
             ->getResult()
         ;

@@ -86,7 +86,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere('s.patient IS NULL')
             ->setParameter('currentDate', $currentDate)
             ->setParameter('specialty', $specialty)
-            ->setParameter('isApproved', true)
+            ->setParameter('isApproved', User::IS_DOCTOR_PROFILE_APPROVED)
             ->getQuery()
             ->getResult()
         ;
