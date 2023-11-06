@@ -104,7 +104,11 @@ class ScheduleSlotService
                 $slotEndDate = clone $slotStartDate;
                 $slotEndDate->modify('+' . $patientServiceInterval . ' minutes');
 
-                if (0 !== count($this->scheduleSlotRepository->findOverlapDate($slotStartDate, $slotEndDate))) {
+                if (0 !== count($this->scheduleSlotRepository->findOverlapDate(
+                    $slotStartDate,
+                    $slotEndDate,
+                    $user
+                ))) {
                     throw new RuntimeException('A date overlap has occured. Please correct the form values.');
                 }
 
@@ -145,7 +149,11 @@ class ScheduleSlotService
         $endDate = clone $startDate;
         $endDate = $endDate->modify("+$duration minutes");
 
-        if (0 !== count($this->scheduleSlotRepository->findOverlapDate($startDate, $endDate))) {
+        if (0 !== count($this->scheduleSlotRepository->findOverlapDate(
+            $startDate,
+            $endDate,
+            $user
+        ))) {
             throw new RuntimeException('A date overlap has occured. Please correct the form values.');
         }
 
