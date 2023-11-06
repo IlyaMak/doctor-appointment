@@ -52,6 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 2, options: ['default' => 'en', 'fixed' => true])]
     private string $language = 'en';
 
+    // This field is used to identify the doctor whose public data have been approved
     #[ORM\Column(options: ['default' => false])]
     private bool $isApproved = false;
 
