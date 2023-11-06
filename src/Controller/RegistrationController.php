@@ -77,7 +77,9 @@ class RegistrationController extends AbstractController
         Request $request,
         ImageKitService $imageKitService,
         #[Autowire(param: 'is_enabled_imagekit')]
-        bool $isImageKitEnabled
+        bool $isImageKitEnabled,
+        #[Autowire(param: 'is_doctor_profile_approved_by_default')]
+        bool $isDoctorProfileApprovedByDefault
     ): Response {
         $user = new User();
         $form = $this->createForm(DoctorRegistrationFormType::class, $user);
@@ -114,6 +116,7 @@ class RegistrationController extends AbstractController
             }
 
             $user->setRoles([User::ROLE_DOCTOR]);
+            $user->setIsApproved($isDoctorProfileApprovedByDefault);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

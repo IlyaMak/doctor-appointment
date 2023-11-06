@@ -2,6 +2,7 @@
 parameters:
     is_required_email_verification: '%env(bool:IS_EMAIL_VERIFICATION_REQUIRED)%'
     is_enabled_imagekit: '%env(bool:IS_IMAGEKIT_ENABLED)%'
+    is_doctor_profile_approved_by_default: '%env(bool:IS_DOCTOR_PROFILE_APPROVED_BY_DEFAULT)%'
 framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
