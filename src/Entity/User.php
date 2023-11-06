@@ -15,6 +15,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_DOCTOR = 'ROLE_DOCTOR';
     public const ROLE_PATIENT = 'ROLE_PATIENT';
+    public const IS_DOCTOR_PROFILE_APPROVED = true;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -51,6 +52,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 2, options: ['default' => 'en', 'fixed' => true])]
     private string $language = 'en';
+
+    // This field is used to identify the doctor whose public data have been approved
+    #[ORM\Column(options: ['default' => false])]
+    private bool $isApproved = false;
 
     public function getId(): ?int
     {
@@ -179,6 +184,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLanguage(string $language): static
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function isIsApproved(): bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): static
+    {
+        $this->isApproved = $isApproved;
 
         return $this;
     }
