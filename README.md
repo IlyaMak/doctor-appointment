@@ -18,6 +18,7 @@ Patients can book doctor appointments and pay for them using Stripe.
 - Nodejs v20.5.1
 - Npm v9.8.0
 - Stripe Account
+- Stripe CLI v1.17.2
 
 ### Steps:
 1. `git clone https://github.com/IlyaMak/doctor-appointment`
@@ -50,7 +51,7 @@ Docker compose v2.21.0
 ## How to use crontab:
 1. To see the list of all cron jobs of the current user: `crontab -l`
 2. To make a written cron job: `crontab crontab/crontab`
-3. To test commands with a crontab on local machine use the full path of the "bin/console" command (/home/illia/Projects/doctor-appointment/bin/console): `php /home/illia/Projects/doctor-appointment/bin/console app:send-email-appoinment-reminder`
+3. To test commands with a crontab on local machine use the full path of the "bin/console" command (/home/username/Projects/doctor-appointment/bin/console): `php /home/username/Projects/doctor-appointment/bin/console app:send-email-appoinment-reminder`
 
 ## To generate translations (example with english):
 `symfony console translation:extract en --force --domain=messages`
