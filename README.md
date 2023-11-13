@@ -23,10 +23,11 @@ Patients can book doctor appointments and pay for them using Stripe.
 ### Steps:
 1. `git clone https://github.com/IlyaMak/doctor-appointment`
 2. `cp .env.example .env`
-3. update DATABASE_URL and stripe in the .env
+3. update DATABASE_URL, STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env
 4. `sh build/build.sh`
 5. `symfony server:start`
 6. open http://localhost:84
+7. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
 
 ## Installation with docker compose
 
@@ -39,7 +40,7 @@ Docker compose v2.21.0
 3. update STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env
 3. `sh build/build-docker.sh`
 4. open http://localhost:84
-5. to use stripe run `stripe login` to log in on the stripe service (if you are not log in yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
+5. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
 
 ## How to send email:
 1. `php bin/console messenger:stats` - Show the message count for one or more transports
