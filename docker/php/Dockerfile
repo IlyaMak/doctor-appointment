@@ -25,6 +25,7 @@ RUN { \
     } > /usr/local/etc/php/conf.d/php-opocache-cfg.ini
 
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.5/install.sh | bash
+RUN curl -L https://github.com/stripe/stripe-cli/releases/download/v1.18.0/stripe_1.18.0_linux_x86_64.tar.gz | tar zxvf - -C /usr/local/bin stripe
 
 RUN . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
