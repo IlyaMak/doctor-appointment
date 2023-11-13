@@ -26,8 +26,8 @@ Patients can book doctor appointments and pay for them using Stripe.
 3. update DATABASE_URL, STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env
 4. `sh build/build.sh`
 5. `symfony server:start`
-6. open http://localhost:84
-7. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
+6. open http://localhost:8000
+7. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `stripe listen --forward-to localhost:8000/api/payment/stripe`
 
 ## Installation with docker compose
 
