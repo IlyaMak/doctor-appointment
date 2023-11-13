@@ -18,6 +18,7 @@ services:
       - '8084:80'
 
   php:
+    container_name: php
     build:
       context: ./docker/php
     ports:
