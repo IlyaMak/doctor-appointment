@@ -1,5 +1,6 @@
 if [ -f '.env' ]
 then
+    docker compose down
     docker compose build
     docker compose up -d
     docker compose exec php composer install

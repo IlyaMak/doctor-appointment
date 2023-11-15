@@ -34,3 +34,4 @@ yarn-error.log
 ###< friendsofphp/php-cs-fixer ###
 cghooks.lock
 
+docker-compose.override.yml
