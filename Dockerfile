@@ -1,7 +1,8 @@
 FROM php:8.2-fpm
 
 RUN apt-get update -y \
-    && apt-get install -y nginx
+    && apt-get install -y nginx \
+    && apt-get -y install git
 
 RUN mkdir /usr/local/nvm
 
@@ -16,12 +17,12 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install intl \
     && apt-get remove libicu-dev icu-devtools -y
 RUN { \
-        echo 'opcache.memory_consumption=128'; \
-        echo 'opcache.interned_strings_buffer=8'; \
-        echo 'opcache.max_accelerated_files=4000'; \
-        echo 'opcache.revalidate_freq=2'; \
-        echo 'opcache.fast_shutdown=1'; \
-        echo 'opcache.enable_cli=1'; \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.interned_strings_buffer=8'; \
+    echo 'opcache.max_accelerated_files=4000'; \
+    echo 'opcache.revalidate_freq=2'; \
+    echo 'opcache.fast_shutdown=1'; \
+    echo 'opcache.enable_cli=1'; \
     } > /usr/local/etc/php/conf.d/php-opocache-cfg.ini
 
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.5/install.sh | bash
@@ -36,16 +37,18 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
-    
+
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-COPY nginx-site.conf /etc/nginx/sites-enabled/default
-COPY entrypoint.sh /etc/entrypoint.sh
+COPY docker/php/nginx-site.conf /etc/nginx/sites-enabled/default
+COPY docker/php/entrypoint.sh /etc/entrypoint.sh
 
 RUN chmod +x /etc/entrypoint.sh
 
 WORKDIR /var/www/doctor-appointment
+
+COPY --chown=www-data:www-data . .
 
 EXPOSE 80 443
 
