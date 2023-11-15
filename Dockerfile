@@ -48,7 +48,19 @@ RUN chmod +x /etc/entrypoint.sh
 
 WORKDIR /var/www/doctor-appointment
 
+# prevent the reinstallation of vendors at every changes in the source code
+COPY --link composer.* symfony.* package-lock.json package.json ./
+RUN set -eux; \
+	composer install --no-cache --no-dev --no-scripts; \
+    npm i;
+
 COPY --chown=www-data:www-data . .
+
+RUN set -eux; \
+	mkdir -p var/cache var/log; \
+    touch .env; \
+    chown -R www-data:www-data var; \
+    npm run build;
 
 EXPOSE 80 443
 
