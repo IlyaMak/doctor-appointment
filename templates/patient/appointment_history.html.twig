@@ -8,51 +8,55 @@
 	<div class="text-center mt-4">
 		<h2>{{ 'appointment_history_label'|trans }}</h2>
 	</div>
+	{% set currentDate = date() %}
+
 	<div class="d-sm-none d-flex mt-4 flex-column align-items-center ">
 		{% for scheduleSlot in scheduleSlots %}
-			<div>
-				<b>{{ 'specialty_label'|trans }}:</b>
-				{{ scheduleSlot.doctor.specialty.name }}
+			<div class="text-center w-100 py-2 {{ scheduleSlot.end < currentDate ? "bg-secondary-subtle" : "" }}">
+				<div>
+					<b>{{ 'specialty_label'|trans }}:</b>
+					{{ scheduleSlot.doctor.specialty.name }}
+				</div>
+				<div><b>{{ 'doctor_label'|trans }}:</b>
+					{{ scheduleSlot.doctor.name }}
+				</div>
+				<div><b>{{ 'date_label'|trans }}:</b>
+					{{ scheduleSlot.start|date("Y-m-d") }}
+				</div>
+				<div><b>{{ 'time_label'|trans }}:</b>
+					{{ scheduleSlot.start|date("H:i") }}
+					-
+					{{ scheduleSlot.end|date("H:i") }}
+				</div>
+				<div><b>{{ 'price_label'|trans }}:</b>
+					{{ scheduleSlot.price }}$
+				</div>
+				<div><b>{{ 'status_label'|trans }}:</b>
+					{% if scheduleSlot.status.value == constant('App\\Enum\\Status::Paid').value %}
+						<span class="text-success">{{ 'paid_label'|trans }}
+							-
+						</span>
+					{% else %}
+						<span class="text-danger">{{ 'not_paid_label'|trans }}
+							-
+						</span>
+					{% endif %}
+					{% if scheduleSlot.status.value == constant('App\\Enum\\Status::NotPaid').value %}
+						<a href="{{ scheduleSlot.paymentLink }}" class="link-underline link-underline-opacity-0" target="_blank">
+							{{ 'pay_label'|trans }}
+						</a>
+					{% else %}
+						<a href="{{ path('patient_show_appointment_details', {'slotId': scheduleSlot.id}) }}" class="link-underline link-underline-opacity-0" target="_blank">
+							{{ 'view_label'|trans }}
+						</a>
+					{% endif %}
+				</div>
 			</div>
-			<div><b>{{ 'doctor_label'|trans }}:</b>
-				{{ scheduleSlot.doctor.name }}
-			</div>
-			<div><b>{{ 'date_label'|trans }}:</b>
-				{{ scheduleSlot.start|date("Y-m-d") }}
-			</div>
-			<div><b>{{ 'time_label'|trans }}:</b>
-				{{ scheduleSlot.start|date("H:i") }}
-				-
-				{{ scheduleSlot.end|date("H:i") }}
-			</div>
-			<div><b>{{ 'price_label'|trans }}:</b>
-				{{ scheduleSlot.price }}$
-			</div>
-			<div><b>{{ 'status_label'|trans }}:</b>
-				{% if scheduleSlot.status.value == constant('App\\Enum\\Status::Paid').value %}
-					<span>{{ 'paid_label'|trans }}
-						-
-					</span>
-				{% else %}
-					<span>{{ 'not_paid_label'|trans }}
-						-
-					</span>
-				{% endif %}
-				{% if scheduleSlot.status.value == constant('App\\Enum\\Status::NotPaid').value %}
-					<a href="{{ scheduleSlot.paymentLink }}" class="link-underline link-underline-opacity-0" target="_blank">
-						{{ 'pay_label'|trans }}
-					</a>
-				{% else %}
-					<a href="{{ path('patient_show_appointment_details', {'slotId': scheduleSlot.id}) }}" class="link-underline link-underline-opacity-0" target="_blank">
-						{{ 'view_label'|trans }}
-					</a>
-				{% endif %}
-			</div>
-			<hr class="w-100">
+			<hr class="w-100 m-0">
 		{% endfor %}
 	</div>
 	<div class="d-sm-block d-none col-xl-6 col-md-7 mt-5 mx-auto">
-		<table class="table bg-white">
+		<table class="table">
 			<thead class="bg-light">
 				<tr>
 					<th>{{ 'specialty_label'|trans }}</th>
@@ -74,7 +78,7 @@
 				{% endif %}
 
 				{% for scheduleSlot in scheduleSlots %}
-					<tr>
+					<tr class={{ scheduleSlot.end < currentDate ? "table-secondary" : "" }}>
 						<td>
 							{{ scheduleSlot.doctor.specialty.name }}
 						</td>
@@ -94,9 +98,9 @@
 						</td>
 						<td>
 							{% if scheduleSlot.status.value == constant('App\\Enum\\Status::Paid').value %}
-								<div>{{ 'paid_label'|trans }}</div>
+								<div class="text-success">{{ 'paid_label'|trans }}</div>
 							{% else %}
-								<div>{{ 'not_paid_label'|trans }}</div>
+								<div class="text-danger">{{ 'not_paid_label'|trans }}</div>
 							{% endif %}
 						</td>
 						<td>
