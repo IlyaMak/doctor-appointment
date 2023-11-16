@@ -42,6 +42,10 @@ Docker compose v2.21.0
 4. open http://localhost:84
 5. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
 
+## Build and push production docker container
+1. `docker build -t user/doctor-appointment:v1.0.0 -f Dockerfile .`
+2. `docker push user/doctor-appointment:v1.0.0`
+
 ## How to send email if emails are sent asynchronously:
 1. `php bin/console messenger:stats` - Show the message count for one or more transports
 2. `php bin/console messenger:consume -vv` - Consume messages ('-vv' to see logs about consumed messages)
