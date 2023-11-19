@@ -24,6 +24,8 @@ services:
       - '84:80'
     volumes:
       - ./:/var/www/doctor-appointment
+    env_file:
+      - .env
 
 volumes:
   database_data:
