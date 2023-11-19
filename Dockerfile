@@ -62,6 +62,8 @@ RUN set -eux; \
     chown -R www-data:www-data var; \
     npm run build;
 
+RUN apt-get -y install cron
+
 EXPOSE 80 443
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]

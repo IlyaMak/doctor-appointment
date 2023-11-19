@@ -47,6 +47,8 @@ RUN chmod +x /etc/entrypoint.sh
 
 WORKDIR /var/www/doctor-appointment
 
+RUN apt-get -y install cron
+
 EXPOSE 80 443
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
