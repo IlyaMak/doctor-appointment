@@ -1,3 +1,5 @@
 # https://crontab.guru/
 
-0 12 * * * php bin/console app:send-email-appoinment-reminder
+* 12 * * * /usr/local/bin/php /var/www/doctor-appointment/bin/console app:send-email-appoinment-reminder >> /proc/1/fd/1
+
+# An empty line is required at the end of this file for a valid cron file.
