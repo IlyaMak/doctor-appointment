@@ -653,6 +653,10 @@
         <source>personal_account_label</source>
         <target>Personal account</target>
       </trans-unit>
+      <trans-unit id="zR_9fEj" resname="verification_exception_message">
+        <source>verification_exception_message</source>
+        <target>Your email is not verified!</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

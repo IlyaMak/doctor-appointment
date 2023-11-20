@@ -649,6 +649,10 @@
         <source>personal_account_label</source>
         <target>Prywatny gabinet</target>
       </trans-unit>
+      <trans-unit id="zR_9fEj" resname="verification_exception_message">
+        <source>verification_exception_message</source>
+        <target>Twój email nie jest zweryfikowany!</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
