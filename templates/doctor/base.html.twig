@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    {% include 'common/doctor_menu.html.twig' %}
-    {% block content %}
-    
-    {% endblock %}
+	{% include 'common/doctor_menu.html.twig' %}
+	{% if not app.user.isApproved %}
+		<h6 class="w-50 mt-4 mx-auto text-center alert alert-warning">
+			{{ 'not_approved_doctor_header'|trans }}
+		</h6>
+	{% endif %}
+	{% block content %}{% endblock %}
 {% endblock %}

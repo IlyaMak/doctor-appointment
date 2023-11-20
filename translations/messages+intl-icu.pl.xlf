@@ -653,6 +653,10 @@
         <source>verification_exception_message</source>
         <target>Twój email nie jest zweryfikowany!</target>
       </trans-unit>
+      <trans-unit id="NM8XfsA" resname="not_approved_doctor_header">
+        <source>not_approved_doctor_header</source>
+        <target>Twój profil musi przejść moderację, zanim stanie się widoczny dla pacjentów. Skontaktuj się z administratorem, aby przyspieszyć proces moderacji.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
