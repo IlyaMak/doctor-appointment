@@ -657,6 +657,10 @@
         <source>verification_exception_message</source>
         <target>Your email is not verified!</target>
       </trans-unit>
+      <trans-unit id="NM8XfsA" resname="not_approved_doctor_header">
+        <source>not_approved_doctor_header</source>
+        <target>Your profile must pass moderation before becoming visible to patients. Contact the administrator to speed up the moderation process.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
