@@ -657,6 +657,10 @@
         <source>not_approved_doctor_header</source>
         <target>Twój profil musi przejść moderację, zanim stanie się widoczny dla pacjentów. Skontaktuj się z administratorem, aby przyspieszyć proces moderacji.</target>
       </trans-unit>
+      <trans-unit id="ZyOA6Hu" resname="overlap_exception_message">
+        <source>overlap_exception_message</source>
+        <target>Nastąpiło nałożenie się dat. Proszę popraw wartości formularza.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
