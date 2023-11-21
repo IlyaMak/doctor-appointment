@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
+use App\Model\ScheduleSlotModel;
 use App\Repository\ScheduleSlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -11,21 +12,18 @@ use DatePeriod;
 use DateInterval;
 use RuntimeException;
 use DateTime;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ScheduleSlotService
 {
-    private EntityManagerInterface $entityManager;
-    private ScheduleSlotRepository $scheduleSlotRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, ScheduleSlotRepository $scheduleSlotRepository)
-    {
-        $this->entityManager = $entityManager;
-        $this->scheduleSlotRepository = $scheduleSlotRepository;
+    public function __construct(
+        private ScheduleSlotRepository $scheduleSlotRepository,
+        private TranslatorInterface $translator,
+    ) {
     }
 
-    public function generateScheduleSlots(FormInterface $form, User $user): int
+    public function setScheduleSlotModel(FormInterface $form): ScheduleSlotModel
     {
-        $scheduleSlotsCount = 0;
         /** @var DateTime */
         $formStartDate = $form->get('startDate')->getData();
         /** @var DateTime */
@@ -40,6 +38,7 @@ class ScheduleSlotService
         $startLunchTime = $form->get('startLunchTime')->getData();
         /** @var DateTime */
         $endLunchTime = $form->get('endLunchTime')->getData();
+        /** @var array<string, ?string> */
         $excludedDaysOfTheWeek = [
             'monday' => $form->get('monday')->getData(),
             'tuesday' => $form->get('tuesday')->getData(),
@@ -51,6 +50,36 @@ class ScheduleSlotService
         ];
         /** @var float */
         $price = $form->get('price')->getData();
+
+        return new ScheduleSlotModel(
+            $formStartDate,
+            $formEndDate,
+            $formStartTime,
+            $formEndTime,
+            $patientServiceInterval,
+            $startLunchTime,
+            $endLunchTime,
+            $excludedDaysOfTheWeek,
+            $price
+        );
+    }
+
+    /** @return ScheduleSlot[] */
+    public function generateScheduleSlots(
+        ScheduleSlotModel $formScheduleSlotModel,
+        User $user
+    ): array {
+        $scheduleSlots = [];
+        $formStartDate = $formScheduleSlotModel->startDate;
+        $formStartTime = $formScheduleSlotModel->startTime;
+        $formEndDate = $formScheduleSlotModel->endDate;
+        $formEndTime = $formScheduleSlotModel->endTime;
+        $excludedDaysOfTheWeek = $formScheduleSlotModel->excludedDaysOfTheWeek;
+        $startLunchTime = $formScheduleSlotModel->startLunchTime;
+        $endLunchTime = $formScheduleSlotModel->endLunchTime;
+        $patientServiceInterval = $formScheduleSlotModel->patientServiceInterval;
+        $price = $formScheduleSlotModel->price;
+
         $formStartDate->setTime(
             (int) $formStartTime->format('H'),
             (int) $formStartTime->format('i'),
@@ -61,7 +90,7 @@ class ScheduleSlotService
         );
         for (
             $day = 0;
-            $day < $formStartDate->diff($formEndDate)->d + 1;
+            $day < (int) $formStartDate->diff($formEndDate)->format('%a') + 1;
             ++$day
         ) {
             $currentDate = clone $formStartDate;
@@ -109,7 +138,7 @@ class ScheduleSlotService
                     $slotEndDate,
                     $user
                 ))) {
-                    throw new RuntimeException('A date overlap has occured. Please correct the form values.');
+                    throw new RuntimeException($this->translator->trans('overlap_exception_message'));
                 }
 
                 if ($slotEndDate > $endCurrentDate) {
@@ -122,16 +151,24 @@ class ScheduleSlotService
                     $price,
                     $user,
                 );
-                $this->entityManager->persist($scheduleSlot);
-                ++$scheduleSlotsCount;
+
+                $scheduleSlots[] = $scheduleSlot;
             }
         }
-        $this->entityManager->flush();
 
-        return $scheduleSlotsCount;
+        return $scheduleSlots;
     }
 
-    public function addNewAppointment(FormInterface $form, User $user): int
+    /** @param ScheduleSlot[] $scheduleSlots */
+    public function saveScheduleSlots(array $scheduleSlots, EntityManagerInterface $entityManager): void
+    {
+        foreach ($scheduleSlots as $scheduleSlot) {
+            $entityManager->persist($scheduleSlot);
+        }
+        $entityManager->flush();
+    }
+
+    public function addNewAppointment(FormInterface $form, User $user, EntityManagerInterface $entityManager): int
     {
         $scheduleSlotsCount = 0;
         /** @var DateTime */
@@ -154,7 +191,7 @@ class ScheduleSlotService
             $endDate,
             $user
         ))) {
-            throw new RuntimeException('A date overlap has occured. Please correct the form values.');
+            throw new RuntimeException($this->translator->trans('overlap_exception_message'));
         }
 
         $scheduleSlot = new ScheduleSlot(
@@ -163,10 +200,10 @@ class ScheduleSlotService
             $price,
             $user,
         );
-        $this->entityManager->persist($scheduleSlot);
+        $entityManager->persist($scheduleSlot);
         ++$scheduleSlotsCount;
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return $scheduleSlotsCount;
     }
