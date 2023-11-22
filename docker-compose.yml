@@ -18,14 +18,12 @@ services:
       - '8084:80'
 
   php:
-    build:
+    build: 
       context: ./docker/php
     ports:
       - '84:80'
     volumes:
       - ./:/var/www/doctor-appointment
-    env_file:
-      - .env
 
 volumes:
   database_data:
