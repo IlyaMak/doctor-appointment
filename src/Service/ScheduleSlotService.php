@@ -19,6 +19,7 @@ class ScheduleSlotService
     public function __construct(
         private ScheduleSlotRepository $scheduleSlotRepository,
         private TranslatorInterface $translator,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
@@ -160,15 +161,15 @@ class ScheduleSlotService
     }
 
     /** @param ScheduleSlot[] $scheduleSlots */
-    public function saveScheduleSlots(array $scheduleSlots, EntityManagerInterface $entityManager): void
+    public function saveScheduleSlots(array $scheduleSlots): void
     {
         foreach ($scheduleSlots as $scheduleSlot) {
-            $entityManager->persist($scheduleSlot);
+            $this->entityManager->persist($scheduleSlot);
         }
-        $entityManager->flush();
+        $this->entityManager->flush();
     }
 
-    public function addNewAppointment(FormInterface $form, User $user, EntityManagerInterface $entityManager): int
+    public function addNewAppointment(FormInterface $form, User $user): int
     {
         $scheduleSlotsCount = 0;
         /** @var DateTime */
@@ -200,10 +201,10 @@ class ScheduleSlotService
             $price,
             $user,
         );
-        $entityManager->persist($scheduleSlot);
+        $this->entityManager->persist($scheduleSlot);
         ++$scheduleSlotsCount;
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         return $scheduleSlotsCount;
     }

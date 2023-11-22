@@ -32,7 +32,6 @@ class DoctorController extends CustomAbstractController
 {
     public function __construct(
         private TranslatorInterface $translator,
-        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -97,7 +96,7 @@ class DoctorController extends CustomAbstractController
                         ),
                     );
                 } else {
-                    $scheduleSlotService->saveScheduleSlots($scheduleSlots, $this->entityManager);
+                    $scheduleSlotService->saveScheduleSlots($scheduleSlots);
                     $this->addFlash(
                         'success',
                         $this->translator->trans(
@@ -133,8 +132,7 @@ class DoctorController extends CustomAbstractController
             try {
                 $scheduleSlotCount = $scheduleSlotService->addNewAppointment(
                     $form,
-                    $this->getUserCustom(),
-                    $this->entityManager
+                    $this->getUserCustom()
                 );
                 if (0 === $scheduleSlotCount) {
                     $this->addFlash(

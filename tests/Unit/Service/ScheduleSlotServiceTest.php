@@ -8,6 +8,7 @@ use App\Model\ScheduleSlotModel;
 use App\Repository\ScheduleSlotRepository;
 use App\Service\ScheduleSlotService;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,14 +18,17 @@ class ScheduleSlotServiceTest extends TestCase
     private ScheduleSlotService $scheduleSlotService;
     private ScheduleSlotRepository $scheduleSlotRepository;
     private TranslatorInterface $translator;
+    private EntityManagerInterface $entityManager;
 
     protected function setUp(): void
     {
         $this->scheduleSlotRepository = $this->createMock(ScheduleSlotRepository::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->scheduleSlotService = new ScheduleSlotService(
             $this->scheduleSlotRepository,
-            $this->translator
+            $this->translator,
+            $this->entityManager
         );
     }
 
