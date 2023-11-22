@@ -42,6 +42,23 @@ Docker compose v2.21.0
 4. open http://localhost:84
 5. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
 
+## Content of the php production service
+php:
+  image: user/doctor-appointment:v1.0.0
+  ports:
+    - '84:80'
+  env_file:
+    - .env
+
+## Content of the php local service
+php:
+  build: 
+    context: ./docker/php
+  ports:
+    - '84:80'
+  volumes:
+    - ./:/var/www/doctor-appointment
+
 ## Build and push production docker container
 1. `docker build -t user/doctor-appointment:v1.0.0 -f Dockerfile .`
 2. `docker push user/doctor-appointment:v1.0.0`
