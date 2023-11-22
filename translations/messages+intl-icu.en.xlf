@@ -661,6 +661,10 @@
         <source>not_approved_doctor_header</source>
         <target>Your profile must pass moderation before becoming visible to patients. Contact the administrator to speed up the moderation process.</target>
       </trans-unit>
+      <trans-unit id="ZyOA6Hu" resname="overlap_exception_message">
+        <source>overlap_exception_message</source>
+        <target>A date overlap has occured. Please correct the form values.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

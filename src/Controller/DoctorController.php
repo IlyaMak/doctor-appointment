@@ -30,8 +30,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted(User::ROLE_DOCTOR, message: 'You don\'t have permissions to access this resource')]
 class DoctorController extends CustomAbstractController
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
+    public function __construct(
+        private TranslatorInterface $translator,
+    ) {
     }
 
     #[Route('/schedule', name: 'schedule')]
@@ -70,14 +71,22 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/set-working-hours-form', name: 'set_working_hours_form')]
-    public function setWorkingHoursForm(Request $request, ScheduleSlotService $scheduleSlotService): Response
-    {
+    public function setWorkingHoursForm(
+        Request $request,
+        ScheduleSlotService $scheduleSlotService,
+    ): Response {
         $form = $this->createForm(ScheduleSlotGenerationFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $scheduleSlotCount = $scheduleSlotService->generateScheduleSlots($form, $this->getUserCustom());
+                $scheduleSlotModel = $scheduleSlotService->setScheduleSlotModel($form);
+                $scheduleSlots = $scheduleSlotService->generateScheduleSlots(
+                    $scheduleSlotModel,
+                    $this->getUserCustom()
+                );
+                $scheduleSlotCount = count($scheduleSlots);
+
                 if (0 === $scheduleSlotCount) {
                     $this->addFlash(
                         'warning',
@@ -87,6 +96,7 @@ class DoctorController extends CustomAbstractController
                         ),
                     );
                 } else {
+                    $scheduleSlotService->saveScheduleSlots($scheduleSlots);
                     $this->addFlash(
                         'success',
                         $this->translator->trans(
@@ -120,7 +130,10 @@ class DoctorController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $scheduleSlotCount = $scheduleSlotService->addNewAppointment($form, $this->getUserCustom());
+                $scheduleSlotCount = $scheduleSlotService->addNewAppointment(
+                    $form,
+                    $this->getUserCustom()
+                );
                 if (0 === $scheduleSlotCount) {
                     $this->addFlash(
                         'warning',
