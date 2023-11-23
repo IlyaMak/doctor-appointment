@@ -35,6 +35,7 @@ class DoctorRegistrationFormType extends PatientRegistrationFormType
                 [
                     'label' => $this->translator->trans('avatar_label'),
                     'mapped' => false,
+                    'required' => false,
                     'attr' => [
                         'class' => 'form-control',
                     ],
