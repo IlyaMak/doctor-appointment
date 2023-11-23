@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="yHWVj5C" resname="avatar_label">
         <source>avatar_label</source>
-        <target>Upload avatar</target>
+        <target>Upload avatar (optional)</target>
       </trans-unit>
       <trans-unit id="h9T3lqK" resname="avatar_constraint_message">
         <source>avatar_constraint_message</source>
