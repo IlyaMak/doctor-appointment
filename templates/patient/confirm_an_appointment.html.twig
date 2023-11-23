@@ -26,7 +26,7 @@
 							</td>
 							<td>
 								<div class="d-flex flex-column align-items-center">
-									<img style="width:50px" src={{ slot.doctor.avatarPath }} alt="avatar">
+									<img style="width:50px" src={{ slot.doctor.avatarPath ?? "/assets/images/default-doctor.svg" }} alt="avatar">
 									{{ slot.doctor.name }}
 								</div>
 							</td>

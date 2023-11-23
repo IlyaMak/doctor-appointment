@@ -92,27 +92,29 @@ class RegistrationController extends AbstractController
                 $request
             );
 
-            /** @var UploadedFile */
+            /** @var ?UploadedFile */
             $avatarData = $form->get('avatar')->getData();
-            $currentDateTime = new DateTime();
-            $currentDate = $currentDateTime->format('YmdHisv');
-            $localAvatarPath = $currentDate . '.' . $avatarData->getClientOriginalExtension();
-            if ($isImageKitEnabled) {
-                $imageURL = $imageKitService->uploadImage($localAvatarPath, $avatarData);
-                if ($imageURL->error !== null) {
-                    /** @var object{message: string, help: string} */
-                    $imageURLError = $imageURL->error;
-                    $this->logger->error($imageURLError->message);
-                } else {
-                    /** @var object{url: string} */
-                    $imageURLResult = $imageURL->result;
-                    $user->setAvatarPath($imageURLResult->url);
+            if ($avatarData) {
+                $currentDateTime = new DateTime();
+                $currentDate = $currentDateTime->format('YmdHisv');
+                $localAvatarPath = $currentDate . '.' . $avatarData->getClientOriginalExtension();
+                if ($isImageKitEnabled) {
+                    $imageURL = $imageKitService->uploadImage($localAvatarPath, $avatarData);
+                    if ($imageURL->error !== null) {
+                        /** @var object{message: string, help: string} */
+                        $imageURLError = $imageURL->error;
+                        $this->logger->error($imageURLError->message);
+                    } else {
+                        /** @var object{url: string} */
+                        $imageURLResult = $imageURL->result;
+                        $user->setAvatarPath($imageURLResult->url);
+                    }
                 }
-            }
 
-            if ($user->getAvatarPath() === null) {
-                $avatarData->move('resources', $localAvatarPath);
-                $user->setAvatarPath('/resources/' . $localAvatarPath);
+                if ($user->getAvatarPath() === null) {
+                    $avatarData->move('resources', $localAvatarPath);
+                    $user->setAvatarPath('/resources/' . $localAvatarPath);
+                }
             }
 
             $user->setRoles([User::ROLE_DOCTOR]);
