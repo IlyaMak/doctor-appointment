@@ -1,11 +1,11 @@
-{% extends 'security/base.html.twig' %}
+{% extends './base.html.twig' %}
 
 {% block title %}
 	{{ 'password_reset_email_sent_title'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex flex-column w-75">
+	<div class="w-75 mx-auto security-height d-flex flex-column justify-content-center">
 		<p>
 			{{ 'check_email_description'|trans }}
 			{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.

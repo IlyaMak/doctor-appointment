@@ -1,4 +1,4 @@
-{% extends 'security/base.html.twig' %}
+{% extends './base.html.twig' %}
 {% form_theme registrationForm 'common/form_errors.html.twig' %}
 
 {% block title %}
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="text-center d-flex flex-column justify-content-center align-items-center">
+	<div class="security-height text-center d-flex flex-column justify-content-center align-items-center">
 		<h1>{{ 'registration_label'|trans }}</h1>
 		{% for flash_error in app.flashes('verify_email_error') %}
 			<div class="mt-3 w-75 alert alert-danger" role="alert">{{ flash_error }}</div>

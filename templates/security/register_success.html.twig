@@ -1,11 +1,11 @@
-{% extends 'security/base.html.twig' %}
+{% extends './base.html.twig' %}
 
 {% block title %}
 	{{ 'success_registration_header'|trans }} | {{ 'app_name'|trans }}
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex flex-column align-items-center">
+	<div class="security-height text-center d-flex flex-column justify-content-center align-items-center">
 		<h2>{{ 'success_registration_header'|trans }}</h2>
 		<form action="{{path('app_sign_in')}}">
 			<button type="submit" class="btn btn-lg btn-primary">
