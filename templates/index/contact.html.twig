@@ -1,4 +1,4 @@
-{% extends 'security/base.html.twig' %}
+{% extends './base.html.twig' %}
 {% form_theme form 'common/form_errors.html.twig' %}
 
 {% block title %}
@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="text-center d-flex flex-column justify-content-center align-items-center">
+	<div class="security-height text-center d-flex flex-column justify-content-center align-items-center">
 		<h1>{{ 'contact_label'|trans }}</h1>
 		{{ form_start(form) }}
 		{% for flash_error in app.flashes('success') %}

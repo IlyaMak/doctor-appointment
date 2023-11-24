@@ -1,8 +1,5 @@
-.blockBody {
-    min-height: calc(100svh - 66px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.security-height {
+    min-height: calc(100svh - 66px); /* 66px is a toolbar height */
 }
 
 .security-form {

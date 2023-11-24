@@ -1,4 +1,4 @@
-{% extends 'security/base.html.twig' %}
+{% extends './base.html.twig' %}
 {% form_theme resetForm 'common/form_errors.html.twig' %}
 
 {% block title %}
@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex flex-column align-items-center">
+	<div class="security-height text-center d-flex flex-column justify-content-center align-items-center">
 		<h1>{{ 'reset_password_label'|trans }}</h1>
 		{{ form_start(resetForm) }}
 		{{ form_widget(resetForm.plainPassword) }}
