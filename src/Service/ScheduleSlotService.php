@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
 use App\Model\ScheduleSlotModel;
+use App\Repository\ScheduleSlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use DatePeriod;
@@ -14,7 +15,8 @@ use DateTime;
 class ScheduleSlotService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private ScheduleSlotRepository $scheduleSlotRepository
     ) {
     }
 
@@ -150,9 +152,7 @@ class ScheduleSlotService
     /** @param ScheduleSlot[] $scheduleSlots */
     public function saveScheduleSlots(array $scheduleSlots): void
     {
-        foreach ($scheduleSlots as $scheduleSlot) {
-            $this->entityManager->persist($scheduleSlot);
-        }
+        $this->scheduleSlotRepository->insertScheduleSlots($scheduleSlots);
         $this->entityManager->flush();
     }
 

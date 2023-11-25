@@ -5,6 +5,7 @@ namespace App\Tests\Unit\Service;
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
 use App\Model\ScheduleSlotModel;
+use App\Repository\ScheduleSlotRepository;
 use App\Service\ScheduleSlotService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,12 +15,15 @@ class ScheduleSlotServiceTest extends TestCase
 {
     private ScheduleSlotService $scheduleSlotService;
     private EntityManagerInterface $entityManager;
+    private ScheduleSlotRepository $scheduleSlotRepository;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->scheduleSlotRepository = $this->createMock(ScheduleSlotRepository::class);
         $this->scheduleSlotService = new ScheduleSlotService(
-            $this->entityManager
+            $this->entityManager,
+            $this->scheduleSlotRepository
         );
     }
 

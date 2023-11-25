@@ -75,6 +75,22 @@ class ScheduleSlotRepository extends ServiceEntityRepository
         return count($nativeQueryResult);
     }
 
+    /** @param ScheduleSlot[] $scheduleSlots */
+    public function insertScheduleSlots(array $scheduleSlots): void
+    {
+        $scheduleSlotInsertQueries = [];
+        foreach ($scheduleSlots as $scheduleSlot) {
+            $scheduleSlotInsertQueries[] =
+                "('{$scheduleSlot->getStart()->format('Y-m-d H:i:s')}', '{$scheduleSlot->getEnd()->format('Y-m-d H:i:s')}', {$scheduleSlot->getPrice()}, '{$scheduleSlot->getStatus()->value}', '{$scheduleSlot->getPaymentLink()}', '{$scheduleSlot->getRecommendation()}', {$scheduleSlot->getDoctor()->getId()}, null)";
+        }
+        $sqlValues = implode(',', $scheduleSlotInsertQueries);
+        $sql = 'INSERT INTO schedule_slot 
+            (start, end, price, status, payment_link, recommendation, doctor_id, patient_id) 
+            VALUES ' . $sqlValues;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->executeQuery();
+    }
+
     /**
      * @return ScheduleSlot[]
      */
