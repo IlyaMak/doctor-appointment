@@ -5,20 +5,15 @@ namespace App\Service;
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
 use App\Model\ScheduleSlotModel;
-use App\Repository\ScheduleSlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use DatePeriod;
 use DateInterval;
-use RuntimeException;
 use DateTime;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ScheduleSlotService
 {
     public function __construct(
-        private ScheduleSlotRepository $scheduleSlotRepository,
-        private TranslatorInterface $translator,
         private EntityManagerInterface $entityManager
     ) {
     }
@@ -134,14 +129,6 @@ class ScheduleSlotService
                 $slotEndDate = clone $slotStartDate;
                 $slotEndDate->modify('+' . $patientServiceInterval . ' minutes');
 
-                if (0 !== count($this->scheduleSlotRepository->findOverlapDate(
-                    $slotStartDate,
-                    $slotEndDate,
-                    $user
-                ))) {
-                    throw new RuntimeException($this->translator->trans('overlap_exception_message'));
-                }
-
                 if ($slotEndDate > $endCurrentDate) {
                     continue;
                 }
@@ -169,9 +156,8 @@ class ScheduleSlotService
         $this->entityManager->flush();
     }
 
-    public function addNewAppointment(FormInterface $form, User $user): int
+    public function generateScheduleSlot(FormInterface $form, User $user): ScheduleSlot
     {
-        $scheduleSlotsCount = 0;
         /** @var DateTime */
         $formDate = $form->get('date')->getData();
         /** @var DateTime */
@@ -187,25 +173,31 @@ class ScheduleSlotService
         $endDate = clone $startDate;
         $endDate = $endDate->modify("+$duration minutes");
 
-        if (0 !== count($this->scheduleSlotRepository->findOverlapDate(
-            $startDate,
-            $endDate,
-            $user
-        ))) {
-            throw new RuntimeException($this->translator->trans('overlap_exception_message'));
-        }
-
         $scheduleSlot = new ScheduleSlot(
             $startDate,
             $endDate,
             $price,
             $user,
         );
-        $this->entityManager->persist($scheduleSlot);
-        ++$scheduleSlotsCount;
 
-        $this->entityManager->flush();
+        return $scheduleSlot;
+    }
 
-        return $scheduleSlotsCount;
+    /** @return string[] */
+    public function generateScheduleSlotQueries(ScheduleSlot $scheduleSlot): array
+    {
+        $startDateString = $scheduleSlot->getStart()->format('Y-m-d H:i:s');
+        $endDateString = $scheduleSlot->getEnd()->format('Y-m-d H:i:s');
+
+        $scheduleSlotQueries[] =
+            "SELECT *
+            FROM schedule_slot as slot
+            WHERE (('$startDateString' >= slot.start AND '$startDateString' <= slot.end AND '$endDateString' >= slot.start AND '$endDateString' <= slot.end) -- [{  }]
+            OR ('$startDateString' < slot.start AND '$endDateString' > slot.start AND '$endDateString' <= slot.end) -- {  [   }] 
+            OR ('$startDateString' >= slot.start AND '$startDateString' < slot.end AND '$endDateString' > slot.end) -- [{   ]  }
+            OR ('$startDateString' < slot.start AND '$endDateString' > slot.end)) -- { [ ] }
+            AND (slot.doctor_id = {$scheduleSlot->getDoctor()->getId()})";
+
+        return $scheduleSlotQueries;
     }
 }
