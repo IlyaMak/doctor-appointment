@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DateTime;
 use DateTimeImmutable;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @extends ServiceEntityRepository<ScheduleSlot>
@@ -52,29 +53,26 @@ class ScheduleSlotRepository extends ServiceEntityRepository
     //    }
 
     /**
-     * @return ScheduleSlot[]
+     * @param string[] $scheduleSlotQueries
      */
-    public function findOverlapDate(DateTime $startDate, DateTime $endDate, User $doctor): array
+    public function findOverlapScheduleSlot(array $scheduleSlotQueries): int
     {
-        /** @var ScheduleSlot[] $entities */
-        $entities = $this->getEntityManager()->createQuery(
-            'SELECT slot 
-                 FROM App\Entity\ScheduleSlot slot
-                 WHERE ((:startDate >= slot.start AND :startDate <= slot.end AND :endDate >= slot.start AND :endDate <= slot.end) -- [{  }]
-                 OR (:startDate < slot.start AND :endDate > slot.start AND :endDate <= slot.end) -- {  [   }] 
-                 OR (:startDate >= slot.start AND :startDate < slot.end AND :endDate > slot.end) -- [{   ]  }
-                 OR (:startDate < slot.start AND :endDate > slot.end)) -- { [ ] }
-                 AND (slot.doctor = :doctor)'
-        )
-        ->setParameters([
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'doctor' => $doctor
-        ])
-        ->getResult()
-        ;
+        $nativeQueryResult = [];
 
-        return $entities;
+        if (count($scheduleSlotQueries) !== 0) {
+            $sql = implode(' UNION ', $scheduleSlotQueries);
+
+            $rsm = new ResultSetMapping();
+            $rsm->addScalarResult('start', 'start');
+            $rsm->addScalarResult('end', 'end');
+            $rsm->addScalarResult('doctor_id', 'doctor_id');
+
+            $nativeQuery = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+            /** @var string[] */
+            $nativeQueryResult = $nativeQuery->getResult();
+        }
+
+        return count($nativeQueryResult);
     }
 
     /**
