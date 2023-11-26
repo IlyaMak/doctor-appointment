@@ -90,7 +90,10 @@ class DoctorController extends CustomAbstractController
                 $scheduleSlotQueries = [];
 
                 foreach ($scheduleSlots as $scheduleSlot) {
-                    $scheduleSlotQueries = $scheduleSlotService->generateScheduleSlotQueries($scheduleSlot);
+                    $scheduleSlotQueries[] =
+                        $scheduleSlotService->generateOverlappedScheduleSlotQuery(
+                            $scheduleSlot
+                        );
                 }
 
                 if (0 !== $this->scheduleSlotRepository->findOverlapScheduleSlot(
@@ -110,7 +113,7 @@ class DoctorController extends CustomAbstractController
                         ),
                     );
                 } else {
-                    $scheduleSlotService->saveScheduleSlots($scheduleSlots);
+                    $this->scheduleSlotRepository->insertScheduleSlots($scheduleSlots);
                     $this->addFlash(
                         'success',
                         $this->translator->trans(
@@ -149,7 +152,10 @@ class DoctorController extends CustomAbstractController
                     $this->getUserCustom()
                 );
 
-                $scheduleSlotQuery = $scheduleSlotService->generateScheduleSlotQueries($scheduleSlot);
+                $scheduleSlotQuery[] =
+                    $scheduleSlotService->generateOverlappedScheduleSlotQuery(
+                        $scheduleSlot
+                    );
 
                 if (0 !== $this->scheduleSlotRepository->findOverlapScheduleSlot(
                     $scheduleSlotQuery
@@ -157,7 +163,8 @@ class DoctorController extends CustomAbstractController
                     throw new RuntimeException($this->translator->trans('overlap_exception_message'));
                 }
 
-                $scheduleSlotService->saveScheduleSlots([$scheduleSlot]);
+                $this->scheduleSlotRepository->insertScheduleSlots([$scheduleSlot]);
+
                 $this->addFlash(
                     'success',
                     $this->translator->trans(
