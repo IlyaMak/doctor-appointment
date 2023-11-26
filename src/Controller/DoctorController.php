@@ -32,11 +32,12 @@ class DoctorController extends CustomAbstractController
 {
     public function __construct(
         private TranslatorInterface $translator,
+        private ScheduleSlotRepository $scheduleSlotRepository,
     ) {
     }
 
     #[Route('/schedule', name: 'schedule')]
-    public function schedule(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
+    public function schedule(Request $request): Response
     {
         $requestedDay = CalendarHelper::getMondayOfTheRequestedDate($request);
 
@@ -45,7 +46,7 @@ class DoctorController extends CustomAbstractController
 
         $availableHours = ScheduleHelper::getAvailableTimeHours();
 
-        $scheduleSlots = $scheduleSlotRepository->findDoctorSlotsByRange(
+        $scheduleSlots = $this->scheduleSlotRepository->findDoctorSlotsByRange(
             $this->getUserCustom(),
             $requestedDay,
             $requestedDay->modify('monday next week'),
@@ -85,6 +86,22 @@ class DoctorController extends CustomAbstractController
                     $scheduleSlotModel,
                     $this->getUserCustom()
                 );
+
+                $scheduleSlotQueries = [];
+
+                foreach ($scheduleSlots as $scheduleSlot) {
+                    $scheduleSlotQueries[] =
+                        $scheduleSlotService->generateOverlappedScheduleSlotQuery(
+                            $scheduleSlot
+                        );
+                }
+
+                if (0 !== $this->scheduleSlotRepository->findOverlapScheduleSlot(
+                    $scheduleSlotQueries
+                )) {
+                    throw new RuntimeException($this->translator->trans('overlap_exception_message'));
+                }
+
                 $scheduleSlotCount = count($scheduleSlots);
 
                 if (0 === $scheduleSlotCount) {
@@ -96,7 +113,7 @@ class DoctorController extends CustomAbstractController
                         ),
                     );
                 } else {
-                    $scheduleSlotService->saveScheduleSlots($scheduleSlots);
+                    $this->scheduleSlotRepository->insertScheduleSlots($scheduleSlots);
                     $this->addFlash(
                         'success',
                         $this->translator->trans(
@@ -130,27 +147,31 @@ class DoctorController extends CustomAbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $scheduleSlotCount = $scheduleSlotService->addNewAppointment(
+                $scheduleSlot = $scheduleSlotService->generateScheduleSlot(
                     $form,
                     $this->getUserCustom()
                 );
-                if (0 === $scheduleSlotCount) {
-                    $this->addFlash(
-                        'warning',
-                        $this->translator->trans(
-                            'no_slots_added_message_mark',
-                            ['scheduleSlotCount' => $scheduleSlotCount]
-                        )
+
+                $scheduleSlotQuery[] =
+                    $scheduleSlotService->generateOverlappedScheduleSlotQuery(
+                        $scheduleSlot
                     );
-                } else {
-                    $this->addFlash(
-                        'success',
-                        $this->translator->trans(
-                            'added_slots_message_mark',
-                            ['scheduleSlotCount' => $scheduleSlotCount]
-                        ),
-                    );
+
+                if (0 !== $this->scheduleSlotRepository->findOverlapScheduleSlot(
+                    $scheduleSlotQuery
+                )) {
+                    throw new RuntimeException($this->translator->trans('overlap_exception_message'));
                 }
+
+                $this->scheduleSlotRepository->insertScheduleSlots([$scheduleSlot]);
+
+                $this->addFlash(
+                    'success',
+                    $this->translator->trans(
+                        'added_slots_message_mark',
+                        ['scheduleSlotCount' => count([$scheduleSlot])]
+                    ),
+                );
             } catch (RuntimeException $exception) {
                 $this->addFlash('error', $exception->getMessage());
             }
@@ -165,14 +186,13 @@ class DoctorController extends CustomAbstractController
     #[Route('/edit-appointment-form', name: 'edit_appointment_form')]
     public function editAppointmentForm(
         Request $request,
-        ScheduleSlotRepository $scheduleSlotRepository,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer,
         #[Autowire(env: 'EMAIL_ADDRESS')]
         string $emailAddress,
     ): Response {
         /** @var ScheduleSlot */
-        $scheduleSlot = $scheduleSlotRepository->find($request->query->get('slotId'));
+        $scheduleSlot = $this->scheduleSlotRepository->find($request->query->get('slotId'));
 
         $form = $this->createForm(
             EditScheduleSlotFormType::class,
@@ -224,7 +244,7 @@ class DoctorController extends CustomAbstractController
     }
 
     #[Route('/delete-working-hours', name: 'delete_working_hours')]
-    public function deleteWorkingHours(Request $request, ScheduleSlotRepository $scheduleSlotRepository): Response
+    public function deleteWorkingHours(Request $request): Response
     {
         $form = $this->createForm(DeleteScheduleSlotFormType::class);
         $form->handleRequest($request);
@@ -235,13 +255,13 @@ class DoctorController extends CustomAbstractController
             /** @var DateTime */
             $endDate = $form->get('endDate')->getData();
 
-            $deletedSlots = $scheduleSlotRepository->deleteScheduleSlots(
+            $deletedSlots = $this->scheduleSlotRepository->deleteScheduleSlots(
                 $startDate,
                 $endDate,
                 $this->getUserCustom(),
             );
 
-            $skippedSlots = $scheduleSlotRepository->countScheduleSlotsWithPatient(
+            $skippedSlots = $this->scheduleSlotRepository->countScheduleSlotsWithPatient(
                 $startDate,
                 $endDate,
                 $this->getUserCustom(),
