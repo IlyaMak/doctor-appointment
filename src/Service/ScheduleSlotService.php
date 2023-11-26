@@ -5,8 +5,6 @@ namespace App\Service;
 use App\Entity\ScheduleSlot;
 use App\Entity\User;
 use App\Model\ScheduleSlotModel;
-use App\Repository\ScheduleSlotRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use DatePeriod;
 use DateInterval;
@@ -14,12 +12,6 @@ use DateTime;
 
 class ScheduleSlotService
 {
-    public function __construct(
-        private EntityManagerInterface $entityManager,
-        private ScheduleSlotRepository $scheduleSlotRepository
-    ) {
-    }
-
     public function setScheduleSlotModel(FormInterface $form): ScheduleSlotModel
     {
         /** @var DateTime */
@@ -149,13 +141,6 @@ class ScheduleSlotService
         return $scheduleSlots;
     }
 
-    /** @param ScheduleSlot[] $scheduleSlots */
-    public function saveScheduleSlots(array $scheduleSlots): void
-    {
-        $this->scheduleSlotRepository->insertScheduleSlots($scheduleSlots);
-        $this->entityManager->flush();
-    }
-
     public function generateScheduleSlot(FormInterface $form, User $user): ScheduleSlot
     {
         /** @var DateTime */
@@ -183,21 +168,17 @@ class ScheduleSlotService
         return $scheduleSlot;
     }
 
-    /** @return string[] */
-    public function generateScheduleSlotQueries(ScheduleSlot $scheduleSlot): array
+    public function generateOverlappedScheduleSlotQuery(ScheduleSlot $scheduleSlot): string
     {
         $startDateString = $scheduleSlot->getStart()->format('Y-m-d H:i:s');
         $endDateString = $scheduleSlot->getEnd()->format('Y-m-d H:i:s');
 
-        $scheduleSlotQueries[] =
-            "SELECT *
+        return "SELECT *
             FROM schedule_slot as slot
             WHERE (('$startDateString' >= slot.start AND '$startDateString' <= slot.end AND '$endDateString' >= slot.start AND '$endDateString' <= slot.end) -- [{  }]
             OR ('$startDateString' < slot.start AND '$endDateString' > slot.start AND '$endDateString' <= slot.end) -- {  [   }] 
             OR ('$startDateString' >= slot.start AND '$startDateString' < slot.end AND '$endDateString' > slot.end) -- [{   ]  }
             OR ('$startDateString' < slot.start AND '$endDateString' > slot.end)) -- { [ ] }
             AND (slot.doctor_id = {$scheduleSlot->getDoctor()->getId()})";
-
-        return $scheduleSlotQueries;
     }
 }
