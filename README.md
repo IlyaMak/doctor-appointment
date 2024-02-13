@@ -24,8 +24,8 @@ Patients can book doctor appointments and pay for them using Stripe.
 
 ### Steps:
 1. `git clone https://github.com/IlyaMak/doctor-appointment`
-2. `cp .env.example .env`
-3. update DATABASE_URL, STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env
+2. `cp .env.local.example .env.local`
+3. update DATABASE_URL, STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env.local
 4. `sh build/build.sh`
 5. `symfony server:start`
 6. open http://localhost:8000
@@ -38,11 +38,11 @@ Docker compose v2.21.0
 
 ### Steps:
 1. `git clone https://github.com/IlyaMak/doctor-appointment`
-2. `cp .env.example .env`
-3. update STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env
-3. `sh build/build-docker.sh`
-4. open http://localhost:84
-5. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
+2. `cp .env.local.example .env.local`
+3. update STRIPE_KEY, STRIPE_SECRET and STRIPE_ENDPOINT_SECRET variables in the .env.local
+4. `sh build/build-docker.sh`
+5. open http://localhost:84
+6. to use stripe run `stripe login` to log in on the stripe service (if you are not logged yet), then run in the separate command line - `docker compose exec php stripe listen --forward-to localhost:80/api/payment/stripe`
 
 ## Content of the php production service
 php:
@@ -50,7 +50,7 @@ php:
   ports:
     - '84:80'
   env_file:
-    - .env
+    - .env.local
 
 ## Content of the php local service
 php:

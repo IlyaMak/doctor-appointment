@@ -58,7 +58,6 @@ COPY --chown=www-data:www-data . .
 
 RUN set -eux; \
 	mkdir -p var/cache var/log; \
-    touch .env; \
     chown -R www-data:www-data var; \
     npm run build;
 

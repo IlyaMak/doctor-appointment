@@ -6,7 +6,6 @@
 /public/bundles/
 /var/
 /vendor/
-/.env
 /.env.test
 /public/resources/
 ###< symfony/framework-bundle ###
@@ -35,3 +34,5 @@ yarn-error.log
 cghooks.lock
 
 docker-compose.override.yml
+/.idea
+.vercel
