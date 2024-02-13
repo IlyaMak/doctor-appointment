@@ -1,4 +1,4 @@
-if [ -f '.env' ]
+if [ -f '.env.local' ]
 then
     docker compose down
     docker compose build
@@ -7,5 +7,5 @@ then
     docker compose exec php npm i
     docker compose exec php npm run build
 else
-    echo 'You need to create .env file in the root directory. Run: cp .env.example .env'
+    echo 'You need to create .env.local file in the root directory. Run: cp .env.local.example .env.local'
 fi

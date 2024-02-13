@@ -1,0 +1,6 @@
+/.git
+/node_modules
+/var
+/vendor
+.env.local
+/.idea
